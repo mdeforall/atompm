@@ -53,4 +53,7 @@ class TConstants :
 	MOTIFMM	= '/Formalisms/__Transformations__/Transformation/MoTif'
 	TCOREMM = '/Formalisms/__Transformations__/Transformation/T-Core'
 
+	''' mohanad :: MDE-integration :: start  '''
+	MDE = '/Formalisms/BlockBasedMDE/BlockBasedMDE'
+	''' mohanad :: MDE-integration :: end  '''
 

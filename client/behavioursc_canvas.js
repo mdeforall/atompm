@@ -12,7 +12,7 @@ __canvasBehaviourStatechart = {
 	'__STATE_EDITING_CONNECTION_PATHS' 				: 5,
 	'__STATE_DRAGGING_CONNECTION_PATH_CTRL_POINT': 6,
 	'__currentState' 						 				: undefined,
-
+	'__Target': undefined,
 	'__entryActions':{
 		1:
 			function(event)
@@ -91,11 +91,21 @@ __canvasBehaviourStatechart = {
 		{
 			if( this.__currentState == this.__STATE_IDLE )
 			{
-				if( name == __EVENT_RIGHT_RELEASE_CANVAS )
+				if( name == __EVENT_RIGHT_RELEASE_CANVAS ){
+					
 					DataUtils.create(GUIUtils.convertToCanvasX(event), GUIUtils.convertToCanvasY(event));
+					
+				}
 			
 				else if( name == __EVENT_LEFT_PRESS_CANVAS )
 					this.__T(this.__STATE_CANVAS_SELECTING,event);
+
+				else if(name == __EVENT_ALT_LEFT_RELEASE_ICON)
+				{
+					bird = event.currentTarget.getAttribute('__csuri');
+
+					__changeFacing(bird);
+				}
 		
 				else if( name == __EVENT_MIDDLE_RELEASE_ICON )
 				{
@@ -127,7 +137,14 @@ __canvasBehaviourStatechart = {
 				}
 				
 				else if( name == __EVENT_RIGHT_PRESS_ICON )
+				{
 					this.__T(this.__STATE_DRAWING_EDGE,event);
+				}
+
+				else if( name == __EVENT_SHIFT_RIGHT_RELEASE_ICON )
+				{
+					__iconToBack(event.target);
+				}
 				
 				else if( name == __EVENT_SHIFT_WHEEL_ICON )
 				{
@@ -182,7 +199,20 @@ __canvasBehaviourStatechart = {
 					__select();
 					this.__T(this.__STATE_IDLE,event);			
 				}
-				
+
+				else if(name == __EVENT_KEYDOWN_E_W_S_N_ICON_SELECTION)
+				{
+					__createIconInDirectionESWN();
+					__select();
+					this.__T(this.__STATE_IDLE,event);
+					setTimeout(function(){__sendIconsBackOnCanvas()}, 100);
+				}
+				else if(name == __EVENT_KEYDOWN_R_RULE_SELECTION)
+				{
+					__copyLHSiconsToRHSinRuleIcon();
+					setTimeout(function(){__sendIconsBackOnCanvas()}, 300);
+				}
+
 				else if( name == __EVENT_KEYUP_ESC			  			||
 							name == __EVENT_LEFT_PRESS_CANVAS  			||
 							name == __EVENT_LEFT_PRESS_ICON 	  			||
@@ -195,6 +225,20 @@ __canvasBehaviourStatechart = {
 				{
 					__select();
 					this.__T(this.__STATE_IDLE,event);
+				}
+
+				else if( name == __EVENT_RIGHT_PRESS_ICON )
+				{
+					__select();
+					this.__T(this.__STATE_DRAWING_EDGE,event);
+				}
+
+				else if (name == __EVENT_RIGHT_PRESS_SELECTION)
+				{
+					SelectedItems = __selection.items;
+					
+					this.__T(this.__STATE_DRAWING_EDGE,event);
+					
 				}
 				
 				else if( name == __EVENT_LEFT_PRESS_SELECTION )
@@ -282,7 +326,17 @@ __canvasBehaviourStatechart = {
 				}
 				else if( name == __EVENT_LEFT_RELEASE_ICON )
 				{
-					DataUtils.getInsertConnectionType(
+					__Target = event.currentTarget.getAttribute('__csuri');
+					srcIcon = __selection.items[0];
+
+					if(__selection.items.length == 1 && (__isVisualLink(srcIcon, __Target) && !__isVisualLink(__Target, srcIcon)))
+					{
+						__removeOnLinks(srcIcon);
+						__createVisualLink( srcIcon, __Target);
+					}
+					else
+					{
+						DataUtils.getInsertConnectionType(
 							event.target,
 							undefined,
 							function(connectionType) 
@@ -298,6 +352,8 @@ __canvasBehaviourStatechart = {
 									GeometryUtils.transformSelection(__SELECTION_DRAG);
 								}
 							});
+					}
+					setTimeout(function(){__sendIconsBackOnCanvas()}, 100);
 					this.__T(this.__STATE_SOMETHING_SELECTED,event);
 				}
 				
@@ -320,7 +376,28 @@ __canvasBehaviourStatechart = {
 				else if( name == __EVENT_KEYUP_ESC ||
 							name == __EVENT_RIGHT_RELEASE_CANVAS )
 				{
-					ConnectionUtils.hideConnectionPath();		
+					ConnectionUtils.hideConnectionPath();
+					if(SelectedItems.length != 0)
+					{
+						SelectedItems = [];
+						__select();
+					}		
+					this.__T(this.__STATE_IDLE,event);
+				}
+
+				else if(name == __EVENT_RIGHT_RELEASE_SELECTION)
+				{
+					ConnectionUtils.hideConnectionPath();
+					if(SelectedItems.length == 1)
+					{
+						DataUtils.create(GUIUtils.convertToCanvasX(event), GUIUtils.convertToCanvasY(event));
+					}
+					else if(SelectedItems.length != 1)
+					{
+						SelectedItems = [];
+						__select();
+					}
+					setTimeout(function(){__sendIconsBackOnCanvas()}, 100);
 					this.__T(this.__STATE_IDLE,event);
 				}
 
@@ -338,12 +415,56 @@ __canvasBehaviourStatechart = {
 					ConnectionUtils.snapConnectionSegment();
 				
 				else if( name == __EVENT_RIGHT_RELEASE_ICON )
-				{
-					if( ConnectionUtils.getConnectionPath().getTotalLength() <= 5 )
+				{ 
+					UnderneathIcon = event.currentTarget;
+					if( ConnectionUtils.getConnectionPath().getTotalLength() <= 15 ){
 						console.warn('to avoid accidental path creations, paths must '+
 										 'measure at least 5px');
+
+						ConnectionUtils.hideConnectionPath();	
+
+						//creates icons on top of other icons	 
+						DataUtils.create(GUIUtils.convertToCanvasX(event), GUIUtils.convertToCanvasY(event));
+					}
+					// creates visual links from a selected icon to another icon
+					else if(SelectedItems.length != 0)
+					{
+						underneathID = UnderneathIcon;
+						__Target = UnderneathIcon.getAttribute('__csuri');
+						UnderneathIcon = null;
+						__selectedItems = SelectedItems;
+						SelectedItems = [];
+
+						if(__selectedItems.length == 1)
+						{
+							/* if there is no visual links from src to __Target then checks if __Target has a connected underneath icon or not, if there is 
+								connected underneath icon and there is visual connection exists between the src and the underneath connected icon, then changes 
+								the __Target to the underneath connected icon and connect them with visual on link */
+							if(!__isVisualLink(__selectedItems[0], __Target) 
+								&& ( __isUnderneathVisualLinkOneDir(__selectedItems[0], __Target) || __isUnderneathVisualLinkBothDir(__selectedItems[0], __Target)))
+							{
+								__Target = __edgeId2ends(__getConnectionParticipants(__icons[__Target].edgesOut[0])[2])[1];	
+							}
+
+							ConnectionUtils.hideConnectionPath();
+							__removeOnLinks(__selectedItems[0]);
+							__createVisualLink(__selectedItems[0], __Target);
+						}
+						else
+						{
+							ConnectionUtils.hideConnectionPath();
+							console.warn("cannot create links with more than one source!")
+						}
+						__select();
+						
+					}
+
 					else
-						DataUtils.connect(event.target);
+						{
+							UnderneathIcon = null;
+							DataUtils.connect(event.target);
+						}	
+					setTimeout(function(){__sendIconsBackOnCanvas()}, 100);	
 					this.__T(this.__STATE_IDLE,event);
 				}
 				

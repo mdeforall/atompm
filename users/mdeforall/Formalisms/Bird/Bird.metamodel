@@ -1,0 +1,387 @@
+{
+	"types": {
+		"Positionable": [
+			{
+				"name": "position",
+				"type": "list<int>",
+				"default": [
+					0,
+					0
+				]
+			}
+		],
+		"Bird": [
+			{
+				"name": "facing",
+				"type": "ENUM(Up,Down,Right,Left)",
+				"default": "Right"
+			},
+			{
+				"name": "position",
+				"type": "list<int>",
+				"default": [
+					0,
+					0
+				]
+			}
+		],
+		"Empty": [
+			{
+				"name": "position",
+				"type": "list<int>",
+				"default": [
+					0,
+					0
+				]
+			}
+		],
+		"Pig": [
+			{
+				"name": "position",
+				"type": "list<int>",
+				"default": [
+					0,
+					0
+				]
+			}
+		],
+		"Tile": [
+			{
+				"name": "position",
+				"type": "list<int>",
+				"default": [
+					0,
+					0
+				]
+			}
+		],
+		"EmptyAbstract": [
+			{
+				"name": "position",
+				"type": "list<int>",
+				"default": [
+					0,
+					0
+				]
+			}
+		],
+		"east": [],
+		"south": [],
+		"On": []
+	},
+	"constraints": [
+		{
+			"name": "noAbstractInstances",
+			"event": "pre-create",
+			"code": "false",
+			"targetType": "Positionable"
+		},
+		{
+			"name": "noAbstractInstances",
+			"event": "pre-create",
+			"code": "false",
+			"targetType": "EmptyAbstract"
+		}
+	],
+	"actions": [
+		{
+			"name": "snapToTarget",
+			"event": "post-create",
+			"code": "/*newline*/      var targetNodes = getNeighbors('>'),/*newline*/          sourceNodes = getNeighbors('<');/*newline*/    /*newline*/        var targetNode = targetNodes[0],/*newline*/            sourceNode = sourceNodes[0];/*newline*/        /*newline*/        var sourcePosition = getAttr('position',sourceNode);/*newline*//*newline*/        setAttr('position',[sourcePosition[0]+47.5,sourcePosition[1]],targetNode);",
+			"targetType": "east"
+		},
+		{
+			"name": "snapToTarget",
+			"event": "post-create",
+			"code": "/*newline*/      var targetNodes = getNeighbors('>'),/*newline*/          sourceNodes = getNeighbors('<');/*newline*/    /*newline*/        var targetNode = targetNodes[0],/*newline*/            sourceNode = sourceNodes[0];/*newline*/        /*newline*/        var sourcePosition = getAttr('position',sourceNode);/*newline*//*newline*/        setAttr('position',[sourcePosition[0],sourcePosition[1]+47.5],targetNode);",
+			"targetType": "south"
+		},
+		{
+			"name": "snapToTarget",
+			"event": "post-create",
+			"code": "/*newline*/      var targetNodes = getNeighbors('>'),/*newline*/          sourceNodes = getNeighbors('<');/*newline*/    /*newline*/        var targetNode = targetNodes[0],/*newline*/            sourceNode = sourceNodes[0];/*newline*/        /*newline*/        var targetPosition = getAttr('position',targetNode);/*newline*//*newline*/        setAttr('position',[targetPosition[0],targetPosition[1]],sourceNode);",
+			"targetType": "On"
+		}
+	],
+	"cardinalities": {
+		"Positionable": [],
+		"Bird": [
+			{
+				"dir": "out",
+				"type": "On",
+				"min": "0",
+				"max": "Infinity"
+			}
+		],
+		"Empty": [
+			{
+				"dir": "in",
+				"type": "On",
+				"min": "0",
+				"max": "Infinity"
+			},
+			{
+				"dir": "out",
+				"type": "east",
+				"min": "0",
+				"max": "Infinity"
+			},
+			{
+				"dir": "in",
+				"type": "east",
+				"min": "0",
+				"max": "Infinity"
+			},
+			{
+				"dir": "out",
+				"type": "south",
+				"min": "0",
+				"max": "Infinity"
+			},
+			{
+				"dir": "in",
+				"type": "south",
+				"min": "0",
+				"max": "Infinity"
+			}
+		],
+		"Pig": [
+			{
+				"dir": "out",
+				"type": "On",
+				"min": "0",
+				"max": "Infinity"
+			}
+		],
+		"Tile": [
+			{
+				"dir": "out",
+				"type": "east",
+				"min": "0",
+				"max": "Infinity"
+			},
+			{
+				"dir": "in",
+				"type": "east",
+				"min": "0",
+				"max": "Infinity"
+			},
+			{
+				"dir": "out",
+				"type": "south",
+				"min": "0",
+				"max": "Infinity"
+			},
+			{
+				"dir": "in",
+				"type": "south",
+				"min": "0",
+				"max": "Infinity"
+			}
+		],
+		"EmptyAbstract": [
+			{
+				"dir": "out",
+				"type": "east",
+				"min": "0",
+				"max": "Infinity"
+			},
+			{
+				"dir": "in",
+				"type": "east",
+				"min": "0",
+				"max": "Infinity"
+			},
+			{
+				"dir": "out",
+				"type": "south",
+				"min": "0",
+				"max": "Infinity"
+			},
+			{
+				"dir": "in",
+				"type": "south",
+				"min": "0",
+				"max": "Infinity"
+			}
+		],
+		"east": [
+			{
+				"dir": "in",
+				"type": "EmptyAbstract",
+				"min": "0",
+				"max": "1"
+			},
+			{
+				"dir": "out",
+				"type": "EmptyAbstract",
+				"min": "0",
+				"max": "1"
+			},
+			{
+				"dir": "in",
+				"type": "Empty",
+				"min": "0",
+				"max": "1"
+			},
+			{
+				"dir": "out",
+				"type": "Empty",
+				"min": "0",
+				"max": "1"
+			},
+			{
+				"dir": "in",
+				"type": "Tile",
+				"min": "0",
+				"max": "1"
+			},
+			{
+				"dir": "out",
+				"type": "Tile",
+				"min": "0",
+				"max": "1"
+			}
+		],
+		"south": [
+			{
+				"dir": "in",
+				"type": "EmptyAbstract",
+				"min": "0",
+				"max": "1"
+			},
+			{
+				"dir": "out",
+				"type": "EmptyAbstract",
+				"min": "0",
+				"max": "1"
+			},
+			{
+				"dir": "in",
+				"type": "Empty",
+				"min": "0",
+				"max": "1"
+			},
+			{
+				"dir": "out",
+				"type": "Empty",
+				"min": "0",
+				"max": "1"
+			},
+			{
+				"dir": "in",
+				"type": "Tile",
+				"min": "0",
+				"max": "1"
+			},
+			{
+				"dir": "out",
+				"type": "Tile",
+				"min": "0",
+				"max": "1"
+			}
+		],
+		"On": [
+			{
+				"dir": "in",
+				"type": "Bird",
+				"min": "0",
+				"max": "1"
+			},
+			{
+				"dir": "out",
+				"type": "Empty",
+				"min": "0",
+				"max": "1"
+			},
+			{
+				"dir": "in",
+				"type": "Pig",
+				"min": "0",
+				"max": "1"
+			}
+		]
+	},
+	"legalConnections": {
+		"Bird": {
+			"Empty": [
+				"On"
+			]
+		},
+		"Empty": {
+			"EmptyAbstract": [
+				"east",
+				"south"
+			],
+			"Empty": [
+				"east",
+				"south"
+			],
+			"Tile": [
+				"east",
+				"south"
+			]
+		},
+		"Pig": {
+			"Empty": [
+				"On"
+			]
+		},
+		"Tile": {
+			"EmptyAbstract": [
+				"east",
+				"south"
+			],
+			"Empty": [
+				"east",
+				"south"
+			],
+			"Tile": [
+				"east",
+				"south"
+			]
+		},
+		"EmptyAbstract": {
+			"EmptyAbstract": [
+				"east",
+				"south"
+			],
+			"Empty": [
+				"east",
+				"south"
+			],
+			"Tile": [
+				"east",
+				"south"
+			]
+		}
+	},
+	"connectorTypes": {
+		"east": "visual",
+		"south": "visual",
+		"On": "visual"
+	},
+	"types2parentTypes": {
+		"Positionable": [],
+		"Bird": [
+			"Positionable"
+		],
+		"Empty": [
+			"Positionable",
+			"EmptyAbstract"
+		],
+		"Pig": [
+			"Positionable"
+		],
+		"Tile": [
+			"Positionable",
+			"EmptyAbstract"
+		],
+		"EmptyAbstract": [
+			"Positionable"
+		],
+		"east": [],
+		"south": [],
+		"On": []
+	}
+}

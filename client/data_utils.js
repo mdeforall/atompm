@@ -40,6 +40,14 @@ DataUtils = function(){
 				 };
 	
 		ConnectionUtils.hideConnectionPath();
+		if(!__isVisualLink(uri1, uri2) && (__isUnderneathVisualLinkOneDir(uri1, uri2) || __isUnderneathVisualLinkBothDir(uri1, uri2)))
+		{
+			uri2 = __edgeId2ends(__getConnectionParticipants(__icons[uri2].edgesOut[0])[2])[1];
+		}	
+
+		// remove existing on links from uri1 (if uri1 is PigIcon or BirdIcon or BallIcon) before creating new on link
+		__removeOnLinks(uri1);
+
 		WindowManagement.openDialog(
 				_LEGAL_CONNECTIONS,
 				{'uri1':uri1,'uri2':uri2,'ctype':__VISUAL_LINK},

@@ -450,6 +450,11 @@ WindowManagement = function(){
 			/* args: uri1, uri2, ctype, forceCallback */
 		{
 			var legalConnections = __legalConnections(args['uri1'],args['uri2'],args['ctype']);
+			if(ESconnection.length != 0)
+			{
+				legalConnections = ESconnection;
+				ESconnection = [];
+			}
 			if( legalConnections.length == 0 )
 			{
 				var err = 'no valid connection between selected types';

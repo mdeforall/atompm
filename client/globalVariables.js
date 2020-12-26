@@ -27,8 +27,15 @@ var EditUtils; /* Handles the Copy, Paste, Undo, and Redo options. Consider merg
 var GeometryUtils; /* Handles transformations and translations. */
 var MMMUtils;
 var Layout; /*For auto-layout capabilities. */
-
+var UnderneathIcon;
+var latestIcon=[];
+var SelectedItems = [];
 var currentKeys = [];
+
+var ESconnection = [];
+var Key_E_S_W_N;
+var IconsBeforeCopy = [];
+var NewIconCreated;
 
 // Command Keys
 var KEY_TAB = 9,
@@ -41,7 +48,13 @@ var KEY_TAB = 9,
 	KEY_DEL = 46,
 	KEY_CMD1 = 91, 
 	KEY_CMD2 = 92, 
-	KEY_CMD3 = 224;
+	KEY_CMD3 = 224,
+	KEY_E = 69,
+	KEY_S = 83,
+	KEY_W = 87,
+	KEY_N = 78,
+	KEY_R = 82;
+
 
 // Arrow Keys
 var KEY_RIGHT_ARROW = 39, 

@@ -1037,3 +1037,354 @@ function __getRecentDir(name) {
 function __setRecentDir(name,value) {
 	utils.createCookie('recentDir'+name,value);
 }
+
+/**
+ * creates visual link from srcUri to tarUri
+ */
+function __createVisualLink(srcUri, tarUri)
+{
+	callback = function (connectionType) {
+		HttpUtils.httpReq(
+			"POST", 
+			HttpUtils.url(connectionType, __NO_USERNAME), 
+			{
+      		'src': srcUri,
+			'dest': tarUri,
+			'pos':[__icons[tarUri].icon.getAttr('__x'), __icons[tarUri].icon.getAttr('__y')]
+      		});
+	};
+	
+  
+  	WindowManagement.openDialog(
+    	_LEGAL_CONNECTIONS,
+    	{ 'uri1': srcUri, 'uri2': tarUri, ctype: __VISUAL_LINK },
+    	callback
+  );
+}
+
+/**
+ * returns true if there is visual link between srcUri and tarUri
+ */
+function __isVisualLink(srcUri, tarUri)
+{
+	return __legalConnections( srcUri, tarUri, __VISUAL_LINK).length != 0;
+}
+
+/**
+ * returns true if there is containment link between srcUri and tarUri
+ */
+function __isContainmentLink(srcUri, tarUri)
+{
+	return __legalConnections( tarUri, srcUri, __CONTAINMENT_LINK).length != 0;
+}
+
+/** 
+ * returns true if there is a visual link from srcUri to the underneath connected item of tarUri in one direction from srcUri to the underneath connected item
+ * but not the other direction 
+ */
+function __isUnderneathVisualLinkOneDir(srcUri, tarUri)
+{
+	return __icons[tarUri].edgesOut[0] != undefined
+			&& __edgeId2ends(__getConnectionParticipants(__icons[tarUri].edgesOut[0])[2])[1] != undefined
+			&& __legalConnections( srcUri,__edgeId2ends(__getConnectionParticipants(__icons[tarUri].edgesOut[0])[2])[1], __VISUAL_LINK).length != 0
+			&& __legalConnections( __edgeId2ends(__getConnectionParticipants(__icons[tarUri].edgesOut[0])[2])[1], srcUri, __VISUAL_LINK).length == 0;
+}
+
+/** 
+ * returns true if there is a link from srcUri to the underneath connected item of tarUri in both direction from srcUri to the underneath connected item
+ * and from underneath connected item to the srcUri
+ */
+function __isUnderneathVisualLinkBothDir(srcUri, tarUri)
+{
+	return __icons[tarUri].edgesOut[0] != undefined
+			&& __edgeId2ends(__getConnectionParticipants(__icons[tarUri].edgesOut[0])[2])[1] != undefined
+			&& __legalConnections( srcUri,__edgeId2ends(__getConnectionParticipants(__icons[tarUri].edgesOut[0])[2])[1], __VISUAL_LINK).length != 0
+			&& __legalConnections( __edgeId2ends(__getConnectionParticipants(__icons[tarUri].edgesOut[0])[2])[1], srcUri, __VISUAL_LINK).length != 0;
+}
+
+/**
+ * changes the facing of bird icon to the next facing
+ */
+function __changeFacing(uri)
+{
+	if(__IconType(uri)=="/BirdIcon")
+	{
+		HttpUtils.httpReq(
+			'GET', 
+			HttpUtils.url(uri), 
+			undefined, 
+			function(statusCode, resp){
+				facing = utils.jsonp( utils.jsonp(resp)['data'] )['facing']['value'];
+				if(facing == "Left")
+					DataUtils.update(uri,{facing: "Up"});
+				else if(facing == "Up")
+					DataUtils.update(uri,{facing: "Right"});
+				else if(facing == "Right")
+					DataUtils.update(uri,{facing: "Down"});	
+				else if(facing == "Down")
+					DataUtils.update(uri,{facing: "Left"});
+			}
+			);
+	}
+}
+
+
+/**
+ * creates CellIcon or EmptyIcon or TileIcon in the east, west, south or north direction of a selected CellIcon or EmptyIcon or TileIcon
+ * connect them with visual links depending on the key direction
+ */
+function __createIconInDirectionESWN()
+{
+	if (__selection.items.length == 1) {
+		item = __selection.items[0];
+
+		if (__IconType(item) == "/EmptyIcon" || __IconType(item) == "/TileIcon") {
+			if (__typeToCreate == "/Formalisms/Bird/Bird.defaultIcons/EmptyIcon" || __typeToCreate == "/Formalisms/Bird/Bird.defaultIcons/TileIcon") {
+				SelectedItems = __selection.items;
+				if (Key_E_S_W_N == 'E') {
+					ESconnection.push("/Formalisms/Bird/Bird.defaultIcons/east");
+					DataUtils.create(Number(__icons[item].icon.node.getAttribute('__x')) + 47.5, Number(__icons[item].icon.node.getAttribute('__y')));
+				}
+				else if (Key_E_S_W_N == 'S') {
+					ESconnection.push("/Formalisms/Bird/Bird.defaultIcons/south");
+					DataUtils.create(Number(__icons[item].icon.node.getAttribute('__x')), Number(__icons[item].icon.node.getAttribute('__y')) + 47.5);
+				}
+				else if (Key_E_S_W_N == 'N') {
+					ESconnection.push("/Formalisms/Bird/Bird.defaultIcons/south");
+					DataUtils.create(Number(__icons[item].icon.node.getAttribute('__x')), Number(__icons[item].icon.node.getAttribute('__y')) - 47.5);
+				}
+				else if (Key_E_S_W_N == 'W') {
+					ESconnection.push("/Formalisms/Bird/Bird.defaultIcons/east");
+					DataUtils.create(Number(__icons[item].icon.node.getAttribute('__x')) - 47.5, Number(__icons[item].icon.node.getAttribute('__y')));
+				}
+
+			}
+			else
+				Key_E_S_W_N = null;
+
+		}
+		else if (__IconType(item) == "/CellIcon" && __typeToCreate == "/Formalisms/Maze/Maze.defaultIcons/CellIcon") {
+			SelectedItems = __selection.items;
+			if (Key_E_S_W_N == 'E') {
+				ESconnection.push("/Formalisms/Maze/Maze.defaultIcons/east");
+				DataUtils.create(Number(__icons[item].icon.node.getAttribute('__x')) + 51, Number(__icons[item].icon.node.getAttribute('__y')));
+			}
+			else if (Key_E_S_W_N == 'S') {
+				ESconnection.push("/Formalisms/Maze/Maze.defaultIcons/south");
+				DataUtils.create(Number(__icons[item].icon.node.getAttribute('__x')), Number(__icons[item].icon.node.getAttribute('__y')) + 51);
+			}
+			else if (Key_E_S_W_N == 'N') {
+				ESconnection.push("/Formalisms/Maze/Maze.defaultIcons/south");
+				DataUtils.create(Number(__icons[item].icon.node.getAttribute('__x')), Number(__icons[item].icon.node.getAttribute('__y')) - 51);
+			}
+			else if (Key_E_S_W_N == 'W') {
+				ESconnection.push("/Formalisms/Maze/Maze.defaultIcons/east");
+				DataUtils.create(Number(__icons[item].icon.node.getAttribute('__x')) - 51, Number(__icons[item].icon.node.getAttribute('__y')));
+			}
+		}
+		else
+			Key_E_S_W_N = null;
+	}
+}
+
+/**
+ * finds the surounding icons of a newly created icon 'uri' and connect them if not already connected
+ */
+function __findSuroundingIconsAndConnect(uri)
+{
+	var uriX = __icons[uri].icon.node.getAttribute('__x');
+	var uriY = __icons[uri].icon.node.getAttribute('__y');
+
+	for (var item in __icons) {
+		if (!__isConnectionType(item)) {
+			var itemX = __icons[item].icon.node.getAttribute('__x');
+			var itemY = __icons[item].icon.node.getAttribute('__y');
+
+			//for icons in east or south of newly created icon
+			if (((Number(uriX) + 47.5 == itemX || Number(uriX) + 51 == itemX) && (uriY == itemY))) {
+
+				if (!__isVisualConnectionIn(item, uri)) {
+					if (__IconType(uri) == "/EmptyIcon" || __IconType(uri) == "/TileIcon")
+						ESconnection.push("/Formalisms/Bird/Bird.defaultIcons/east");
+					else if (__IconType(uri) == "/CellIcon")
+						ESconnection.push("/Formalisms/Maze/Maze.defaultIcons/east");
+
+					__createVisualLink(uri, item);
+				}
+			}
+			else if (((uriX == itemX) && (Number(uriY) + 47.5 == itemY || Number(uriY) + 51 == itemY))) {
+				if (!__isVisualConnectionIn(item, uri)) {
+					if (__IconType(uri) == "/EmptyIcon" || __IconType(uri) == "/TileIcon")
+						ESconnection.push("/Formalisms/Bird/Bird.defaultIcons/south");
+					else if (__IconType(uri) == "/CellIcon")
+						ESconnection.push("/Formalisms/Maze/Maze.defaultIcons/south");
+
+					__createVisualLink(uri, item);
+				}
+			}
+			// for icons in west and north of newly created icon
+			else if (((Number(uriX) - 47.5 == itemX || Number(uriX) - 51 == itemX) && (uriY == itemY))) {
+				if (!__isVisualConnectionIn(uri, item)) {
+					if (__IconType(uri) == "/EmptyIcon" || __IconType(uri) == "/TileIcon")
+						ESconnection.push("/Formalisms/Bird/Bird.defaultIcons/east");
+					else if (__IconType(uri) == "/CellIcon")
+						ESconnection.push("/Formalisms/Maze/Maze.defaultIcons/east");
+
+					__createVisualLink(item, uri);
+				}
+			}
+			else if (((uriX == itemX) && (Number(uriY) - 47.5 == itemY || Number(uriY) - 51 == itemY))) {
+				if (!__isVisualConnectionIn(uri, item)) {
+					if (__IconType(uri) == "/EmptyIcon" || __IconType(uri) == "/TileIcon")
+						ESconnection.push("/Formalisms/Bird/Bird.defaultIcons/south");
+					else if (__IconType(uri) == "/CellIcon")
+						ESconnection.push("/Formalisms/Maze/Maze.defaultIcons/south");
+
+					__createVisualLink(item, uri);
+				}
+			}
+		}
+
+	}
+
+}
+
+/**
+ * delete outgoing on links from uri (if uri is PigIcon or BirdIcon or BallIcon)
+ */
+function __removeOnLinks(uri)
+{
+	if((__IconType(uri) == "/PigIcon" || __IconType(uri) == "/BirdIcon" || __IconType(uri) == "/BallIcon") && __icons[uri].edgesOut.length != 0)
+		{
+			var edgesO = __icons[uri].edgesOut;
+
+			var Items = [];
+			onlink =__edgeId2ends(edgesO[0])[1];
+			Items.push(onlink);
+			Items.push(__icons[onlink]['edgesOut'][0]);
+			Items.push(__icons[onlink]['edgesIn'][0]);
+
+			var requests = [];
+				Items.forEach(
+				function(it)
+				{
+				if( it in __icons )
+					requests.push(
+						{'method':'DELETE', 
+						 'uri':HttpUtils.url(it,__NO_USERNAME+__NO_WID)});
+				});
+
+			HttpUtils.httpReq(
+				'POST',
+				HttpUtils.url('/batchEdit',__NO_USERNAME),
+				requests);
+		}
+}
+
+/**
+ * copies LHS icons and paste in RHS in a selected RuleIcon of BlockBasedMDE
+ */
+function __copyLHSiconsToRHSinRuleIcon()
+{
+	var iconsBefore = [];
+	var rule;
+	if(__selection['items'].length == 1 && __selection['items'][0].includes("RuleIcon"))
+	{   
+		var LHSIcons = [];
+		rule = __selection['items'][0];
+		ruleX = __icons[rule].icon.node.getAttribute('__x');
+		ruleY = __icons[rule].icon.node.getAttribute('__y');
+		for(var item in __icons)
+		{
+			iconsBefore.push(__icons[item].icon.node.getAttribute('__csuri'));
+			itemX = __icons[item].icon.node.getAttribute('__x');
+			itemY = __icons[item].icon.node.getAttribute('__y');
+			if((itemX > ruleX) && (itemX < Number(ruleX)+310) && (itemY > ruleY) && (itemY < Number(ruleY)+235))
+			{
+				LHSIcons.push(__icons[item].icon.node.getAttribute('__csuri'));
+			}
+		}
+
+		if(LHSIcons.length == 0)
+			return;
+
+		__select();
+
+		for(var uri in LHSIcons)
+		{ 
+			if( __isConnectionType(LHSIcons[uri]) )
+			{
+				for(var edgeI in __icons[LHSIcons[uri]]['edgesIn'])	
+					LHSIcons.push(__icons[LHSIcons[uri]]['edgesIn'][edgeI]);
+			
+				for(var edgeO in __icons[LHSIcons[uri]]['edgesOut'])	
+					LHSIcons.push(__icons[LHSIcons[uri]]['edgesOut'][edgeO]);
+			}	
+		}
+
+		__select(LHSIcons);
+		EditUtils.copy();
+
+		setTimeout(function(){		
+			EditUtils.paste();
+			}, 100);
+
+		setTimeout(function(){
+				newIcons = [];
+				for(var uri in __icons){
+					newIcons.push(__icons[uri].icon.node.getAttribute('__csuri'));
+				}
+
+				for(var uri in newIcons)
+				{
+					for(var itm in iconsBefore)
+					{
+						if((newIcons[uri] == iconsBefore[itm]))
+						{
+							//delete newIcons[uri];
+							newIcons.splice(uri, 1);
+						}
+					}
+				}
+
+				for(var i in newIcons)
+				{
+					if(newIcons[i] != undefined)
+					{
+						if( !__isConnectionType(newIcons[i]))
+						{
+							var x = Number(__icons[newIcons[i]].icon.getAttr('__x'))+315;
+							var y = Number(__icons[newIcons[i]].icon.getAttr('__y'));
+						 
+							DataUtils.update(newIcons[i], {position: [x, y]});
+						}
+					}
+				}
+			__select(newIcons);
+			},200);
+	}
+}
+
+/**
+ * checks all link on canvas and calls toBack() on the icons connected by links and which has a edgeIn
+ */
+function __sendIconsBackOnCanvas()
+{
+	for(var item in __icons)
+	{
+		if(__isConnectionType(__icons[item].icon.node.getAttribute('__csuri')))
+		{
+			iconToGoBack = __edgeId2ends(__icons[item].edgesOut[0])[1];
+			__iconToBack(__icons[iconToGoBack].icon.node.firstElementChild);
+		}
+	}
+
+	for(var i in __icons)
+	{
+		if(__IconType(__icons[i].icon.node.getAttribute('__csuri')) == 'e'
+			|| __IconType(__icons[i].icon.node.getAttribute('__csuri')) == 's')
+		{
+			__iconToBack(__icons[i].icon.node.firstElementChild);
+		}
+	}
+}

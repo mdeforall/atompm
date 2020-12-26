@@ -107,7 +107,9 @@ CompileUtils = function(){
 				if( event.button == 0 )
 					BehaviorManager.handleUserEvent(__EVENT_LEFT_PRESS_ICON,event);
 				else if( event.button == 2 )
+				{
 					BehaviorManager.handleUserEvent(__EVENT_RIGHT_PRESS_ICON,event);
+				}
 			};
 		edge.node.onmouseup = 
 			function(event)
@@ -282,13 +284,19 @@ CompileUtils = function(){
 			if( 'behaviours' in options )
 			{
 				icon.setAttr('class','clickable');
+
 				icon.node.onmousedown = 
 					function(event)
 					{
 						if( event.button == 0 )
 							BehaviorManager.handleUserEvent(__EVENT_LEFT_PRESS_ICON,event);
 						else if( event.button == 2 )
-							BehaviorManager.handleUserEvent(__EVENT_RIGHT_PRESS_ICON,event);
+						{
+							if(event.shiftKey)
+								;
+							else
+								BehaviorManager.handleUserEvent(__EVENT_RIGHT_PRESS_ICON,event);
+						}
 					};
 				icon.node.onmouseup = 
 					function(event)
@@ -297,11 +305,18 @@ CompileUtils = function(){
 						{
 							if( event.shiftKey )
 								BehaviorManager.handleUserEvent(__EVENT_SHIFT_LEFT_RELEASE_ICON,event);
+							else if(event.altKey)
+								BehaviorManager.handleUserEvent(__EVENT_ALT_LEFT_RELEASE_ICON,event);
 							else
 								BehaviorManager.handleUserEvent(__EVENT_LEFT_RELEASE_ICON,event);							
 						}
 						else if( event.button == 2 )
-							BehaviorManager.handleUserEvent(__EVENT_RIGHT_RELEASE_ICON,event);
+						{	
+							if(event.shiftKey)
+								BehaviorManager.handleUserEvent(__EVENT_SHIFT_RIGHT_RELEASE_ICON,event);
+							else
+								BehaviorManager.handleUserEvent(__EVENT_RIGHT_RELEASE_ICON,event);
+						}
 						else if( event.button == 1 )
 						{
 							if( event.shiftKey )

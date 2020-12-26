@@ -30,7 +30,9 @@ from .motifcontext import MotifContext
 from .tcorecontext import TCoreContext
 from .pytcore.tcore.messages import Pivots
 ''' hergin :: motif-integration end '''
-
+''' mohanad :: motif-integration start '''
+from .mdecontext import MdeContext
+''' mohanad :: motif-integration end '''
 import igraph as ig
 #import pydot
 #import datetime
@@ -347,6 +349,8 @@ class PyTCoreAbstractionLayer :
             self._mtContexts.append(TCoreContext(fname,self))
         elif TC.TRANSFMM in self._transfData[fname]['metamodels']:
             self._mtContexts.append(ModelTransformationContext(self._transfData[fname],fname))
+        elif TC.MDE in self._transfData[fname]['metamodels']: # mohanad :: mde-integration modify
+            self._mtContexts.append(MdeContext(fname,self))
         ''' hergin :: motif-integration end '''
 
 
@@ -424,7 +428,7 @@ class PyTCoreAbstractionLayer :
         self._loadRuntimeConfiguration(mtc.getRuntimeConfiguration())
 
         if self._debugOn and not mtc.isTransformationUnderWay() and \
-                (type(mtc) == MotifContext or type(mtc) == TCoreContext) : # hergin :: motif-integration modify
+                (type(mtc) == MotifContext or type(mtc) == TCoreContext or type(mtc) == MdeContext) : # hergin :: motif-integration modify | mohanad :: mde-integration modify
             _execmode = self._execmode
             self._execmode = 'PAUSE'
             self._aswPrintReq(TC.DEBUGGING_HALT)
@@ -475,7 +479,8 @@ class PyTCoreAbstractionLayer :
                     return self._nextRule()
 
                 elif fulltype.startswith(TC.TCOREMM) or \
-                        fulltype.startswith(TC.MOTIFMM):
+                        fulltype.startswith(TC.MOTIFMM) or \
+                           fulltype.startswith(TC.MDE) : # mohanad :: mde-integration modify
                     if self._debugOn :
                         highlightUpcomingStep()
 
@@ -995,7 +1000,8 @@ class PyTCoreAbstractionLayer :
             #self._aswPrintReq('launching rule :: '+r['fname'])
             #ar = NDARule(r['cr']['lhs'],r['cr']['rhs'],rng=self._randomGen)
             mtc = self._mtContexts[-1]
-            if mtc.metamodel == TC.MOTIFMM or mtc.metamodel == TC.TCOREMM:
+            
+            if mtc.metamodel == TC.MOTIFMM or mtc.metamodel == TC.TCOREMM or mtc.metamodel == TC.MDE: # mohanad :: mde-integration modify
                 ar = r['rule']
             else:
                 ar = NDARule(r['cr']['lhs'],r['cr']['rhs'],rng=self._randomGen,sendAndApplyDeltaFunc=self.sendAndApplyDelta)
@@ -1087,8 +1093,23 @@ class PyTCoreAbstractionLayer :
                 return True
             else:
                 (res,ai) = runRule(nr)
+                ''' mohanad :: mde-integration :: start '''
+                if self._mtContexts[-1].metamodel ==TC.MDE:
+                    self._mtContexts[-1].updateStep(self._mtContexts[-1].getCurrentStepId())
+                ''' mohanad :: mde-integration :: end '''
+
+
             self._mtContexts[-1].setLastStepApplicationInfo(ai)
 
+            ''' mohanad :: mde-integration :: start '''
+            # highlght the transformation in the same instance
+            if self._mtContexts[-1].metamodel ==TC.MDE:
+
+                self._requestNodeHighlight(
+                            '127.0.0.1:8124',
+                            self._aswCommTools['wid'],
+                            self._mtContexts[-1].getCurrentStepId())
+            ''' mohanad :: mde-integration :: end '''
             if ai == TC.FAILED and self.incUpdates:
                 ''' hergin :: motif-integration modify (which rule is not succeeded) '''
                 self._aswPrintReq(TC.RULE_FAILURE_MSG+" ("+self._mtContexts[-1]._lastStep['alias']+":"+self._mtContexts[-1]._lastStep['name']+")")
@@ -1099,7 +1120,7 @@ class PyTCoreAbstractionLayer :
 
                 mtc = self._mtContexts[-1]
                 if self.incUpdates:
-                    if mtc.metamodel == TC.MOTIFMM or mtc.metamodel == TC.TCOREMM:
+                    if mtc.metamodel == TC.MOTIFMM or mtc.metamodel == TC.TCOREMM or mtc.metamodel ==TC.MDE: # mohanad :: mde-integration modify
                         self._aswPrintReq(TC.RULE_SUCCESS_MSG+" ("+self._mtContexts[-1]._lastStep['alias']+":"+self._mtContexts[-1]._lastStep['name']+")")
                     else:
                         self._aswPrintReq(TC.RULE_SUCCESS_MSG)

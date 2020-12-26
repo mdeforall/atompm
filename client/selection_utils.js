@@ -120,12 +120,16 @@ function __select(selection,ignoreContents)
 		{
 			if( event.button == 0 )
 				BehaviorManager.handleUserEvent(__EVENT_LEFT_PRESS_SELECTION,event);
+			else if(event.button == 2)
+				BehaviorManager.handleUserEvent(__EVENT_RIGHT_PRESS_SELECTION,event);
 		};
 	__selection['rect'].node.onmouseup = 
 		function(event)
 		{
 			if( event.button == 0 )
 				BehaviorManager.handleUserEvent(__EVENT_LEFT_RELEASE_SELECTION,event);
+			else if(event.button == 2)
+				BehaviorManager.handleUserEvent(__EVENT_RIGHT_RELEASE_SELECTION,event);
 		};
 	return true;
 }
@@ -335,4 +339,12 @@ function __updateCanvasSelectionOverlay(x,y)
 	}
 	else
 		__selectionOverlay.attr('height', h);
+}
+
+//return the icon type of a entered icon id.
+function __IconType(id)
+{
+	var result = id.substr(0,id.indexOf('/',37));
+	result = result.substr(result.indexOf('/',33));
+	return result;
 }

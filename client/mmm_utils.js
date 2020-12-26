@@ -50,6 +50,14 @@ function __isContainmentConnectionType(linkuri)
 	return __loadedToolbars[asmm].connectorTypes[type] == __CONTAINMENT_LINK;
 }
 
+function __isVisualConnectionType(linkuri)
+{
+	var matches = linkuri.match(/(.*)\..*Icons(\.pattern){0,1}\/(.*)Link/),
+		 asmm		= matches[1]+(matches[2] || '')+'.metamodel',
+		 type		= matches[3];
+	return __loadedToolbars[asmm].connectorTypes[type] == __VISUAL_LINK;
+}
+
 /**
  * Returns whether or not this is a metamodel
  * @param str
@@ -487,6 +495,28 @@ function __isDirectlyContainedIn(icon,container)
 						function(_edgeId)
 						{
 							return __edges[_edgeId]['start'] == container;	
+						});
+				});
+}
+
+/**
+ * returns true if the given Uris are connected by a visual link from otherIcon to icon 
+ */
+function __isVisualConnectionIn(icon,otherIcon)
+{
+	return otherIcon != undefined &&
+			 ! __isConnectionType(otherIcon) &&
+			 __icons[icon]['edgesIn'].some(
+				function(edgeId)
+				{
+					var linkuri	= __edgeId2linkuri(edgeId);
+					if( ! __isVisualConnectionType(linkuri) )
+						return false;
+						
+					return __icons[linkuri]['edgesIn'].some(
+						function(_edgeId)
+						{
+							return __edges[_edgeId]['start'] == otherIcon;	
 						});
 				});
 }

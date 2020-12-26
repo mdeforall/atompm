@@ -192,6 +192,37 @@ class mtworkerThread(threading.Thread) :
 					msg['resp'],
 					{'statusCode':500,
 					 'reason':"Error in model transformation worker: " + str(e)})
+					 
+		# mohanad: MDE load transformation (problem when reload taking old maze bird facing)
+		elif msg['method'] == 'PUT' and re.match('/mde.transform',msg['uri']):
+			try :
+				self._ptcal.stop()
+				self._ptcal._userTransfs = []
+				
+				if not self._ptcal.isStopped() :
+					self._postMessage(
+						msg['resp'],
+						{'statusCode':403,
+						 'reason':'not allowed to (re)load during '+ \
+								  'ongoing transformation(s)'})
+				else :
+					transfs = json.loads(msg['reqData'])['transfs']
+					transfs.reverse()
+					self._ptcal.loadTransforms(transfs)
+					self._postMessage(msg['resp'],{'statusCode':200})
+			except Exception as e :
+				print("Exception: " + str(e))
+				traceback.print_exc()
+
+				self._postMessage(
+					msg['resp'],
+					{'statusCode':500,
+					 'reason':"Error in model transformation worker: " + str(e)})
+
+				self._postMessage(
+					msg['resp'],
+					{'statusCode':500,
+					 'reason':"Error in model transformation worker: " + str(e)})
 
 		elif msg['method'] == 'PUT' and re.match('/query.transform',msg['uri']):
 			try :
