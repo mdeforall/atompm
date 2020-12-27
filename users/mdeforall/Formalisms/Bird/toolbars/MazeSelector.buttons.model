@@ -200,7 +200,7 @@
 				},
 				"code": {
 					"type": "code",
-					"value": "_loadModel('/Formalisms/Bird/puzzle1.model');"
+					"value": "_loadModel('/Formalisms/Bird/hoc/maze1.model');"
 				},
 				"$type": "/Formalisms/__Utilities__/Buttons/Buttons/Button"
 			}

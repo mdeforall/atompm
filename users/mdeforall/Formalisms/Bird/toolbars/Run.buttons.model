@@ -200,7 +200,7 @@
 				},
 				"code": {
 					"type": "code",
-					"value": "__highlight('/Formalisms/BlockBasedMDE/BlockBasedMDE.defaultIcons/StartIcon/296.instance');\n_httpReq('PUT','/__mt/current.transform?wid='+_context.wid,{'transfs':['/Formalisms/Bird/T_Run.model'],'username':_context.username});\n\n\nsetTimeout(function(){\n   __highlight('/Formalisms/BlockBasedMDE/BlockBasedMDE.defaultIcons/RuleIcon/183.instance');\n   _httpReq('PUT','/__mt/execmode?wid='+_context.wid,{'mode':'step'});\n}, 1000);\n\nsetTimeout(function(){\n   _httpReq('PUT','/__mt/execmode?wid='+_context.wid,{'mode':'step'}); \n}, 2000);\n\nsetTimeout(function(){\n   __highlight('/Formalisms/BlockBasedMDE/BlockBasedMDE.defaultIcons/RuleIcon/370.instance');\n   _httpReq('PUT','/__mt/execmode?wid='+_context.wid,{'mode':'step'}); \n}, 3000);\n\nsetTimeout(function(){ \n   __highlight('/Formalisms/BlockBasedMDE/BlockBasedMDE.defaultIcons/RuleExitIcon/299.instance');\n}, 3500);\n\nsetTimeout(function(){ \n   alert(\"Congratulations!\");\n}, 4000);\n"
+					"value": "_saveModel();\n\nsetTimeout(function(){httpReq('PUT',\n        '/__mt/mde.transform?wid='+_context.wid,\n             {'transfs':[__saveas],\n              'username':_context.username});}, 1000);\n\nsetTimeout(function(){httpReq('PUT','/__mt/execmode?wid='+_context.wid,{'mode':'play'});}, 2000);"
 				},
 				"$type": "/Formalisms/__Utilities__/Buttons/Buttons/Button"
 			}
