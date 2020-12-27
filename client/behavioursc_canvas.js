@@ -93,7 +93,7 @@ __canvasBehaviourStatechart = {
 			{
 				if( name == __EVENT_RIGHT_RELEASE_CANVAS ){
 					
-					DataUtils.create(GUIUtils.convertToCanvasX(event), GUIUtils.convertToCanvasY(event));
+					//DataUtils.create(GUIUtils.convertToCanvasX(event), GUIUtils.convertToCanvasY(event));
 					
 				}
 			

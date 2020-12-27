@@ -190,4 +190,15 @@ function __initClient()
 		};
 	
 
+	
+	  document.getElementById('div_canvas').addEventListener('contextmenu',function(ev){
+		ev.preventDefault();
+		new Contextual({
+			isSticky: false,
+			items: [
+				{label: 'Create', onClick: () => {DataUtils.create(GUIUtils.convertToCanvasX(ev), GUIUtils.convertToCanvasY(ev));}},
+			]
+		});
+	});
+
 }
