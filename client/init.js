@@ -196,7 +196,8 @@ function __initClient()
 		new Contextual({
 			isSticky: false,
 			items: [
-				{label: 'Create', onClick: () => {DataUtils.create(GUIUtils.convertToCanvasX(ev), GUIUtils.convertToCanvasY(ev));}},
+				{label: __typeToCreate==undefined?"Select a type!":"Create "+__typeToCreate.match(/.*\/(.*)\Icon/)[1]+" here!", 
+				 onClick: () => {DataUtils.create(GUIUtils.convertToCanvasX(ev), GUIUtils.convertToCanvasY(ev))}},
 			]
 		});
 	});
