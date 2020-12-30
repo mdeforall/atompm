@@ -205,12 +205,10 @@ __canvasBehaviourStatechart = {
 					__createIconInDirectionESWN();
 					__select();
 					this.__T(this.__STATE_IDLE,event);
-					setTimeout(function(){__sendIconsBackOnCanvas()}, 100);
 				}
 				else if(name == __EVENT_KEYDOWN_R_RULE_SELECTION)
 				{
 					__copyLHSiconsToRHSinRuleIcon();
-					setTimeout(function(){__sendIconsBackOnCanvas()}, 300);
 				}
 
 				else if( name == __EVENT_KEYUP_ESC			  			||
@@ -366,7 +364,6 @@ __canvasBehaviourStatechart = {
 								}
 							});
 					}
-					setTimeout(function(){__sendIconsBackOnCanvas()}, 100);
 
 					__makeConnectionsWhenDropped();
 
@@ -413,7 +410,6 @@ __canvasBehaviourStatechart = {
 						SelectedItems = [];
 						__select();
 					}
-					setTimeout(function(){__sendIconsBackOnCanvas()}, 100);
 					this.__T(this.__STATE_IDLE,event);
 				}
 
@@ -480,7 +476,6 @@ __canvasBehaviourStatechart = {
 							UnderneathIcon = null;
 							DataUtils.connect(event.target);
 						}	
-					setTimeout(function(){__sendIconsBackOnCanvas()}, 100);	
 					this.__T(this.__STATE_IDLE,event);
 				}
 				

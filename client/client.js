@@ -1366,27 +1366,3 @@ function __copyLHSiconsToRHSinRuleIcon()
 			},200);
 	}
 }
-
-/**
- * checks all link on canvas and calls toBack() on the icons connected by links and which has a edgeIn
- */
-function __sendIconsBackOnCanvas()
-{
-	for(var item in __icons)
-	{
-		if(__isConnectionType(__icons[item].icon.node.getAttribute('__csuri')))
-		{
-			iconToGoBack = __edgeId2ends(__icons[item].edgesOut[0])[1];
-			__iconToBack(__icons[iconToGoBack].icon.node.firstElementChild);
-		}
-	}
-
-	for(var i in __icons)
-	{
-		if(__IconType(__icons[i].icon.node.getAttribute('__csuri')) == 'e'
-			|| __IconType(__icons[i].icon.node.getAttribute('__csuri')) == 's')
-		{
-			__iconToBack(__icons[i].icon.node.firstElementChild);
-		}
-	}
-}

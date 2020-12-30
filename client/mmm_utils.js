@@ -210,12 +210,12 @@ function __createEdge(segments,style,edgeId,linkuri)
         getOrderNr(id, []);
     }
     
-    Object.keys(__icons).concat().sort(function(a, b) {return __icons[a]['ordernr'] - __icons[b]['ordernr'];}).forEach(function(el) {
-        __icons[el]['icon'].toFront();
-    });
-    Object.keys(__edges).forEach(function(el) {
-        __edges[el]['icon'].toFront();
-	});
+    //Object.keys(__icons).concat().sort(function(a, b) {return __icons[a]['ordernr'] - __icons[b]['ordernr'];}).forEach(function(el) {
+    //    __icons[el]['icon'].toFront();
+    //});
+    //Object.keys(__edges).forEach(function(el) {
+    //    __edges[el]['icon'].toFront();
+	//});
 	
 	if(linkuri.includes("east") || linkuri.includes("south")) { // for now , lets just focus on east and south links
 		if(ids[0]==linkuri) { // second edge creation request, completes the full edge
