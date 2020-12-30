@@ -73,7 +73,6 @@ function __makeConnectionsWhenDropped() {
 		if(connections.length>0) {
 			for(index in connections) {
 				if(connections[index].includes(link)) {
-					console.log("will create "+connections[index]+" from "+from+" to "+to);
 					__createVisualLink(from,to,link);
 					break;
 				}
@@ -83,7 +82,11 @@ function __makeConnectionsWhenDropped() {
 	for(id in highlightedSnaps) {
 		__icons[highlightedSnaps[id]['id']].icon.unhighlight();
 	}
-	highlightedSnaps = [];
+	if(highlightedSnaps.length!=0) {
+		__select();
+		highlightedSnaps = [];
+		BehaviorManager.goToIDLE();
+	}
 }
 
 function __isSelected(it)

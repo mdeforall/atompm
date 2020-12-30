@@ -333,10 +333,8 @@ __canvasBehaviourStatechart = {
 							name == __EVENT_LEFT_RELEASE_SELECTION )
 				{
 					GeometryUtils.transformSelection(__SELECTION_DRAG);
-
-					__makeConnectionsWhenDropped();
-
 					this.__T(this.__STATE_SOMETHING_SELECTED,event);
+					__makeConnectionsWhenDropped();
 				}
 				else if( name == __EVENT_LEFT_RELEASE_ICON )
 				{
@@ -367,10 +365,8 @@ __canvasBehaviourStatechart = {
 								}
 							});
 					}
-
-					__makeConnectionsWhenDropped();
-
 					this.__T(this.__STATE_SOMETHING_SELECTED,event);
+					__makeConnectionsWhenDropped();
 				}
 				
 				else

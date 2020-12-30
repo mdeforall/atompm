@@ -16,6 +16,16 @@ BehaviorManager = new function(){
 		}
 	}
 
+	this.goToIDLE = function() {
+		if( activeBehaviourStatechart == undefined ) {
+			console.warn('There is no active behaviour statechart to process the event. ' +
+					'If this event was triggered immediately after a page load, ' + 
+					'then the statechart may just not be loaded yet.');
+		} else {
+			activeBehaviourStatechart.__T(activeBehaviourStatechart.__STATE_IDLE,undefined);
+		}
+	}
+
 	/**
 	 * Sends the current event to the currently active state chart, if 
 	 * it exists
@@ -51,6 +61,10 @@ BehaviorManager = new function(){
 		if( init )
 			activeBehaviourStatechart.init();
 	};
+
+	this.getStateChart = function() {
+		return activeBehaviourStatechart;
+	}
 	
 	return this;
 }();
