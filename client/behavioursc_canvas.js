@@ -332,6 +332,9 @@ __canvasBehaviourStatechart = {
 							name == __EVENT_LEFT_RELEASE_SELECTION )
 				{
 					GeometryUtils.transformSelection(__SELECTION_DRAG);
+
+					__makeConnectionsWhenDropped();
+
 					this.__T(this.__STATE_SOMETHING_SELECTED,event);
 				}
 				else if( name == __EVENT_LEFT_RELEASE_ICON )
@@ -364,6 +367,9 @@ __canvasBehaviourStatechart = {
 							});
 					}
 					setTimeout(function(){__sendIconsBackOnCanvas()}, 100);
+
+					__makeConnectionsWhenDropped();
+
 					this.__T(this.__STATE_SOMETHING_SELECTED,event);
 				}
 				

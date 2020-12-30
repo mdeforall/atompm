@@ -1041,7 +1041,7 @@ function __setRecentDir(name,value) {
 /**
  * creates visual link from srcUri to tarUri
  */
-function __createVisualLink(srcUri, tarUri)
+function __createVisualLink(srcUri, tarUri,choice=undefined)
 {
 	callback = function (connectionType) {
 		HttpUtils.httpReq(
@@ -1057,7 +1057,9 @@ function __createVisualLink(srcUri, tarUri)
   
   	WindowManagement.openDialog(
     	_LEGAL_CONNECTIONS,
-    	{ 'uri1': srcUri, 'uri2': tarUri, ctype: __VISUAL_LINK },
+		choice==undefined
+			?{ 'uri1': srcUri, 'uri2': tarUri, ctype: __VISUAL_LINK}
+			:{ 'uri1': srcUri, 'uri2': tarUri, ctype: __VISUAL_LINK,"choice":choice},
     	callback
   );
 }

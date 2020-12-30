@@ -467,13 +467,17 @@ WindowManagement = function(){
 				callback( legalConnections[0]+'Link.type' );
 			else
 			{
-				var select = GUIUtils.getSelector(legalConnections);
-				GUIUtils.setupAndShowDialog(
-					[select],
-					function() {return HttpUtils.getSelectorSelection(select)+'Link.type';},
-					__TWO_BUTTONS,
-					'choose connection type',
-					callback);
+				if('choice' in args) {
+					callback(legalConnections.filter((a)=>a.includes(args['choice']))+'Link.type');
+				} else {
+					var select = GUIUtils.getSelector(legalConnections);
+					GUIUtils.setupAndShowDialog(
+						[select],
+						function() {return HttpUtils.getSelectorSelection(select)+'Link.type';},
+						__TWO_BUTTONS,
+						'choose connection type',
+						callback);
+				}
 			}
 		}
 	
