@@ -63,6 +63,7 @@ DataUtils = function(){
         if (__typeToCreate == undefined) {
             WindowManagement.openDialog(_ERROR, 'you must select a type to create');
         } else {
+			creationInitializedByUser = true;
             HttpUtils.httpReq(
                 'POST',
                 HttpUtils.url(__typeToCreate + '.type', __NO_USERNAME),

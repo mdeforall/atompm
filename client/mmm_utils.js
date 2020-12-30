@@ -271,6 +271,15 @@ function __createIcon(node,id)
 	icon.setAttr('__y',__getAbsoluteCoordinate(pos[1],bbox.height));
 	icon.setAttr('vector-effect','inherit');
 	__setIconTransform(id);
+
+
+	if(creationInitializedByUser) {
+		__select(icon.node.firstChild);
+		BehaviorManager.goToSomethingSelectedState();
+	}
+	
+
+
 	return icon;
 }
 

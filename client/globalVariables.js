@@ -36,6 +36,7 @@ var ESconnection = [];
 var Key_E_S_W_N;
 var IconsBeforeCopy = [];
 var NewIconCreated;
+var creationInitializedByUser = false;
 
 // Command Keys
 var KEY_TAB = 9,

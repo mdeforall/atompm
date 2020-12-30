@@ -120,6 +120,7 @@ function __select(selection,ignoreContents)
 		__selection = undefined;
 		GeometryUtils.hideGeometryControlsOverlay();
 		GeometryUtils.hideTransformationPreviewOverlay();
+		creationInitializedByUser = false;
 	}
 	if( selection == undefined )
 		return;
