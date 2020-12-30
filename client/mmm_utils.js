@@ -274,8 +274,8 @@ function __createIcon(node,id)
 
 
 	if(creationInitializedByUser) {
-		__select(icon.node.firstChild);
-		BehaviorManager.goToSomethingSelectedState();
+		//__select(icon.node.firstChild);
+		//BehaviorManager.goToSomethingSelectedState();
 	}
 	
 
