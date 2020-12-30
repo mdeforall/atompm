@@ -215,7 +215,31 @@ function __createEdge(segments,style,edgeId,linkuri)
     });
     Object.keys(__edges).forEach(function(el) {
         __edges[el]['icon'].toFront();
-    });
+	});
+	
+	if(linkuri.includes("east") || linkuri.includes("south")) { // for now , lets just focus on east and south links
+		if(ids[0]==linkuri) { // second edge creation request, completes the full edge
+			firstID = ids[1];
+			for(eID in __edges) {
+				if(__edges[eID].end==linkuri) {
+					secondID = __edges[eID].start;
+
+					// reposition
+					if(Number(firstID.match(/\d+/)[0])>Number(secondID.match(/\d+/)[0])) {
+						__icons[firstID].icon.setAttr("__x",Number(__icons[secondID].icon.getAttr("__x"))+(linkuri.includes("east")?47:0));
+						__icons[firstID].icon.setAttr("__y",Number(__icons[secondID].icon.getAttr("__y"))+(linkuri.includes("south")?47:0));
+						__setIconTransform(firstID);
+					} else {
+						__icons[secondID].icon.setAttr("__x",Number(__icons[firstID].icon.getAttr("__x"))-(linkuri.includes("east")?47:0));
+						__icons[secondID].icon.setAttr("__y",Number(__icons[firstID].icon.getAttr("__y"))-(linkuri.includes("south")?47:0));
+						__setIconTransform(secondID);
+					}
+
+					break;
+				}
+			}
+		}
+	}
     
 	return edge;
 }

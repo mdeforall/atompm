@@ -87,18 +87,6 @@
 		{
 			"name": "snapToTarget",
 			"event": "post-create",
-			"code": "/*newline*/      var targetNodes = getNeighbors('>'),/*newline*/          sourceNodes = getNeighbors('<');/*newline*/    /*newline*/        var targetNode = targetNodes[0],/*newline*/            sourceNode = sourceNodes[0];/*newline*/        /*newline*/        var sourcePosition = getAttr('position',sourceNode);/*newline*//*newline*/        setAttr('position',[sourcePosition[0]+47.5,sourcePosition[1]],targetNode);",
-			"targetType": "east"
-		},
-		{
-			"name": "snapToTarget",
-			"event": "post-create",
-			"code": "/*newline*/      var targetNodes = getNeighbors('>'),/*newline*/          sourceNodes = getNeighbors('<');/*newline*/    /*newline*/        var targetNode = targetNodes[0],/*newline*/            sourceNode = sourceNodes[0];/*newline*/        /*newline*/        var sourcePosition = getAttr('position',sourceNode);/*newline*//*newline*/        setAttr('position',[sourcePosition[0],sourcePosition[1]+47.5],targetNode);",
-			"targetType": "south"
-		},
-		{
-			"name": "snapToTarget",
-			"event": "post-create",
 			"code": "/*newline*/      var targetNodes = getNeighbors('>'),/*newline*/          sourceNodes = getNeighbors('<');/*newline*/    /*newline*/        var targetNode = targetNodes[0],/*newline*/            sourceNode = sourceNodes[0];/*newline*/        /*newline*/        var targetPosition = getAttr('position',targetNode);/*newline*//*newline*/        setAttr('position',[targetPosition[0],targetPosition[1]],sourceNode);",
 			"targetType": "On"
 		}

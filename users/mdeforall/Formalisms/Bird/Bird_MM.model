@@ -3836,9 +3836,7 @@
 		},
 		"edges": [],
 		"metamodels": [
-			"/Formalisms/__LanguageSyntax__/SimpleClassDiagram/SimpleClassDiagram.umlIcons",
-			"/Formalisms/__LanguageSyntax__/ConcreteSyntax/ConcreteSyntax.defaultIcons",
-			"/Formalisms/PN_inhibitor/PN.defaultIcons"
+			"/Formalisms/__LanguageSyntax__/SimpleClassDiagram/SimpleClassDiagram.umlIcons"
 		]
 	},
 	"asm": {
@@ -4050,13 +4048,7 @@
 				},
 				"actions": {
 					"type": "list<$EVENT_HANDLER>",
-					"value": [
-						{
-							"name": "snapToTarget",
-							"event": "post-create",
-							"code": "/*newline*/      var targetNodes = getNeighbors('>'),/*newline*/          sourceNodes = getNeighbors('<');/*newline*/    /*newline*/        var targetNode = targetNodes[0],/*newline*/            sourceNode = sourceNodes[0];/*newline*/        /*newline*/        var sourcePosition = getAttr('position',sourceNode);/*newline*//*newline*/        setAttr('position',[sourcePosition[0]+47.5,sourcePosition[1]],targetNode);"
-						}
-					]
+					"value": []
 				},
 				"cardinalities": {
 					"type": "list<$CARDINALITY>",
@@ -4083,13 +4075,7 @@
 				},
 				"actions": {
 					"type": "list<$EVENT_HANDLER>",
-					"value": [
-						{
-							"name": "snapToTarget",
-							"event": "post-create",
-							"code": "/*newline*/      var targetNodes = getNeighbors('>'),/*newline*/          sourceNodes = getNeighbors('<');/*newline*/    /*newline*/        var targetNode = targetNodes[0],/*newline*/            sourceNode = sourceNodes[0];/*newline*/        /*newline*/        var sourcePosition = getAttr('position',sourceNode);/*newline*//*newline*/        setAttr('position',[sourcePosition[0],sourcePosition[1]+47.5],targetNode);"
-						}
-					]
+					"value": []
 				},
 				"cardinalities": {
 					"type": "list<$CARDINALITY>",
@@ -4237,9 +4223,7 @@
 			}
 		],
 		"metamodels": [
-			"/Formalisms/__LanguageSyntax__/SimpleClassDiagram/SimpleClassDiagram",
-			"/Formalisms/__LanguageSyntax__/ConcreteSyntax/ConcreteSyntax",
-			"/Formalisms/PN_inhibitor/PN"
+			"/Formalisms/__LanguageSyntax__/SimpleClassDiagram/SimpleClassDiagram"
 		]
 	}
 }
