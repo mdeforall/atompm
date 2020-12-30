@@ -140,6 +140,26 @@ Raphael.fn.group = function() {
 					 group.style.display = 'none';
 				 },
 
+			 'highlightSnap':
+				 function(args)
+				 {
+					 var direction = args['direction'] || 'south';
+
+					 switch(direction) {
+						 case 'south':
+							 this.highlight({'color':'red','bbox':{'x':10,'y':55,'width':46,'height':1},'width':5,'opacity':1});
+							 break;
+						 case 'north':
+							 this.highlight({'color':'red','bbox':{'x':10,'y':8,'width':45,'height':1},'width':3,'opacity':1});
+							 break;
+						 case 'east':
+						     this.highlight({'color':'red','bbox':{'x':55,'y':10,'width':1,'height':45},'width':3,'opacity':1});
+						     break;
+						 case 'west':
+						     this.highlight({'color':'red','bbox':{'x':8,'y':10,'width':1,'height':45},'width':3,'opacity':1});
+						     break;
+					 }
+				 },
 
 			 /* render a highlighting effect 
 			  		1. remove current highlighting if any 
@@ -156,7 +176,7 @@ Raphael.fn.group = function() {
 					 var color	 = args['color'],
 						  opacity = args['opacity'] || 0.3,
 						  width	 = args['width'] || 20,
-						  bbox 	 = set.getBBox(),
+						  bbox 	 = args['bbox'] || set.getBBox(),
 					 	  rect 	 = r.rect(bbox.x,bbox.y,bbox.width,bbox.height,10);
 
 					 rect.attr('stroke',color);

@@ -7,6 +7,10 @@ GeometryUtils = function(){
 	
 	var geometryControlsOverlay = undefined;
 	var transformationPreviewOverlay = undefined;
+
+	this.getOverlay = function() {
+		return transformationPreviewOverlay;
+	}
 	
 	/**
 	 * Determines whether or not geometric transformations are allowed. This only

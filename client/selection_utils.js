@@ -6,6 +6,39 @@
 var __selectionOverlay;
 var __highlighted = [];
 var __selection;
+var highlightedSnaps = [];
+
+function __highlightCloseSnappingSides(someX,someY) {
+	// find icons around current X and Y
+	for(id in highlightedSnaps) {
+		__icons[highlightedSnaps[id]].icon.unhighlight();
+	}
+	highlightedSnaps = [];
+	for(id in __icons) {
+		bbox = __icons[id].icon.getBBox();
+		nextX = bbox["x"];
+		nextY = bbox["y"];
+		if(!__icons[id].icon.node.hasAttribute("__linkStyle")
+				&& __icons[id].icon.getAttr("__csuri")!=__selection.items[0]) {
+			
+			northSnapArea = {'x':nextX-24,'y':nextY-72,'width':47,'height':23};
+			eastSnapArea = {'x':nextX+48,'y':nextY-24,'width':23,'height':47};
+			southSnapArea = {'x':nextX-24,'y':nextY+48,'width':47,'height':23};
+			westSnapArea = {'x':nextX-72,'y':nextY-24,'width':23,'height':47};
+
+			snapAreas = {'north':northSnapArea,'south':southSnapArea,'east':eastSnapArea,'west':westSnapArea};
+
+			for(snapID in snapAreas) {
+				if(snapAreas[snapID]['x']<someX && someX<snapAreas[snapID]['x']+snapAreas[snapID]['width']
+					&& snapAreas[snapID]['y']<someY && someY<snapAreas[snapID]['y']+snapAreas[snapID]['height']) {
+						__icons[id].icon.highlightSnap({'direction':snapID});
+						highlightedSnaps.push(id);
+						break;
+					}
+			}
+		}
+	}
+}
 
 function __isSelected(it)
 {

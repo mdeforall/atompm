@@ -309,9 +309,19 @@ __canvasBehaviourStatechart = {
 			
 			else if( this.__currentState == this.__STATE_DRAGGING_SELECTION )
 			{
-				if( name == __EVENT_MOUSE_MOVE )
-					GeometryUtils.previewSelectionTranslation(GUIUtils.convertToCanvasX(event), GUIUtils.convertToCanvasY(event));
-				
+				if( name == __EVENT_MOUSE_MOVE ) {
+					canvasX = GUIUtils.convertToCanvasX(event);
+					canvasY = GUIUtils.convertToCanvasY(event);
+					GeometryUtils.previewSelectionTranslation(canvasX, canvasY);
+					
+					
+					// overlayX - overlayX0 gives us the difference from the top-left to mouse click coordinates on a selected item.
+					overlayX = GeometryUtils.getOverlay().node.getAttribute('x');
+					overlayY = GeometryUtils.getOverlay().node.getAttribute('y');
+					overlayX0 = GeometryUtils.getOverlay().node.getAttribute('_x0');
+					overlayY0 = GeometryUtils.getOverlay().node.getAttribute('_y0');
+					__highlightCloseSnappingSides(canvasX-(overlayX0-overlayX),canvasY-(overlayY0-overlayY));
+				}
 				else if( name == __EVENT_KEYUP_ESC )
 				{
 					GeometryUtils.hideTransformationPreviewOverlay();
