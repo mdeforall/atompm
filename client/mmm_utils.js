@@ -229,6 +229,7 @@ function __createEdge(segments,style,edgeId,linkuri)
 						__icons[firstID].icon.setAttr("__x",Number(__icons[secondID].icon.getAttr("__x"))+(linkuri.includes("east")?47:0));
 						__icons[firstID].icon.setAttr("__y",Number(__icons[secondID].icon.getAttr("__y"))+(linkuri.includes("south")?47:0));
 						__setIconTransform(firstID);
+
 					} else {
 						__icons[secondID].icon.setAttr("__x",Number(__icons[firstID].icon.getAttr("__x"))-(linkuri.includes("east")?47:0));
 						__icons[secondID].icon.setAttr("__y",Number(__icons[firstID].icon.getAttr("__y"))-(linkuri.includes("south")?47:0));
@@ -238,6 +239,20 @@ function __createEdge(segments,style,edgeId,linkuri)
 					break;
 				}
 			}
+		}
+	}
+
+	// tiles should be in the front of others
+	for(iconId in __icons) {
+		if(iconId.includes("EmptyIcon") || iconId.includes("TileIcon")) {
+			__icons[iconId].icon.toFront();
+		}
+	}
+
+	// bird and pig should always be in the front (of even tiles)
+	for(iconId in __icons) {
+		if(iconId.includes("BirdIcon") || iconId.includes("PigIcon")) {
+			__icons[iconId].icon.toFront();
 		}
 	}
     
@@ -280,6 +295,19 @@ function __createIcon(node,id)
 		__makeConnectionsWhenDropped();
 	}
 	
+	// tiles should be in the front of others
+	for(iconId in __icons) {
+		if(iconId.includes("EmptyIcon") || iconId.includes("TileIcon")) {
+			__icons[iconId].icon.toFront();
+		}
+	}
+
+	// bird and pig should always be in the front (of even tiles)
+	for(iconId in __icons) {
+		if(iconId.includes("BirdIcon") || iconId.includes("PigIcon")) {
+			__icons[iconId].icon.toFront();
+		}
+	}
 
 
 	return icon;
