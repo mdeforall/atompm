@@ -224,16 +224,19 @@ function __createEdge(segments,style,edgeId,linkuri)
 				if(__edges[eID].end==linkuri) {
 					secondID = __edges[eID].start;
 
-					// reposition
+					// reposition (whoever is created last, should reposition itself)
 					if(Number(firstID.match(/\d+/)[0])>Number(secondID.match(/\d+/)[0])) {
-						__icons[firstID].icon.setAttr("__x",Number(__icons[secondID].icon.getAttr("__x"))+(linkuri.includes("east")?47:0));
-						__icons[firstID].icon.setAttr("__y",Number(__icons[secondID].icon.getAttr("__y"))+(linkuri.includes("south")?47:0));
-						__setIconTransform(firstID);
-
+						DataUtils.update(firstID,
+							{'position':[
+								Number(__icons[secondID].icon.getAttr("__x"))+(linkuri.includes("east")?47:0),
+								Number(__icons[secondID].icon.getAttr("__y"))+(linkuri.includes("south")?47:0)]
+							});
 					} else {
-						__icons[secondID].icon.setAttr("__x",Number(__icons[firstID].icon.getAttr("__x"))-(linkuri.includes("east")?47:0));
-						__icons[secondID].icon.setAttr("__y",Number(__icons[firstID].icon.getAttr("__y"))-(linkuri.includes("south")?47:0));
-						__setIconTransform(secondID);
+						DataUtils.update(secondID,
+							{'position':
+								[Number(__icons[firstID].icon.getAttr("__x"))-(linkuri.includes("east")?47:0),
+								Number(__icons[firstID].icon.getAttr("__y"))-(linkuri.includes("south")?47:0)]
+							});
 					}
 
 					break;
