@@ -312,13 +312,16 @@ __canvasBehaviourStatechart = {
 					canvasY = GUIUtils.convertToCanvasY(event);
 					GeometryUtils.previewSelectionTranslation(canvasX, canvasY);
 					
-					
-					// overlayX - overlayX0 gives us the difference from the top-left to mouse click coordinates on a selected item.
-					overlayX = GeometryUtils.getOverlay().node.getAttribute('x');
-					overlayY = GeometryUtils.getOverlay().node.getAttribute('y');
-					overlayX0 = GeometryUtils.getOverlay().node.getAttribute('_x0');
-					overlayY0 = GeometryUtils.getOverlay().node.getAttribute('_y0');
-					__highlightCloseSnappingSides(canvasX-(overlayX0-overlayX),canvasY-(overlayY0-overlayY));
+					if(__selection.items.length==1) {
+										
+						// overlayX - overlayX0 gives us the difference from the top-left to mouse click coordinates on a selected item.
+						overlayX = GeometryUtils.getOverlay().node.getAttribute('x');
+						overlayY = GeometryUtils.getOverlay().node.getAttribute('y');
+						overlayX0 = GeometryUtils.getOverlay().node.getAttribute('_x0');
+						overlayY0 = GeometryUtils.getOverlay().node.getAttribute('_y0');
+
+						__highlightCloseSnappingSides(__selection.items[0],canvasX-(overlayX0-overlayX),canvasY-(overlayY0-overlayY));
+					}
 				}
 				else if( name == __EVENT_KEYUP_ESC )
 				{

@@ -8,10 +8,12 @@ var __highlighted = [];
 var __selection;
 var highlightedSnaps = [];
 
-function __highlightCloseSnappingSides(someX,someY) {
-	if(__selection.items.length==1 // let's focus on only 1 selected item for now
-		&& (__selection.items[0].includes("TileIcon") || __selection.items[0].includes("EmptyIcon"))) { // let's focus on selected tiles for now
-		
+function __highlightCloseSnappingSides(someURI,someX=undefined,someY=undefined) {
+	if(someURI.includes("TileIcon") || someURI.includes("EmptyIcon")) { // let's focus on selected tiles for now
+
+		toCheckX = someX==undefined?Number(__icons[someURI].icon.getAttr("__x")):someX;
+		toCheckY = someY==undefined?Number(__icons[someURI].icon.getAttr("__y")):someY;
+
 		for(id in highlightedSnaps) {
 			__icons[highlightedSnaps[id]['id']].icon.unhighlight();
 		}
@@ -24,7 +26,7 @@ function __highlightCloseSnappingSides(someX,someY) {
 		
 			if(!__icons[id].icon.node.hasAttribute("__linkStyle")
 					&& (__icons[id].icon.getAttr("__csuri").includes("TileIcon") || __icons[id].icon.getAttr("__csuri").includes("EmptyIcon")) // let's focus on tiles around for now
-					&& __icons[id].icon.getAttr("__csuri")!=__selection.items[0]) {
+					&& __icons[id].icon.getAttr("__csuri")!=someURI) {
 				
 				northSnapArea = {'x':nextX-24,'y':nextY-72,'width':47,'height':23};
 				eastSnapArea = {'x':nextX+48,'y':nextY-24,'width':23,'height':47};
@@ -34,10 +36,10 @@ function __highlightCloseSnappingSides(someX,someY) {
 				snapAreas = {'north':northSnapArea,'south':southSnapArea,'east':eastSnapArea,'west':westSnapArea};
 
 				for(snapID in snapAreas) {
-					if(snapAreas[snapID]['x']<someX && someX<snapAreas[snapID]['x']+snapAreas[snapID]['width']
-						&& snapAreas[snapID]['y']<someY && someY<snapAreas[snapID]['y']+snapAreas[snapID]['height']) {
+					if(snapAreas[snapID]['x']<toCheckX && toCheckX<snapAreas[snapID]['x']+snapAreas[snapID]['width']
+						&& snapAreas[snapID]['y']<toCheckY && toCheckY<snapAreas[snapID]['y']+snapAreas[snapID]['height']) {
 						__icons[id].icon.highlightSnap({'direction':snapID});
-						highlightedSnaps.push({'id':id,'direction':snapID});
+						highlightedSnaps.push({'id':id,'direction':snapID,'other':someURI});
 						break;
 					}
 				}
@@ -51,19 +53,19 @@ function __makeConnectionsWhenDropped() {
 		from = "", to="", link="";
 		if(highlightedSnaps[id]['direction']=='east') {
 			from = highlightedSnaps[id]['id'];
-			to = __selection.items[0];
+			to = highlightedSnaps[id]['other'];
 			link = "east";
 		} else if(highlightedSnaps[id]['direction']=='south') {
 			from = highlightedSnaps[id]['id'];
-			to = __selection.items[0];
+			to = highlightedSnaps[id]['other'];
 			link = "south";
 		} else if(highlightedSnaps[id]['direction']=='north') {
 			to = highlightedSnaps[id]['id'];
-			from = __selection.items[0];
+			from = highlightedSnaps[id]['other'];
 			link = "south";
 		} else if(highlightedSnaps[id]['direction']=='west') {
 			to = highlightedSnaps[id]['id'];
-			from = __selection.items[0];
+			from = highlightedSnaps[id]['other'];
 			link = "east";
 		}
 
@@ -81,7 +83,7 @@ function __makeConnectionsWhenDropped() {
 	for(id in highlightedSnaps) {
 		__icons[highlightedSnaps[id]['id']].icon.unhighlight();
 	}
-	highlightedSnaps = []
+	highlightedSnaps = [];
 }
 
 function __isSelected(it)

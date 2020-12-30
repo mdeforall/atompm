@@ -276,6 +276,8 @@ function __createIcon(node,id)
 	if(creationInitializedByUser) {
 		//__select(icon.node.firstChild);
 		//BehaviorManager.goToSomethingSelectedState();
+		__highlightCloseSnappingSides(icon.getAttr("__csuri"));
+		__makeConnectionsWhenDropped();
 	}
 	
 
