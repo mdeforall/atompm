@@ -140,6 +140,14 @@ function __handleChangelog(changelog,seqNum,hitchhiker)
 						__createEdge(segments[edgeId], linkStyle, edgeId, step['id']);
 				}
 
+				if(creationInitializedByUser) {
+					//__select(icon.node.firstChild);
+					//BehaviorManager.goToSomethingSelectedState();
+					__highlightCloseSnappingSides(icon.getAttr("__csuri"));
+					__makeConnectionsWhenDropped();
+					creationInitializedByUser = false;
+				}
+
 				// creates link if the icon being created is in top of another icon and if there is a legal connection between them.
 				if(UnderneathIcon != null || SelectedItems.length == 1)
 				{

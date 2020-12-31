@@ -225,18 +225,18 @@ function __createEdge(segments,style,edgeId,linkuri)
 					secondID = __edges[eID].start;
 
 					// reposition (whoever is created last, should reposition itself)
-					if(Number(firstID.match(/\d+/)[0])>Number(secondID.match(/\d+/)[0])) {
-						DataUtils.update(firstID,
-							{'position':[
-								Number(__icons[secondID].icon.getAttr("__x"))+(linkuri.includes("east")?47:0),
-								Number(__icons[secondID].icon.getAttr("__y"))+(linkuri.includes("south")?47:0)]
-							});
+					if(Number(firstID.match(/\d+/)[0])>Number(secondID.match(/\d+/)[0])) {	
+							DataUtils.update(firstID,
+								{'position':[
+									Number(__icons[secondID].icon.getAttr("__x"))+(linkuri.includes("east")?47:0),
+									Number(__icons[secondID].icon.getAttr("__y"))+(linkuri.includes("south")?47:0)]
+								});
 					} else {
-						DataUtils.update(secondID,
-							{'position':
-								[Number(__icons[firstID].icon.getAttr("__x"))-(linkuri.includes("east")?47:0),
-								Number(__icons[firstID].icon.getAttr("__y"))-(linkuri.includes("south")?47:0)]
-							});
+							DataUtils.update(secondID,
+								{'position':
+									[Number(__icons[firstID].icon.getAttr("__x"))-(linkuri.includes("east")?47:0),
+									Number(__icons[firstID].icon.getAttr("__y"))-(linkuri.includes("south")?47:0)]
+								});
 					}
 
 					break;
@@ -290,13 +290,6 @@ function __createIcon(node,id)
 	icon.setAttr('vector-effect','inherit');
 	__setIconTransform(id);
 
-
-	if(creationInitializedByUser) {
-		//__select(icon.node.firstChild);
-		//BehaviorManager.goToSomethingSelectedState();
-		__highlightCloseSnappingSides(icon.getAttr("__csuri"));
-		__makeConnectionsWhenDropped();
-	}
 	
 	// tiles should be in the front of others
 	for(iconId in __icons) {
