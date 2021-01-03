@@ -7,7 +7,7 @@ var __selectionOverlay;
 var __highlighted = [];
 var __selection;
 var highlightedSnaps = [];
-var toApplySnaps = {};
+var toApply = {};
 
 // This method highlights the sides of each cell (like east, west, north, south sides) when we drag another cell nearby.
 // Since there might be multiple snap highlights on each side, it also calculates distance of the cell-dragged with snaps and puts the shortest ones to toApply object.
