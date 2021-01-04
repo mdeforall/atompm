@@ -1107,7 +1107,14 @@ class MdeContext(TransformationContext) :
             
             edgesFromLastStep = self.findToEdges(self._lastStep['id'])
 
-            if len(edgesFromLastStep) == 0 :
+            filteredEdgesFromLastStep = []
+
+            for edge in edgesFromLastStep:
+                if self.t['nodes'][edge['dest']]['$type'] != '/Formalisms/BlockBasedMDE/BlockBasedMDE/rhs' \
+                    and self.t['nodes'][edge['dest']]['$type'] != '/Formalisms/BlockBasedMDE/BlockBasedMDE/lhs':
+                    filteredEdgesFromLastStep.append(edge)
+
+            if len(filteredEdgesFromLastStep) == 0 :
                 ai = self._applicationInfo()
                 self._lastStep = {}
                 self._expired = True

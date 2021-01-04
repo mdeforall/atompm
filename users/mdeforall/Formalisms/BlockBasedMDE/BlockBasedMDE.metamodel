@@ -2,16 +2,6 @@
 	"types": {
 		"Rule": [
 			{
-				"name": "RHS",
-				"type": "string",
-				"default": ""
-			},
-			{
-				"name": "LHS",
-				"type": "string",
-				"default": ""
-			},
-			{
 				"name": "count",
 				"type": "int",
 				"default": "1"
@@ -116,7 +106,10 @@
 				]
 			}
 		],
-		"SameConnector": []
+		"SameConnector": [],
+		"$*": [],
+		"lhs": [],
+		"rhs": []
 	},
 	"constraints": [
 		{
@@ -191,6 +184,12 @@
 				"max": "Infinity"
 			},
 			{
+				"dir": "out",
+				"type": "rhs",
+				"min": "0",
+				"max": "Infinity"
+			},
+			{
 				"dir": "in",
 				"type": "Entry",
 				"min": "0",
@@ -205,6 +204,12 @@
 			{
 				"dir": "in",
 				"type": "failToAbstractRule",
+				"min": "0",
+				"max": "Infinity"
+			},
+			{
+				"dir": "out",
+				"type": "lhs",
 				"min": "0",
 				"max": "Infinity"
 			}
@@ -225,6 +230,12 @@
 			{
 				"dir": "in",
 				"type": "failToAbstractRule",
+				"min": "0",
+				"max": "Infinity"
+			},
+			{
+				"dir": "out",
+				"type": "lhs",
 				"min": "0",
 				"max": "Infinity"
 			}
@@ -263,6 +274,12 @@
 			{
 				"dir": "in",
 				"type": "failToAbstractRule",
+				"min": "0",
+				"max": "Infinity"
+			},
+			{
+				"dir": "out",
+				"type": "lhs",
 				"min": "0",
 				"max": "Infinity"
 			}
@@ -493,6 +510,60 @@
 				"min": "0",
 				"max": "1"
 			}
+		],
+		"$*": [
+			{
+				"dir": "in",
+				"type": "lhs",
+				"min": "0",
+				"max": "Infinity"
+			},
+			{
+				"dir": "in",
+				"type": "rhs",
+				"min": "0",
+				"max": "Infinity"
+			}
+		],
+		"lhs": [
+			{
+				"dir": "in",
+				"type": "AbstractRule",
+				"min": "0",
+				"max": "1"
+			},
+			{
+				"dir": "out",
+				"type": "$*",
+				"min": "0",
+				"max": "1"
+			},
+			{
+				"dir": "in",
+				"type": "Rule",
+				"min": "0",
+				"max": "1"
+			},
+			{
+				"dir": "in",
+				"type": "Query",
+				"min": "0",
+				"max": "1"
+			}
+		],
+		"rhs": [
+			{
+				"dir": "in",
+				"type": "Rule",
+				"min": "0",
+				"max": "1"
+			},
+			{
+				"dir": "out",
+				"type": "$*",
+				"min": "0",
+				"max": "1"
+			}
 		]
 	},
 	"legalConnections": {
@@ -508,6 +579,15 @@
 			],
 			"RuleExit": [
 				"exit"
+			],
+			"$*": [
+				"rhs",
+				"lhs"
+			]
+		},
+		"AbstractRule": {
+			"$*": [
+				"lhs"
 			]
 		},
 		"Query": {
@@ -523,6 +603,9 @@
 			],
 			"Query": [
 				"failToAbstractRule"
+			],
+			"$*": [
+				"lhs"
 			]
 		},
 		"RuleExit": {
@@ -577,7 +660,9 @@
 		"next": "visual",
 		"failToAbstractRule": "visual",
 		"exit": "visual",
-		"SameConnector": "visual"
+		"SameConnector": "visual",
+		"lhs": "containment",
+		"rhs": "containment"
 	},
 	"types2parentTypes": {
 		"Rule": [
@@ -612,6 +697,9 @@
 		"failToAbstractRule": [],
 		"exit": [],
 		"Positionable": [],
-		"SameConnector": []
+		"SameConnector": [],
+		"$*": [],
+		"lhs": [],
+		"rhs": []
 	}
 }
