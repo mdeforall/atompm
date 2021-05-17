@@ -1289,26 +1289,26 @@ function __removeOnLinks(uri)
 function __copyLHSiconsToRHSinRuleIcon()
 {
 	var iconsBefore = [];
-	var rule;
-	if(__selection['items'].length == 1 && __selection['items'][0].includes("RuleIcon"))
+	var ruleIcon;
+	if(__selection['items'].length >= 1 && __selection['items'][0].includes("RuleIcon"))
 	{   
 		var LHSIcons = [];
-		rule = __selection['items'][0];
-		ruleX = __icons[rule].icon.node.getAttribute('__x');
-		ruleY = __icons[rule].icon.node.getAttribute('__y');
-		for(var item in __icons)
+		ruleIcon = __selection['items'][0];;
+		ruleX = __icons[ruleIcon].icon.node.getAttribute('__x');
+		ruleY = __icons[ruleIcon].icon.node.getAttribute('__y');
+		for(var item in Array.from(Array(__selection['items'].length).keys()))
 		{
-			iconsBefore.push(__icons[item].icon.node.getAttribute('__csuri'));
-			itemX = __icons[item].icon.node.getAttribute('__x');
-			itemY = __icons[item].icon.node.getAttribute('__y');
-			if((itemX > ruleX) && (itemX < Number(ruleX)+310) && (itemY > ruleY) && (itemY < Number(ruleY)+235))
+			var currentItem = __selection['items'][item];
+			if(item != 0 && !currentItem.includes("lhsLink"))
 			{
-				LHSIcons.push(__icons[item].icon.node.getAttribute('__csuri'));
+				LHSIcons.push(__icons[currentItem].icon.node.getAttribute('__csuri'));
 			}
 		}
-
-		if(LHSIcons.length == 0)
-			return;
+		
+		for(var item in __icons) 
+		{
+			iconsBefore.push(__icons[item].icon.node.getAttribute('__csuri'));
+		}
 
 		__select();
 
@@ -1332,37 +1332,41 @@ function __copyLHSiconsToRHSinRuleIcon()
 			}, 100);
 
 		setTimeout(function(){
-				newIcons = [];
-				for(var uri in __icons){
-					newIcons.push(__icons[uri].icon.node.getAttribute('__csuri'));
-				}
+			newIcons = [];
+			for(var uri in __icons){
+				newIcons.push(__icons[uri].icon.node.getAttribute('__csuri'));
+			}
 
-				for(var uri in newIcons)
+			for(var uri in newIcons)
+			{
+				for(var itm in iconsBefore)
 				{
-					for(var itm in iconsBefore)
+					if((newIcons[uri] == iconsBefore[itm]))
 					{
-						if((newIcons[uri] == iconsBefore[itm]))
-						{
-							//delete newIcons[uri];
-							newIcons.splice(uri, 1);
-						}
+						//delete newIcons[uri];
+						newIcons.splice(uri, 1);
 					}
 				}
+			}
 
-				for(var i in newIcons)
+			for(var i in newIcons)
+			{
+				if(newIcons[i] != undefined)
 				{
-					if(newIcons[i] != undefined)
+					if( !__isConnectionType(newIcons[i]))
 					{
-						if( !__isConnectionType(newIcons[i]))
-						{
-							var x = Number(__icons[newIcons[i]].icon.getAttr('__x'))+315;
-							var y = Number(__icons[newIcons[i]].icon.getAttr('__y'));
-						 
-							DataUtils.update(newIcons[i], {position: [x, y]});
-						}
+						var x = Number(__icons[newIcons[i]].icon.getAttr('__x'))+315;
+						var y = Number(__icons[newIcons[i]].icon.getAttr('__y'));
+						
+						DataUtils.update(newIcons[i], {position: [x, y]});
 					}
 				}
-			__select(newIcons);
-			},200);
+			}
+		__select(newIcons);
+		},200);
+	}
+	else
+	{
+		return;
 	}
 }
