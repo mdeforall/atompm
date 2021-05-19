@@ -467,7 +467,45 @@ WindowManagement = function(){
 				callback( legalConnections[0]+'Link.type' );
 			else
 			{
-				if('choice' in args) {
+				if (legalConnections.length == 2 &&
+								__icons[args['uri1']].icon.node.getAttribute('__csuri').includes("RuleIcon")) 
+				{
+					var canvasX = GUIUtils.convertToCanvasX(event);
+					var overlayX = GeometryUtils.getOverlay().node.getAttribute('x');
+					var overlayX0 = GeometryUtils.getOverlay().node.getAttribute('_x0');
+					var dropPosition = canvasX - (overlayX0 - overlayX);
+					var ruleX = __icons[args['uri1']].icon.node.getAttribute('__x');
+
+					var edgeIdToRemove;
+					
+					if (dropPosition >= Number(ruleX) + 310) {
+						for(var edgeI in __icons[__selection['items'][0]]['edgesIn'])
+						{
+							if(__icons[args['uri2']]['edgesIn'][edgeI].toString().includes("lhs")) {
+								edgeIdToRemove = __icons[args['uri2']]['edgesIn'][edgeI].toString().split("-")[0];
+								__icons[edgeIdToRemove]['icon'].remove();
+								__icons[edgeIdToRemove]['edgesOut'].forEach(__removeEdge);
+								__icons[edgeIdToRemove]['edgesIn'].forEach(__removeEdge);
+								delete __icons[edgeIdToRemove];
+							}
+						}
+						callback(legalConnections[0] + 'Link.type');
+					} else
+					{
+						for(var edgeI in __icons[args['uri2']]['edgesIn'])
+						{
+							if(__icons[args['uri2']]['edgesIn'][edgeI].toString().includes("rhs")) {
+								edgeIdToRemove = __icons[args['uri2']]['edgesIn'][edgeI].toString().split("-")[0];
+								__icons[edgeIdToRemove]['icon'].remove();
+								__icons[edgeIdToRemove]['edgesOut'].forEach(__removeEdge);
+								__icons[edgeIdToRemove]['edgesIn'].forEach(__removeEdge);
+								delete __icons[edgeIdToRemove];
+							}
+						}
+						callback(legalConnections[1] + 'Link.type');
+					}
+				}
+				else if('choice' in args) {
 					callback(legalConnections.filter((a)=>a.includes(args['choice']))+'Link.type');
 				} else {
 					var select = GUIUtils.getSelector(legalConnections);
