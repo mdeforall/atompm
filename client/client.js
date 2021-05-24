@@ -1192,62 +1192,93 @@ function __createIconInDirectionESWN()
 /**
  * finds the surounding icons of a newly created icon 'uri' and connect them if not already connected
  */
-function __findSuroundingIconsAndConnect(uri)
+function __findSurroundingIconsAndConnect(uri, origConnect)
 {
-	var uriX = __icons[uri].icon.node.getAttribute('__x');
-	var uriY = __icons[uri].icon.node.getAttribute('__y');
+	if(GeometryUtils.getOverlay() != undefined)
+	{
+		var canvasX = GUIUtils.convertToCanvasX(event);
+		var overlayX = GeometryUtils.getOverlay().node.getAttribute('x');
+		var overlayX0 = GeometryUtils.getOverlay().node.getAttribute('_x0');
+		var dropPositionX = canvasX - (overlayX0 - overlayX);
 
-	for (var item in __icons) {
-		if (!__isConnectionType(item)) {
-			var itemX = __icons[item].icon.node.getAttribute('__x');
-			var itemY = __icons[item].icon.node.getAttribute('__y');
-
-			//for icons in east or south of newly created icon
-			if (((Number(uriX) + 47.5 == itemX || Number(uriX) + 51 == itemX) && (uriY == itemY))) {
-
-				if (!__isVisualConnectionIn(item, uri)) {
-					if (__IconType(uri) == "/EmptyIcon" || __IconType(uri) == "/TileIcon")
-						ESconnection.push("/Formalisms/Bird/Bird.defaultIcons/east");
-					else if (__IconType(uri) == "/CellIcon")
-						ESconnection.push("/Formalisms/Maze/Maze.defaultIcons/east");
-
-					__createVisualLink(uri, item);
-				}
-			}
-			else if (((uriX == itemX) && (Number(uriY) + 47.5 == itemY || Number(uriY) + 51 == itemY))) {
-				if (!__isVisualConnectionIn(item, uri)) {
-					if (__IconType(uri) == "/EmptyIcon" || __IconType(uri) == "/TileIcon")
-						ESconnection.push("/Formalisms/Bird/Bird.defaultIcons/south");
-					else if (__IconType(uri) == "/CellIcon")
-						ESconnection.push("/Formalisms/Maze/Maze.defaultIcons/south");
-
-					__createVisualLink(uri, item);
-				}
-			}
-			// for icons in west and north of newly created icon
-			else if (((Number(uriX) - 47.5 == itemX || Number(uriX) - 51 == itemX) && (uriY == itemY))) {
-				if (!__isVisualConnectionIn(uri, item)) {
-					if (__IconType(uri) == "/EmptyIcon" || __IconType(uri) == "/TileIcon")
-						ESconnection.push("/Formalisms/Bird/Bird.defaultIcons/east");
-					else if (__IconType(uri) == "/CellIcon")
-						ESconnection.push("/Formalisms/Maze/Maze.defaultIcons/east");
-
-					__createVisualLink(item, uri);
-				}
-			}
-			else if (((uriX == itemX) && (Number(uriY) - 47.5 == itemY || Number(uriY) - 51 == itemY))) {
-				if (!__isVisualConnectionIn(uri, item)) {
-					if (__IconType(uri) == "/EmptyIcon" || __IconType(uri) == "/TileIcon")
-						ESconnection.push("/Formalisms/Bird/Bird.defaultIcons/south");
-					else if (__IconType(uri) == "/CellIcon")
-						ESconnection.push("/Formalisms/Maze/Maze.defaultIcons/south");
-
-					__createVisualLink(item, uri);
-				}
-			}
-		}
-
+		var canvasY = GUIUtils.convertToCanvasY(event);
+		var overlayY = GeometryUtils.getOverlay().node.getAttribute('y');
+		var overlayY0 = GeometryUtils.getOverlay().node.getAttribute('_y0');
+		var dropPositionY = canvasY - (overlayY0 - overlayY);
+	} else 
+	{
+		var dropPositionX = Number(__icons[uri].icon.getAttr('__x'));
+		var dropPositionY = Number(__icons[uri].icon.getAttr('__y'));
 	}
+
+
+		for (var item in __icons) 
+		{
+			if (!__isConnectionType(item) 
+							&& item != uri 
+							&& !__icons[item].icon.node.getAttribute('id').includes("BirdIcon") 
+							&& item != origConnect) 
+			{
+				var itemX = __icons[item].icon.node.getAttribute('__x');
+				var itemY = __icons[item].icon.node.getAttribute('__y');
+
+				//for icons in east or south of newly created icon
+				if ((((Number(dropPositionX) + 27 <= itemX && itemX <= Number(dropPositionX) + 67) 
+								|| (Number(dropPositionX) + 31 <= itemX && itemX <= Number(dropPositionX) + 71)) 
+								&& (Number(dropPositionY) - 20 <= itemY && itemY <= Number(dropPositionY) + 20))) 
+				{
+					if (!__icons[uri]["edgesOut"].toString().includes("east") && !__icons[item]["edgesIn"].toString().includes("east")) {
+						if (__IconType(uri) == "/EmptyIcon" || __IconType(uri) == "/TileIcon")
+							ESconnection.push("/Formalisms/Bird/Bird.defaultIcons/east");
+						else if (__IconType(uri) == "/CellIcon")
+							ESconnection.push("/Formalisms/Maze/Maze.defaultIcons/east");
+
+						__createVisualLink(uri, item);
+					}
+				}
+				else if (((Number(dropPositionX) - 20 <= itemX && itemX <= Number(dropPositionX) + 20) 
+								&& ((Number(dropPositionY) + 27 <= itemY && itemY <= Number(dropPositionY) + 67) 
+								|| (Number(dropPositionY) + 31 <= itemY && itemY <= Number(dropPositionY) + 71)))) 
+				{
+					if (!__icons[uri]["edgesOut"].toString().includes("south") && !__icons[item]["edgesIn"].toString().includes("south")) {
+						if (__IconType(uri) == "/EmptyIcon" || __IconType(uri) == "/TileIcon")
+							ESconnection.push("/Formalisms/Bird/Bird.defaultIcons/south");
+						else if (__IconType(uri) == "/CellIcon")
+							ESconnection.push("/Formalisms/Maze/Maze.defaultIcons/south");
+
+						__createVisualLink(uri, item);
+					}
+				}
+				// for icons in west and north of newly created icon
+				else if ((((Number(dropPositionX) - 32 >= itemX && itemX >= Number(dropPositionX) - 62) 
+								|| (Number(dropPositionX) - 36 >= itemX && itemX >= Number(dropPositionX) - 66)) 
+								&& (Number(dropPositionY) - 20 <= itemY && itemY <= Number(dropPositionY) + 20))) 
+				{
+					if (!__icons[uri]["edgesIn"].toString().includes("east") && !__icons[item]["edgesOut"].toString().includes("east")) {
+						if (__IconType(uri) == "/EmptyIcon" || __IconType(uri) == "/TileIcon")
+							ESconnection.push("/Formalisms/Bird/Bird.defaultIcons/east");
+						else if (__IconType(uri) == "/CellIcon")
+							ESconnection.push("/Formalisms/Maze/Maze.defaultIcons/east");
+
+						__createVisualLink(item, uri);
+					}
+				}
+				else if (((Number(dropPositionX) - 20 <= itemX && itemX <= Number(dropPositionX) + 20) 
+								&& ((Number(dropPositionY) - 32 >= itemY && itemY >= Number(dropPositionY) - 62) 
+								|| (Number(dropPositionY) - 36 >= itemY && itemY >= Number(dropPositionY) - 66)))) 
+				{
+					if (!__icons[uri]["edgesIn"].toString().includes("south") && !__icons[item]["edgesOut"].toString().includes("south")) {
+						if (__IconType(uri) == "/EmptyIcon" || __IconType(uri) == "/TileIcon")
+							ESconnection.push("/Formalisms/Bird/Bird.defaultIcons/south");
+						else if (__IconType(uri) == "/CellIcon")
+							ESconnection.push("/Formalisms/Maze/Maze.defaultIcons/south");
+
+						__createVisualLink(item, uri);
+					}
+				}
+			}
+
+		}
 
 }
 

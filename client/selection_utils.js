@@ -68,7 +68,7 @@ function __highlightCloseSnappingSides(someURI,someX=undefined,someY=undefined) 
 				if(!toApply.hasOwnProperty(highlightedSnaps[id]['direction'])){
 					toApply[highlightedSnaps[id]['direction']] = {'from':from,'to':to,'link':link,'distance':distance};
 				} else {
-					if(toApply[highlightedSnaps[id]['direction']]['distance']>distance) {
+					if(toApply[highlightedSnaps[id]['direction']]['distance']>distance && !__icons[from]["edgesOut"].includes("east")) {
 						toApply[highlightedSnaps[id]['direction']] = {'from':from,'to':to,'link':link,'distance':distance};
 					}
 				}
@@ -86,7 +86,7 @@ function __highlightCloseSnappingSides(someURI,someX=undefined,someY=undefined) 
 				if(!toApply.hasOwnProperty(highlightedSnaps[id]['direction'])){
 					toApply[highlightedSnaps[id]['direction']] = {'from':from,'to':to,'link':link,'distance':distance};
 				} else {
-					if(toApply[highlightedSnaps[id]['direction']]['distance']>distance) {
+					if(toApply[highlightedSnaps[id]['direction']]['distance']>distance && !__icons[from]["edgesOut"].includes("south")) {
 						toApply[highlightedSnaps[id]['direction']] = {'from':from,'to':to,'link':link,'distance':distance};
 					}
 				}
@@ -104,7 +104,7 @@ function __highlightCloseSnappingSides(someURI,someX=undefined,someY=undefined) 
 				if(!toApply.hasOwnProperty(highlightedSnaps[id]['direction'])){
 					toApply[highlightedSnaps[id]['direction']] = {'from':from,'to':to,'link':link,'distance':distance};
 				} else {
-					if(toApply[highlightedSnaps[id]['direction']]['distance']>distance) {
+					if(toApply[highlightedSnaps[id]['direction']]['distance']>distance && !__icons[to]["edgesIn"].includes("east")) {
 						toApply[highlightedSnaps[id]['direction']] = {'from':from,'to':to,'link':link,'distance':distance};
 					}
 				}
@@ -122,7 +122,7 @@ function __highlightCloseSnappingSides(someURI,someX=undefined,someY=undefined) 
 				if(!toApply.hasOwnProperty(highlightedSnaps[id]['direction'])){
 					toApply[highlightedSnaps[id]['direction']] = {'from':from,'to':to,'link':link,'distance':distance};
 				} else {
-					if(toApply[highlightedSnaps[id]['direction']]['distance']>distance) {
+					if(toApply[highlightedSnaps[id]['direction']]['distance']>distance && !__icons[to]["edgesIn"].includes("south")) {
 						toApply[highlightedSnaps[id]['direction']] = {'from':from,'to':to,'link':link,'distance':distance};
 					}
 				}
@@ -138,9 +138,19 @@ function __makeConnectionsWhenDropped() {
 			for(index in connections) {
 				if(connections[index].includes(toApply[id]['link'])) {
 					__createVisualLink(toApply[id]['from'],toApply[id]['to'],toApply[id]['link']);
+					if(__selection != undefined) {
+						if(__selection['items'][0] == toApply[id]['to']) {
+							__findSurroundingIconsAndConnect(toApply[id]['to'],toApply[id]['from']);
+						} else {
+							__findSurroundingIconsAndConnect(toApply[id]['from'],toApply[id]['to']);
+						}
+					} else {
+						__findSurroundingIconsAndConnect(latestIcon[0],toApply[id]['from']);
+					}
 					break;
 				}
 			}
+			break;
 		}
 	}
 	for(id in highlightedSnaps) {

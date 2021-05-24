@@ -442,7 +442,7 @@ GUIUtils = function(){
 				}
 				setTimeout( function(){
 					if(NewIconCreated != null){
-						__findSuroundingIconsAndConnect(NewIconCreated);
+						__findSurroundingIconsAndConnect(NewIconCreated);
 						NewIconCreated = null;
 					}
 					

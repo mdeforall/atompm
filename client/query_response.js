@@ -193,12 +193,12 @@ function __handleChangelog(changelog,seqNum,hitchhiker)
 							if(Key_E_S_W_N == 'W' || Key_E_S_W_N == 'N')
 							{
 								__createVisualLink(  latestIconID[0], __Target);
-								setTimeout(function(){__findSuroundingIconsAndConnect(latestIconID[0]);}, 50);
+								setTimeout(function(){__findSurroundingIconsAndConnect(latestIconID[0], __Target);}, 50);
 							}	
 							else if(Key_E_S_W_N == 'E' || Key_E_S_W_N == 'S')
 							{
 								__createVisualLink( __Target, latestIconID[0]);
-								setTimeout( function(){__findSuroundingIconsAndConnect(latestIconID[0]);}, 50);
+								setTimeout( function(){__findSurroundingIconsAndConnect(latestIconID[0], __Target);}, 50);
 							}
 								
 							Key_E_S_W_N = null;	
