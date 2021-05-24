@@ -68,7 +68,7 @@ function __highlightCloseSnappingSides(someURI,someX=undefined,someY=undefined) 
 				if(!toApply.hasOwnProperty(highlightedSnaps[id]['direction'])){
 					toApply[highlightedSnaps[id]['direction']] = {'from':from,'to':to,'link':link,'distance':distance};
 				} else {
-					if(toApply[highlightedSnaps[id]['direction']]['distance']>distance && !__icons[from]["edgesOut"].includes("east")) {
+					if(toApply[highlightedSnaps[id]['direction']]['distance']>distance) {
 						toApply[highlightedSnaps[id]['direction']] = {'from':from,'to':to,'link':link,'distance':distance};
 					}
 				}
@@ -86,7 +86,7 @@ function __highlightCloseSnappingSides(someURI,someX=undefined,someY=undefined) 
 				if(!toApply.hasOwnProperty(highlightedSnaps[id]['direction'])){
 					toApply[highlightedSnaps[id]['direction']] = {'from':from,'to':to,'link':link,'distance':distance};
 				} else {
-					if(toApply[highlightedSnaps[id]['direction']]['distance']>distance && !__icons[from]["edgesOut"].includes("south")) {
+					if(toApply[highlightedSnaps[id]['direction']]['distance']>distance) {
 						toApply[highlightedSnaps[id]['direction']] = {'from':from,'to':to,'link':link,'distance':distance};
 					}
 				}
@@ -104,7 +104,7 @@ function __highlightCloseSnappingSides(someURI,someX=undefined,someY=undefined) 
 				if(!toApply.hasOwnProperty(highlightedSnaps[id]['direction'])){
 					toApply[highlightedSnaps[id]['direction']] = {'from':from,'to':to,'link':link,'distance':distance};
 				} else {
-					if(toApply[highlightedSnaps[id]['direction']]['distance']>distance && !__icons[to]["edgesIn"].includes("east")) {
+					if(toApply[highlightedSnaps[id]['direction']]['distance']>distance) {
 						toApply[highlightedSnaps[id]['direction']] = {'from':from,'to':to,'link':link,'distance':distance};
 					}
 				}
@@ -122,7 +122,7 @@ function __highlightCloseSnappingSides(someURI,someX=undefined,someY=undefined) 
 				if(!toApply.hasOwnProperty(highlightedSnaps[id]['direction'])){
 					toApply[highlightedSnaps[id]['direction']] = {'from':from,'to':to,'link':link,'distance':distance};
 				} else {
-					if(toApply[highlightedSnaps[id]['direction']]['distance']>distance && !__icons[to]["edgesIn"].includes("south")) {
+					if(toApply[highlightedSnaps[id]['direction']]['distance']>distance) {
 						toApply[highlightedSnaps[id]['direction']] = {'from':from,'to':to,'link':link,'distance':distance};
 					}
 				}
