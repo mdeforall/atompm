@@ -470,16 +470,21 @@ WindowManagement = function(){
 				if (legalConnections.length == 2 &&
 								__icons[args['uri1']].icon.node.getAttribute('__csuri').includes("RuleIcon")) 
 				{
-					var canvasX = GUIUtils.convertToCanvasX(event);
-					var overlayX = GeometryUtils.getOverlay().node.getAttribute('x');
-					var overlayX0 = GeometryUtils.getOverlay().node.getAttribute('_x0');
-					var dropPosition = canvasX - (overlayX0 - overlayX);
-					var ruleX = __icons[args['uri1']].icon.node.getAttribute('__x');
+					if(GeometryUtils.getOverlay() != undefined) {
+						var canvasX = GUIUtils.convertToCanvasX(event);
+						var overlayX = GeometryUtils.getOverlay().node.getAttribute('x');
+						var overlayX0 = GeometryUtils.getOverlay().node.getAttribute('_x0');
+						var dropPosition = canvasX - (overlayX0 - overlayX);
 
+					} else {
+						var dropPosition = Number(__icons[args['uri2']].icon.getAttr('__x'));
+					}
+											
+					var ruleX = __icons[args['uri1']].icon.node.getAttribute('__x');
 					var edgeIdToRemove;
-					
+						
 					if (dropPosition >= Number(ruleX) + 310) {
-						for(var edgeI in __icons[__selection['items'][0]]['edgesIn'])
+						for(var edgeI in __icons[args['uri2']]['edgesIn'])
 						{
 							if(__icons[args['uri2']]['edgesIn'][edgeI].toString().includes("lhs")) {
 								edgeIdToRemove = __icons[args['uri2']]['edgesIn'][edgeI].toString().split("-")[0];
