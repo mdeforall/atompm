@@ -334,6 +334,39 @@ __canvasBehaviourStatechart = {
 				{
 					GeometryUtils.transformSelection(__SELECTION_DRAG);
 					this.__T(this.__STATE_SOMETHING_SELECTED,event);
+					if (__selection.items[0].includes("BirdIcon") && __selection.length == 1 && GeometryUtils.getOverlay() != undefined) 
+					{
+						for (item in __icons) 
+						{
+							if (__icons[item].icon.node.getAttribute('id').includes("EmptyIcon")) 
+							{
+								var itemX = Number(__icons[item].icon.node.getAttribute('__x'));
+								var itemY = Number(__icons[item].icon.node.getAttribute('__y'));
+
+								var canvasX = GUIUtils.convertToCanvasX(event);
+								var overlayX = GeometryUtils.getOverlay().node.getAttribute('x');
+								var overlayX0 = GeometryUtils.getOverlay().node.getAttribute('_x0');
+								var dropPositionX = canvasX - (overlayX0 - overlayX);
+
+								var canvasY = GUIUtils.convertToCanvasY(event);
+								var overlayY = GeometryUtils.getOverlay().node.getAttribute('y');
+								var overlayY0 = GeometryUtils.getOverlay().node.getAttribute('_y0');
+								var dropPositionY = canvasY - (overlayY0 - overlayY);
+
+								if(itemX <= dropPositionX 
+												&& dropPositionX <= itemX + 48 
+												&& itemY <= dropPositionY 
+												&& dropPositionY <= itemY + 48) 
+								{
+									__removeOnLinks(__selection.items[0]);
+									__createVisualLink(__selection.items[0], item);
+								} else 
+								{
+									__removeOnLinks(__selection.items[0]);
+								}
+							}
+						}
+					}
 					__makeConnectionsWhenDropped();
 				}
 				else if( name == __EVENT_LEFT_RELEASE_ICON )
