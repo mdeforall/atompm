@@ -1401,3 +1401,21 @@ function __copyLHSiconsToRHSinRuleIcon()
 		return;
 	}
 }
+
+function __editRuleIconAttributes(ruleIcon) 
+{
+	var canvasX = Number(GUIUtils.convertToCanvasX(event));
+	var canvasY = Number(GUIUtils.convertToCanvasY(event));
+
+	var ruleX = Number(__icons[ruleIcon].icon.node.getAttribute('__x'));
+	var ruleY = Number(__icons[ruleIcon].icon.node.getAttribute('__y'));
+
+	if (ruleY <= canvasY && canvasY <= ruleY + 60 && canvasX >= ruleX + 580) 
+	{
+		console.log("Running loop count Changes!");
+	} else if (ruleX <= canvasX && canvasX <= ruleX + 310) 
+	{
+		console.log("Running name changes!");
+	}
+	
+}
