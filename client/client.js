@@ -1410,12 +1410,67 @@ function __editRuleIconAttributes(ruleIcon)
 	var ruleX = Number(__icons[ruleIcon].icon.node.getAttribute('__x'));
 	var ruleY = Number(__icons[ruleIcon].icon.node.getAttribute('__y'));
 
+	var matches = ruleIcon.match(/.*\/(.*)Icon\/(.*)\.instance/) ||
+				ruleIcon.match(/.*\/(.*)Link\/(.*)\.instance/),
+				type 	= matches[1],
+				id		= matches[2];
+
 	if (ruleY <= canvasY && canvasY <= ruleY + 60 && canvasX >= ruleX + 580) 
 	{
-		console.log("Running loop count Changes!");
+		HttpUtils.httpReq(
+			'GET',
+			HttpUtils.url(ruleIcon),
+			undefined,
+			function(statusCode,resp)
+			{
+				if( ! utils.isHttpSuccessCode(statusCode) ) {
+					return error(resp);
+				}
+				return openDialog(
+					_DICTIONARY_EDITOR,
+					{'data':		utils.jsonp( utils.jsonp(resp)['data'] ),
+						'ignoreKey':	
+							function(attr) 
+							{
+								return attr != 'count';
+							},
+						'keepEverything':
+							function() 
+							{
+								return __changed(ruleIcon);
+							},
+						'title':'edit '+type+' #'+id+'\'s loop count'},
+					function(changes) {DataUtils.update(ruleIcon,changes);});
+			}
+		);	
 	} else if (ruleX <= canvasX && canvasX <= ruleX + 310) 
 	{
-		console.log("Running name changes!");
+		HttpUtils.httpReq(
+			'GET',
+			HttpUtils.url(ruleIcon),
+			undefined,
+			function(statusCode,resp)
+			{
+				if( ! utils.isHttpSuccessCode(statusCode) ) {
+					return error(resp);
+				}
+				return openDialog(
+					_DICTIONARY_EDITOR,
+					{'data':		utils.jsonp( utils.jsonp(resp)['data'] ),
+						'ignoreKey':	
+							function(attr) 
+							{
+								return attr != 'name';
+							},
+						'keepEverything':
+							function() 
+							{
+								return __changed(ruleIcon);
+							},
+						'title':'edit '+type+' #'+id+'\'s name'},
+					function(changes) {DataUtils.update(ruleIcon,changes);});
+			}
+		);	
 	}
 	
 }
