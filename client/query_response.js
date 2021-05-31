@@ -209,12 +209,14 @@ function __handleChangelog(changelog,seqNum,hitchhiker)
 							__createVisualLink( __Target, latestIconID[0]);	
 						}
 							
+						__createRuleLink(underneathID, latestIconID, __Target);
 						
 					}
 					// for creating on links
 					else if(__isVisualLink(latestIconID[0], __Target) && !__isVisualLink(__Target, latestIconID[0]))
 					{
 						__createVisualLink(  latestIconID[0], __Target);	
+						__createRuleLink(underneathID, latestIconID, __Target);
 					}
 
 					/* if there is no visual links from src to __Target then checks if __Target has a connected underneath icon or not, if there is connected underneath icon

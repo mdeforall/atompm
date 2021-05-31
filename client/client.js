@@ -1327,7 +1327,7 @@ function __copyLHSiconsToRHSinRuleIcon()
 		ruleIcon = __selection['items'][0];;
 		ruleX = __icons[ruleIcon].icon.node.getAttribute('__x');
 		ruleY = __icons[ruleIcon].icon.node.getAttribute('__y');
-		for(var item in Array.from(Array(__selection['items'].length).keys()))
+		for(var item in __selection.items)
 		{
 			var currentItem = __selection['items'][item];
 			if(item != 0 && !currentItem.includes("lhsLink"))
@@ -1390,6 +1390,15 @@ function __copyLHSiconsToRHSinRuleIcon()
 						var y = Number(__icons[newIcons[i]].icon.getAttr('__y'));
 						
 						DataUtils.update(newIcons[i], {position: [x, y]});
+
+						connectionType = "/Formalisms/BlockBasedMDE/BlockBasedMDE.defaultIcons/rhsLink.type";
+						HttpUtils.httpReq(
+								'POST',
+								HttpUtils.url(connectionType,__NO_USERNAME),
+								{'src':ruleIcon,
+								'dest':newIcons[i],
+								'pos':[__icons[newIcons[i]].icon.getAttr('__x'), __icons[newIcons[i]].icon.getAttr('__y')]
+								});
 					}
 				}
 			}
@@ -1473,4 +1482,61 @@ function __editRuleIconAttributes(ruleIcon)
 		);	
 	}
 	
+}
+
+function __createRuleLink(underneathID, latestIconID, target)
+{
+	for(var edgeI in __icons[target]['edgesIn'])
+	{
+		if (__icons[target]['edgesIn'][edgeI].toString().includes("lhs"))
+		{
+			var edgeId = __icons[target]['edgesIn'][edgeI].toString().split("-")[0];
+			target = __icons[edgeId]['edgesIn'].toString().split("-")[0];
+			if(__isContainmentLink( latestIconID[0], target))
+			{
+				DataUtils.getInsertConnectionType(
+					underneathID,
+					latestIconID,
+					function(connectionType)
+					{
+						connectionType = "/Formalisms/BlockBasedMDE/BlockBasedMDE.defaultIcons/lhsLink.type";
+						HttpUtils.httpReq(
+								'POST',
+								HttpUtils.url(connectionType,__NO_USERNAME),
+								{'src':target,
+								'dest':latestIconID[0],
+								'pos':[__icons[latestIconID[0]].icon.getAttr('__x'), __icons[latestIconID[0]].icon.getAttr('__y')]
+								});
+
+					}
+					
+				);
+			}
+		}
+		else if (__icons[target]['edgesIn'][edgeI].toString().includes("rhs"))
+		{
+			var edgeId = __icons[target]['edgesIn'][edgeI].toString().split("-")[0];
+			target = __icons[edgeId]['edgesIn'].toString().split("-")[0];
+			if(__isContainmentLink( latestIconID[0], target))
+			{
+				DataUtils.getInsertConnectionType(
+					underneathID,
+					latestIconID,
+					function(connectionType)
+					{
+						connectionType = "/Formalisms/BlockBasedMDE/BlockBasedMDE.defaultIcons/rhsLink.type";
+						HttpUtils.httpReq(
+								'POST',
+								HttpUtils.url(connectionType,__NO_USERNAME),
+								{'src':target,
+								'dest':latestIconID[0],
+								'pos':[__icons[latestIconID[0]].icon.getAttr('__x'), __icons[latestIconID[0]].icon.getAttr('__y')]
+								});
+
+					}
+					
+				);
+			}
+		}
+	}
 }
