@@ -208,8 +208,9 @@ function __handleChangelog(changelog,seqNum,hitchhiker)
 							NewIconCreated = latestIconID[0];
 							__createVisualLink( __Target, latestIconID[0]);	
 						}
-							
-						__createRuleLink(underneathID, latestIconID, __Target);
+						if(UnderneathIcon != undefined) {
+							__createRuleLink(UnderneathIcon, latestIconID, __Target);
+						}
 						
 					}
 					// for creating on links
