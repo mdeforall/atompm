@@ -226,11 +226,13 @@ function __handleChangelog(changelog,seqNum,hitchhiker)
 					{
 						__Target = __edgeId2ends(__getConnectionParticipants(__icons[__Target].edgesOut[0])[2])[1];
 						__createVisualLink(  latestIconID[0], __Target);
+						__createRuleLink(underneathID, latestIconID, __Target);
 					}
 					else if(!__isVisualLink(latestIconID[0], __Target) && __isUnderneathVisualLinkBothDir(latestIconID[0], __Target))
 					{
 						__Target = __edgeId2ends(__getConnectionParticipants(__icons[__Target].edgesOut[0])[2])[1];
 						__createVisualLink( __Target, latestIconID[0]);
+						__createRuleLink(underneathID, latestIconID, __Target);
 					}
 				}
 				
