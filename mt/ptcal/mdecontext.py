@@ -568,30 +568,30 @@ class MdeContext(TransformationContext) :
                     #move east check
                     if self.birdMazeFacing == 'Right':
                         direction ='east'
-                        if lhsBirdFacing == 'Right' or lhsBirdFacing == 'Down':
+                        if lhsBirdFacing == 'Right':
                             swap = False
-                        elif lhsBirdFacing == 'Left' or lhsBirdFacing == 'Up':
+                        elif lhsBirdFacing == 'Left' or lhsBirdFacing == 'Up' or lhsBirdFacing == 'Down':
                             swap = True
                     #move west check
                     if self.birdMazeFacing == 'Left':
                         direction ='east'
-                        if lhsBirdFacing == 'Right' or lhsBirdFacing == 'Down':
+                        if lhsBirdFacing == 'Right' or lhsBirdFacing == 'Down' or lhsBirdFacing == 'Up':
                             swap = True
-                        elif lhsBirdFacing == 'Left' or lhsBirdFacing == 'Up':
+                        elif lhsBirdFacing == 'Left':
                             swap = False
                     #move south check
                     if self.birdMazeFacing == 'Down':
                         direction ='south'
-                        if lhsBirdFacing == 'Right' or lhsBirdFacing == 'Down':
+                        if lhsBirdFacing == 'Down':
                             swap = False
-                        elif lhsBirdFacing == 'Left' or lhsBirdFacing == 'Up':
+                        elif lhsBirdFacing == 'Left' or lhsBirdFacing == 'Up' or lhsBirdFacing == 'Right':
                             swap = True
                     #move north check
                     if self.birdMazeFacing == 'Up':
                         direction ='south'
-                        if lhsBirdFacing == 'Right' or lhsBirdFacing == 'Down':
+                        if lhsBirdFacing == 'Left' or lhsBirdFacing == 'Right' or lhsBirdFacing == 'Down':
                             swap = True
-                        elif lhsBirdFacing == 'Left' or lhsBirdFacing == 'Up':
+                        elif lhsBirdFacing == 'Up':
                             swap = False
 
 
