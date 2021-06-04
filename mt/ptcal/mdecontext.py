@@ -1082,6 +1082,8 @@ class MdeContext(TransformationContext) :
                         resString = self.metamodel+"/fail"
                 else:
                     resString = self.t['nodes'][LinkID]['$type']
+                if self.t['nodes'][LinkID]['$type'] == self.metamodel+"/Rule":
+                    return LinkID
                 
                 for edgeLS in edgesFromLastStep:
                     if self.t['nodes'][edgeLS['dest']]['$type'] == resString:
@@ -1120,7 +1122,7 @@ class MdeContext(TransformationContext) :
                 self._expired = True
                 return ai
             else :
-                nextStepID = getNextStepId(self._lastStep['id'])
+                nextStepID = getNextStepId(filteredEdgesFromLastStep[0]['dest'])
                 
 
                 if nextStepID in self.rules:
