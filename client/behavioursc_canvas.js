@@ -338,7 +338,10 @@ __canvasBehaviourStatechart = {
 				{
 					GeometryUtils.transformSelection(__SELECTION_DRAG);
 					this.__T(this.__STATE_SOMETHING_SELECTED,event);
-					if (__selection.items[0].includes("BirdIcon") && __selection.items.length == 1 && GeometryUtils.getOverlay() != undefined) 
+					if ((__selection.items[0].includes("BirdIcon") 
+									|| __selection.items[0].includes("PigIcon")) 
+									&& __selection.items.length == 1 
+									&& GeometryUtils.getOverlay() != undefined) 
 					{
 						for (item in __icons) 
 						{
