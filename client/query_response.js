@@ -141,8 +141,8 @@ function __handleChangelog(changelog,seqNum,hitchhiker)
 				}
 
 				if(creationInitializedByUser) {
-					//__select(icon.node.firstChild);
-					//BehaviorManager.goToSomethingSelectedState();
+					__select(icon.node.firstChild);
+					BehaviorManager.goToSomethingSelectedState();
 					__highlightCloseSnappingSides(icon.getAttr("__csuri"));
 					__makeConnectionsWhenDropped();
 					creationInitializedByUser = false;
@@ -210,6 +210,8 @@ function __handleChangelog(changelog,seqNum,hitchhiker)
 						}
 						__createRuleLink(underneathID, latestIconID, __Target);
 
+						__select(latestIconID);
+						BehaviorManager.goToSomethingSelectedState();
 						
 					}
 					// for creating on links
