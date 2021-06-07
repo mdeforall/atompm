@@ -526,20 +526,20 @@ class MdeContext(TransformationContext) :
             isRhsBirdInFirst = isBirdOnTile(rhsstartNode)
 
             # move east
-            if isLhsBirdInFirst and isRhsBirdInLast and self.checkType(lhsDirectionId) =='east' and self.checkType(rhsDirectionId) =='east':
+            if isLhsBirdInFirst and isRhsBirdInLast and self.checkType(lhsDirectionId) =='east' and self.checkType(rhsDirectionId) =='east' and lhsFace == 'Right':
 
                 return checkMoveForward and True
 
             # move south
-            if isLhsBirdInFirst and isRhsBirdInLast and self.checkType(lhsDirectionId) =='south' and self.checkType(rhsDirectionId) =='south':
+            if isLhsBirdInFirst and isRhsBirdInLast and self.checkType(lhsDirectionId) =='south' and self.checkType(rhsDirectionId) =='south' and lhsFace == 'Down':
 
                 return checkMoveForward and True
             # move west
-            if isLhsBirdInLast and isRhsBirdInFirst and self.checkType(lhsDirectionId) =='east' and self.checkType(rhsDirectionId) =='east':
+            if isLhsBirdInLast and isRhsBirdInFirst and self.checkType(lhsDirectionId) =='east' and self.checkType(rhsDirectionId) =='east' and lhsFace == 'Left':
 
                 return checkMoveForward and True
             # move north
-            if isLhsBirdInLast and isRhsBirdInFirst and self.checkType(lhsDirectionId) =='south' and self.checkType(rhsDirectionId) =='south':
+            if isLhsBirdInLast and isRhsBirdInFirst and self.checkType(lhsDirectionId) =='south' and self.checkType(rhsDirectionId) =='south' and lhsFace == 'Up':
 
                 return checkMoveForward and True
 
@@ -566,32 +566,32 @@ class MdeContext(TransformationContext) :
                 currentLhsNode = xnode['dest']
                 if currentLhsNode not in labeled:
                     #move east check
-                    if self.birdMazeFacing == 'Right':
+                    if self.birdMazeFacing == 'Right' or lhsBirdFacing == 'Down':
                         direction ='east'
                         if lhsBirdFacing == 'Right':
                             swap = False
-                        elif lhsBirdFacing == 'Left' or lhsBirdFacing == 'Up' or lhsBirdFacing == 'Down':
+                        elif lhsBirdFacing == 'Left' or lhsBirdFacing == 'Up':
                             swap = True
                     #move west check
-                    if self.birdMazeFacing == 'Left':
+                    if self.birdMazeFacing == 'Left' or lhsBirdFacing == 'Up':
                         direction ='east'
-                        if lhsBirdFacing == 'Right' or lhsBirdFacing == 'Down' or lhsBirdFacing == 'Up':
+                        if lhsBirdFacing == 'Right' or lhsBirdFacing == 'Down':
                             swap = True
                         elif lhsBirdFacing == 'Left':
                             swap = False
                     #move south check
                     if self.birdMazeFacing == 'Down':
                         direction ='south'
-                        if lhsBirdFacing == 'Down':
+                        if lhsBirdFacing == 'Down' or lhsBirdFacing == 'Right':
                             swap = False
-                        elif lhsBirdFacing == 'Left' or lhsBirdFacing == 'Up' or lhsBirdFacing == 'Right':
+                        elif lhsBirdFacing == 'Left' or lhsBirdFacing == 'Up':
                             swap = True
                     #move north check
                     if self.birdMazeFacing == 'Up':
                         direction ='south'
-                        if lhsBirdFacing == 'Left' or lhsBirdFacing == 'Right' or lhsBirdFacing == 'Down':
+                        if lhsBirdFacing == 'Right' or lhsBirdFacing == 'Down':
                             swap = True
-                        elif lhsBirdFacing == 'Up':
+                        elif lhsBirdFacing == 'Left' or lhsBirdFacing == 'Up':
                             swap = False
 
 
