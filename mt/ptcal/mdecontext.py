@@ -566,18 +566,18 @@ class MdeContext(TransformationContext) :
                 currentLhsNode = xnode['dest']
                 if currentLhsNode not in labeled:
                     #move east check
-                    if self.birdMazeFacing == 'Right' or lhsBirdFacing == 'Down':
+                    if self.birdMazeFacing == 'Right':
                         direction ='east'
-                        if lhsBirdFacing == 'Right':
+                        if lhsBirdFacing == 'Right' or lhsBirdFacing == 'Down':
                             swap = False
                         elif lhsBirdFacing == 'Left' or lhsBirdFacing == 'Up':
                             swap = True
                     #move west check
-                    if self.birdMazeFacing == 'Left' or lhsBirdFacing == 'Up':
+                    if self.birdMazeFacing == 'Left':
                         direction ='east'
                         if lhsBirdFacing == 'Right' or lhsBirdFacing == 'Down':
                             swap = True
-                        elif lhsBirdFacing == 'Left':
+                        elif lhsBirdFacing == 'Left' or lhsBirdFacing == 'Up':
                             swap = False
                     #move south check
                     if self.birdMazeFacing == 'Down':
