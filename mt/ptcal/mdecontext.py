@@ -526,24 +526,25 @@ class MdeContext(TransformationContext) :
             isRhsBirdInFirst = isBirdOnTile(rhsstartNode)
 
             # move east
-            if isLhsBirdInFirst and isRhsBirdInLast and self.checkType(lhsDirectionId) =='east' and self.checkType(rhsDirectionId) =='east' and lhsFace == 'Right':
+            if isLhsBirdInFirst and isRhsBirdInLast and self.checkType(lhsDirectionId) =='east' and self.checkType(rhsDirectionId) =='east':
 
-                return checkMoveForward and True
-
+                return checkMoveForward and True, lhsFace == 'Right' and rhsFace == 'Right'
             # move south
-            if isLhsBirdInFirst and isRhsBirdInLast and self.checkType(lhsDirectionId) =='south' and self.checkType(rhsDirectionId) =='south' and lhsFace == 'Down':
+            if isLhsBirdInFirst and isRhsBirdInLast and self.checkType(lhsDirectionId) =='south' and self.checkType(rhsDirectionId) =='south':
 
-                return checkMoveForward and True
+                return checkMoveForward and True, lhsFace == 'Down' and rhsFace == 'Down'
             # move west
-            if isLhsBirdInLast and isRhsBirdInFirst and self.checkType(lhsDirectionId) =='east' and self.checkType(rhsDirectionId) =='east' and lhsFace == 'Left':
+            if isLhsBirdInLast and isRhsBirdInFirst and self.checkType(lhsDirectionId) =='east' and self.checkType(rhsDirectionId) =='east':
 
-                return checkMoveForward and True
+                return checkMoveForward and True, lhsFace == 'Left' and rhsFace == 'Left'
             # move north
-            if isLhsBirdInLast and isRhsBirdInFirst and self.checkType(lhsDirectionId) =='south' and self.checkType(rhsDirectionId) =='south' and lhsFace == 'Up':
+            if isLhsBirdInLast and isRhsBirdInFirst and self.checkType(lhsDirectionId) =='south' and self.checkType(rhsDirectionId) =='south':
 
-                return checkMoveForward and True
+                return checkMoveForward and True, lhsFace == 'Up' and rhsFace == 'Up'
+            # is not a move pattern
+            return False, False
 
-        isMovePattern = isMoveForward(lhsBirdFacing, rhsBirdFacing, lhsstart, rhsstart)
+        isMovePattern, areRuleBirdsMatching = isMoveForward(lhsBirdFacing, rhsBirdFacing, lhsstart, rhsstart)
 
         swap = False
         direction =''
@@ -566,28 +567,28 @@ class MdeContext(TransformationContext) :
                 currentLhsNode = xnode['dest']
                 if currentLhsNode not in labeled:
                     #move east check
-                    if self.birdMazeFacing == 'Right':
+                    if self.birdMazeFacing == 'Right' and areRuleBirdsMatching:
                         direction ='east'
                         if lhsBirdFacing == 'Right' or lhsBirdFacing == 'Down':
                             swap = False
                         elif lhsBirdFacing == 'Left' or lhsBirdFacing == 'Up':
                             swap = True
                     #move west check
-                    if self.birdMazeFacing == 'Left':
+                    if self.birdMazeFacing == 'Left' and areRuleBirdsMatching:
                         direction ='east'
                         if lhsBirdFacing == 'Right' or lhsBirdFacing == 'Down':
                             swap = True
                         elif lhsBirdFacing == 'Left' or lhsBirdFacing == 'Up':
                             swap = False
                     #move south check
-                    if self.birdMazeFacing == 'Down':
+                    if self.birdMazeFacing == 'Down' and areRuleBirdsMatching:
                         direction ='south'
                         if lhsBirdFacing == 'Down' or lhsBirdFacing == 'Right':
                             swap = False
                         elif lhsBirdFacing == 'Left' or lhsBirdFacing == 'Up':
                             swap = True
                     #move north check
-                    if self.birdMazeFacing == 'Up':
+                    if self.birdMazeFacing == 'Up' and areRuleBirdsMatching:
                         direction ='south'
                         if lhsBirdFacing == 'Right' or lhsBirdFacing == 'Down':
                             swap = True
@@ -674,7 +675,7 @@ class MdeContext(TransformationContext) :
                         if missingEdge['dest'] == linkedRhsEdges[0]['src'] or missingEdge['src'] == linkedRhsEdges[0]['src'] :
                             edgesLinksIndexList.append(rule['edges'][-1])
         
-        # change the direction of movment if needed
+        # change the direction of movement if needed
         if swap:
             for item in edgesLinksIndexList:
                 index = rule['edges'].index(item)
