@@ -166,74 +166,74 @@ function __handleChangelog(changelog,seqNum,hitchhiker)
 					    UnderneathIcon = null;
 					}
 
-					if(__isContainmentLink( latestIconID[0], __Target))
-					{
+					
+					if (__isContainmentLink(latestIconID[0], __Target)) {
 						DataUtils.getInsertConnectionType(
 							underneathID,
 							latestIconID,
-							function(connectionType)
-										{
-											HttpUtils.httpReq(
-													'POST',
-													HttpUtils.url(connectionType,__NO_USERNAME),
-													{'src':__Target,
-													'dest':latestIconID[0],
-													'pos':[__icons[latestIconID[0]].icon.getAttr('__x'), __icons[latestIconID[0]].icon.getAttr('__y')]
-													});
-		
-										}
-							
+							function (connectionType) {
+								HttpUtils.httpReq(
+									'POST',
+									HttpUtils.url(connectionType, __NO_USERNAME),
+									{
+										'src': __Target,
+										'dest': latestIconID[0],
+										'pos': [__icons[latestIconID[0]].icon.getAttr('__x'), __icons[latestIconID[0]].icon.getAttr('__y')]
+									});
+
+							}
+
 						);
 					}
 					// for creating east and south links
-					else if(__isVisualLink(__Target, latestIconID[0]) && __isVisualLink(latestIconID[0], __Target))
-					{
-						if(Key_E_S_W_N != null)
-						{
-							if(Key_E_S_W_N == 'W' || Key_E_S_W_N == 'N')
-							{
-								__createVisualLink(  latestIconID[0], __Target);
-								setTimeout(function(){__findSurroundingIconsAndConnect(latestIconID[0], __Target);}, 50);
-							}	
-							else if(Key_E_S_W_N == 'E' || Key_E_S_W_N == 'S')
-							{
-								__createVisualLink( __Target, latestIconID[0]);
-								setTimeout( function(){__findSurroundingIconsAndConnect(latestIconID[0], __Target);}, 50);
+					else if (__isVisualLink(__Target, latestIconID[0]) && __isVisualLink(latestIconID[0], __Target)) {
+						if (Key_E_S_W_N != null) {
+							if (Key_E_S_W_N == 'W' || Key_E_S_W_N == 'N') {
+								__createVisualLink(latestIconID[0], __Target);
+								setTimeout(function () { __findSurroundingIconsAndConnect(latestIconID[0], __Target); }, 50);
 							}
-								
-							Key_E_S_W_N = null;	
+							else if (Key_E_S_W_N == 'E' || Key_E_S_W_N == 'S') {
+								__createVisualLink(__Target, latestIconID[0]);
+								setTimeout(function () { __findSurroundingIconsAndConnect(latestIconID[0], __Target); }, 50);
+							}
+
+							Key_E_S_W_N = null;
 						}
-						else
-						{
+						else if (__Target.toString().substring(0, 44) == latestIconID.toString().substring(0, 44)) {
+							__icons[latestIconID]['icon'].remove();
+							__icons[latestIconID]['edgesOut'].forEach(__removeEdge);
+							__icons[latestIconID]['edgesIn'].forEach(__removeEdge);
+							delete __icons[latestIconID];
+							__select();
+							latestIconID = [];
+						}
+						else {
 							NewIconCreated = latestIconID[0];
-							__createVisualLink( __Target, latestIconID[0]);	
+							__createVisualLink(__Target, latestIconID[0]);
 						}
-						__createRuleLink(underneathID, latestIconID, __Target);
+						__createRuleLink(UnderneathIcon, latestIconID, __Target);
 
 						__select(latestIconID);
 						BehaviorManager.goToSomethingSelectedState();
-						
+
 					}
 					// for creating on links
-					else if(__isVisualLink(latestIconID[0], __Target) && !__isVisualLink(__Target, latestIconID[0]))
-					{
-						__createVisualLink(  latestIconID[0], __Target);	
+					else if (__isVisualLink(latestIconID[0], __Target) && !__isVisualLink(__Target, latestIconID[0])) {
+						__createVisualLink(latestIconID[0], __Target);
 						__createRuleLink(underneathID, latestIconID, __Target);
 					}
 
 					/* if there is no visual links from src to __Target then checks if __Target has a connected underneath icon or not, if there is connected underneath icon
-					   and there is visual connection exists between the src and the underneath connected icon, then changes the __Target to the
-					   underneath connected icon and connect them with visual on link */
-					else if(!__isVisualLink(latestIconID[0], __Target) && __isUnderneathVisualLinkOneDir(latestIconID[0], __Target))
-					{
+						and there is visual connection exists between the src and the underneath connected icon, then changes the __Target to the
+						underneath connected icon and connect them with visual on link */
+					else if (!__isVisualLink(latestIconID[0], __Target) && __isUnderneathVisualLinkOneDir(latestIconID[0], __Target)) {
 						__Target = __edgeId2ends(__getConnectionParticipants(__icons[__Target].edgesOut[0])[2])[1];
-						__createVisualLink(  latestIconID[0], __Target);
+						__createVisualLink(latestIconID[0], __Target);
 						__createRuleLink(underneathID, latestIconID, __Target);
 					}
-					else if(!__isVisualLink(latestIconID[0], __Target) && __isUnderneathVisualLinkBothDir(latestIconID[0], __Target))
-					{
+					else if (!__isVisualLink(latestIconID[0], __Target) && __isUnderneathVisualLinkBothDir(latestIconID[0], __Target)) {
 						__Target = __edgeId2ends(__getConnectionParticipants(__icons[__Target].edgesOut[0])[2])[1];
-						__createVisualLink( __Target, latestIconID[0]);
+						__createVisualLink(__Target, latestIconID[0]);
 						__createRuleLink(underneathID, latestIconID, __Target);
 					}
 				}
