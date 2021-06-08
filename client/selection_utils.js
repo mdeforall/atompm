@@ -27,22 +27,22 @@ function __highlightCloseSnappingSides(someURI,someX=undefined,someY=undefined) 
 			nextX = bbox["x"];
 			nextY = bbox["y"];
 		
-			if(!__icons[id].icon.node.hasAttribute("__linkStyle")
-					&& (__icons[id].icon.getAttr("__csuri").includes("TileIcon") || __icons[id].icon.getAttr("__csuri").includes("EmptyIcon")) // let's focus on tiles around for now
-					&& __icons[id].icon.getAttr("__csuri")!=someURI) {
-				
-				northSnapArea = {'x':nextX-48,'y':nextY-72,'width':95,'height':23};
-				eastSnapArea = {'x':nextX+48,'y':nextY-48,'width':23,'height':95};
-				southSnapArea = {'x':nextX-48,'y':nextY+48,'width':95,'height':23};
-				westSnapArea = {'x':nextX-72,'y':nextY-48,'width':23,'height':95};
+			if (!__icons[id].icon.node.hasAttribute("__linkStyle")
+				&& (__icons[id].icon.getAttr("__csuri").includes("TileIcon") || __icons[id].icon.getAttr("__csuri").includes("EmptyIcon")) // let's focus on tiles around for now
+				&& __icons[id].icon.getAttr("__csuri") != someURI) {
 
-				snapAreas = {'north':northSnapArea,'south':southSnapArea,'east':eastSnapArea,'west':westSnapArea};
+				northSnapArea = { 'x': nextX - 48, 'y': nextY - 72, 'width': 95, 'height': 23 };
+				eastSnapArea = { 'x': nextX + 48, 'y': nextY - 48, 'width': 23, 'height': 95 };
+				southSnapArea = { 'x': nextX - 48, 'y': nextY + 48, 'width': 95, 'height': 23 };
+				westSnapArea = { 'x': nextX - 72, 'y': nextY - 48, 'width': 23, 'height': 95 };
 
-				for(snapID in snapAreas) {
-					if(snapAreas[snapID]['x']<toCheckX && toCheckX<snapAreas[snapID]['x']+snapAreas[snapID]['width']
-						&& snapAreas[snapID]['y']<toCheckY && toCheckY<snapAreas[snapID]['y']+snapAreas[snapID]['height']) {
-						__icons[id].icon.highlightSnap({'direction':snapID});
-						highlightedSnaps.push({'id':id,'direction':snapID,'selected':someURI});
+				snapAreas = { 'north': northSnapArea, 'south': southSnapArea, 'east': eastSnapArea, 'west': westSnapArea };
+
+				for (snapID in snapAreas) {
+					if (snapAreas[snapID]['x'] < toCheckX && toCheckX < snapAreas[snapID]['x'] + snapAreas[snapID]['width']
+						&& snapAreas[snapID]['y'] < toCheckY && toCheckY < snapAreas[snapID]['y'] + snapAreas[snapID]['height']) {
+						__icons[id].icon.highlightSnap({ 'direction': snapID });
+						highlightedSnaps.push({ 'id': id, 'direction': snapID, 'selected': someURI });
 					}
 				}
 			}
@@ -52,9 +52,9 @@ function __highlightCloseSnappingSides(someURI,someX=undefined,someY=undefined) 
 		// toApply will hold this info for the time when the icon is released and the connections will be created
 		// in the __makeConnectionsWhenDropped method.
 		toApply = {}
-		for(id in highlightedSnaps) {
-			from = "", to="", link="";
-			if(highlightedSnaps[id]['direction']=='east') {
+		for (id in highlightedSnaps) {
+			from = "", to = "", link = "";
+			if (highlightedSnaps[id]['direction'] == 'east') {
 				from = highlightedSnaps[id]['id'];
 				to = highlightedSnaps[id]['selected'];
 				link = "east";
@@ -62,17 +62,17 @@ function __highlightCloseSnappingSides(someURI,someX=undefined,someY=undefined) 
 				fromY = Number(__icons[from].icon.getAttr("__y"));
 				toX = toCheckX;
 				toY = toCheckY;
-				a = fromX-toX;
-				b = fromY-toY;
-				distance = Math.sqrt(a*a+b*b);
-				if(!toApply.hasOwnProperty(highlightedSnaps[id]['direction'])){
-					toApply[highlightedSnaps[id]['direction']] = {'from':from,'to':to,'link':link,'distance':distance};
+				a = fromX - toX;
+				b = fromY - toY;
+				distance = Math.sqrt(a * a + b * b);
+				if (!toApply.hasOwnProperty(highlightedSnaps[id]['direction'])) {
+					toApply[highlightedSnaps[id]['direction']] = { 'from': from, 'to': to, 'link': link, 'distance': distance };
 				} else {
-					if(toApply[highlightedSnaps[id]['direction']]['distance']>distance) {
-						toApply[highlightedSnaps[id]['direction']] = {'from':from,'to':to,'link':link,'distance':distance};
+					if (toApply[highlightedSnaps[id]['direction']]['distance'] > distance) {
+						toApply[highlightedSnaps[id]['direction']] = { 'from': from, 'to': to, 'link': link, 'distance': distance };
 					}
 				}
-			} else if(highlightedSnaps[id]['direction']=='south') {
+			} else if (highlightedSnaps[id]['direction'] == 'south') {
 				from = highlightedSnaps[id]['id'];
 				to = highlightedSnaps[id]['selected'];
 				link = "south";
@@ -80,17 +80,17 @@ function __highlightCloseSnappingSides(someURI,someX=undefined,someY=undefined) 
 				fromY = Number(__icons[from].icon.getAttr("__y"));
 				toX = toCheckX;
 				toY = toCheckY;
-				a = fromX-toX;
-				b = fromY-toY;
-				distance = Math.sqrt(a*a+b*b);
-				if(!toApply.hasOwnProperty(highlightedSnaps[id]['direction'])){
-					toApply[highlightedSnaps[id]['direction']] = {'from':from,'to':to,'link':link,'distance':distance};
+				a = fromX - toX;
+				b = fromY - toY;
+				distance = Math.sqrt(a * a + b * b);
+				if (!toApply.hasOwnProperty(highlightedSnaps[id]['direction'])) {
+					toApply[highlightedSnaps[id]['direction']] = { 'from': from, 'to': to, 'link': link, 'distance': distance };
 				} else {
-					if(toApply[highlightedSnaps[id]['direction']]['distance']>distance) {
-						toApply[highlightedSnaps[id]['direction']] = {'from':from,'to':to,'link':link,'distance':distance};
+					if (toApply[highlightedSnaps[id]['direction']]['distance'] > distance) {
+						toApply[highlightedSnaps[id]['direction']] = { 'from': from, 'to': to, 'link': link, 'distance': distance };
 					}
 				}
-			} else if(highlightedSnaps[id]['direction']=='north') {
+			} else if (highlightedSnaps[id]['direction'] == 'north') {
 				to = highlightedSnaps[id]['id'];
 				from = highlightedSnaps[id]['selected'];
 				link = "south";
@@ -98,17 +98,17 @@ function __highlightCloseSnappingSides(someURI,someX=undefined,someY=undefined) 
 				fromY = toCheckY;
 				toX = Number(__icons[to].icon.getAttr("__x"));
 				toY = Number(__icons[to].icon.getAttr("__y"));
-				a = fromX-toX;
-				b = fromY-toY;
-				distance = Math.sqrt(a*a+b*b);
-				if(!toApply.hasOwnProperty(highlightedSnaps[id]['direction'])){
-					toApply[highlightedSnaps[id]['direction']] = {'from':from,'to':to,'link':link,'distance':distance};
+				a = fromX - toX;
+				b = fromY - toY;
+				distance = Math.sqrt(a * a + b * b);
+				if (!toApply.hasOwnProperty(highlightedSnaps[id]['direction'])) {
+					toApply[highlightedSnaps[id]['direction']] = { 'from': from, 'to': to, 'link': link, 'distance': distance };
 				} else {
-					if(toApply[highlightedSnaps[id]['direction']]['distance']>distance) {
-						toApply[highlightedSnaps[id]['direction']] = {'from':from,'to':to,'link':link,'distance':distance};
+					if (toApply[highlightedSnaps[id]['direction']]['distance'] > distance) {
+						toApply[highlightedSnaps[id]['direction']] = { 'from': from, 'to': to, 'link': link, 'distance': distance };
 					}
 				}
-			} else if(highlightedSnaps[id]['direction']=='west') {
+			} else if (highlightedSnaps[id]['direction'] == 'west') {
 				to = highlightedSnaps[id]['id'];
 				from = highlightedSnaps[id]['selected'];
 				link = "east";
@@ -116,14 +116,168 @@ function __highlightCloseSnappingSides(someURI,someX=undefined,someY=undefined) 
 				fromY = toCheckY;
 				toX = Number(__icons[to].icon.getAttr("__x"));
 				toY = Number(__icons[to].icon.getAttr("__y"));
-				a = fromX-toX;
-				b = fromY-toY;
-				distance = Math.sqrt(a*a+b*b);
-				if(!toApply.hasOwnProperty(highlightedSnaps[id]['direction'])){
-					toApply[highlightedSnaps[id]['direction']] = {'from':from,'to':to,'link':link,'distance':distance};
+				a = fromX - toX;
+				b = fromY - toY;
+				distance = Math.sqrt(a * a + b * b);
+				if (!toApply.hasOwnProperty(highlightedSnaps[id]['direction'])) {
+					toApply[highlightedSnaps[id]['direction']] = { 'from': from, 'to': to, 'link': link, 'distance': distance };
 				} else {
-					if(toApply[highlightedSnaps[id]['direction']]['distance']>distance) {
-						toApply[highlightedSnaps[id]['direction']] = {'from':from,'to':to,'link':link,'distance':distance};
+					if (toApply[highlightedSnaps[id]['direction']]['distance'] > distance) {
+						toApply[highlightedSnaps[id]['direction']] = { 'from': from, 'to': to, 'link': link, 'distance': distance };
+					}
+				}
+			}
+		}
+	} else if (someURI.includes("RuleIcon") || someURI.includes("QueryIcon") || someURI.includes("StartIcon") || someURI.includes("RuleExitIcon")) { //Snapping for rules
+		//console.log("Tunnel Snakes Rule!")
+		toCheckX = someX == undefined ? Number(__icons[someURI].icon.getAttr("__x")) : someX;
+		toCheckY = someY == undefined ? Number(__icons[someURI].icon.getAttr("__y")) : someY;
+
+		for (id in highlightedSnaps) {
+			__icons[highlightedSnaps[id]['id']].icon.unhighlight();
+		}
+
+		highlightedSnaps = [];
+		for (id in __icons) {
+			bbox = __icons[id].icon.getBBox();
+			nextX = bbox["x"];
+			nextY = bbox["y"];
+
+			if (!__icons[id].icon.node.hasAttribute("__linkStyle")
+				&& ((__icons[id].icon.getAttr("__csuri").includes("RuleIcon")) || (__icons[id].icon.getAttr("__csuri").includes("QueryIcon")) || (__icons[id].icon.getAttr("__csuri").includes("StartIcon")) || (__icons[id].icon.getAttr("__csuri").includes("RuleExitIcon")) || (__icons[id].icon.getAttr("__csuri").includes("RuleEntryIcon"))) // let's focus on rules for now
+				&& __icons[id].icon.getAttr("__csuri") != someURI) {
+
+				if (id.includes("StartIcon")) {
+					southSnapArea = { 'x': nextX - 50, 'y': nextY + 55, 'width': 50, 'height': 55 };
+
+					snapAreas = { 'southStart': southSnapArea };
+				} else if (id.includes("RuleEntryIcon")) {
+					southSnapArea = { 'x': nextX - 50, 'y': nextY + 35, 'width': 50, 'height': 35 };
+
+					snapAreas = { 'southStart': southSnapArea };
+				} else if (id.includes("QueryIcon")) {
+					northSnapArea = { 'x': nextX - 285, 'y': nextY - 335, 'width': 435, 'height': 150 };
+					successSnapArea = { 'x': nextX - 0, 'y': nextY + 235, 'width': 217, 'height': 150 };
+					failSnapArea = { 'x': nextX + 217, 'y': nextY + 235, 'width': 217, 'height': 150 };
+
+					snapAreas = { 'northQuery': northSnapArea, 'success': successSnapArea, 'fail': failSnapArea }
+				} else {
+					//northSnapArea = { 'x': nextX - 285, 'y': nextY - 335, 'width': 620, 'height': 150 };
+					southSnapArea = { 'x': nextX - 285, 'y': nextY + 235, 'width': 620, 'height': 150 };
+
+					snapAreas = { /*'northRule': northSnapArea,*/ 'southRule': southSnapArea };
+				}
+
+				for (snapID in snapAreas) {
+					if (snapAreas[snapID]['x'] < toCheckX && toCheckX < snapAreas[snapID]['x'] + snapAreas[snapID]['width']
+						&& snapAreas[snapID]['y'] < toCheckY && toCheckY < snapAreas[snapID]['y'] + snapAreas[snapID]['height']) {
+						__icons[id].icon.highlightSnap({ 'direction': snapID });
+						highlightedSnaps.push({ 'id': id, 'direction': snapID, 'selected': someURI });
+					}
+				}
+			}
+		}
+
+		// There might be multiple snap highlights, we will decide to snap whicever is closer.
+		// toApply will hold this info for the time when the icon is released and the connections will be created
+		// in the __makeConnectionsWhenDropped method.
+		toApply = {}
+		for (id in highlightedSnaps) {
+			from = "", to = "", link = "";
+			if (highlightedSnaps[id]['direction'] == 'southRule') {
+				from = highlightedSnaps[id]['id'];
+				to = highlightedSnaps[id]['selected'];
+				if (to.includes("RuleExitIcon")) {
+					link = "exit";
+				} else {
+					link = "next";
+				}
+				fromX = Number(__icons[from].icon.getAttr("__x"));
+				fromY = Number(__icons[from].icon.getAttr("__y"));
+				toX = toCheckX;
+				toY = toCheckY;
+				a = fromX - toX;
+				b = fromY - toY;
+				distance = Math.sqrt(a * a + b * b);
+				if (!toApply.hasOwnProperty(highlightedSnaps[id]['direction'])) {
+					toApply[highlightedSnaps[id]['direction']] = { 'from': from, 'to': to, 'link': link, 'distance': distance };
+				} else {
+					if (toApply[highlightedSnaps[id]['direction']]['distance'] > distance) {
+						toApply[highlightedSnaps[id]['direction']] = { 'from': from, 'to': to, 'link': link, 'distance': distance };
+					}
+				}
+			} else if (highlightedSnaps[id]['direction'] == 'northRule') {
+				to = highlightedSnaps[id]['id'];
+				from = highlightedSnaps[id]['selected'];
+				console.log(to);
+				console.log(from);
+				link = "next";
+				fromX = toCheckX;
+				fromY = toCheckY;
+				toX = Number(__icons[to].icon.getAttr("__x"));
+				toY = Number(__icons[to].icon.getAttr("__y"));
+				a = fromX - toX;
+				b = fromY - toY;
+				distance = Math.sqrt(a * a + b * b);
+				if (!toApply.hasOwnProperty(highlightedSnaps[id]['direction'])) {
+					toApply[highlightedSnaps[id]['direction']] = { 'from': from, 'to': to, 'link': link, 'distance': distance };
+				} else {
+					if (toApply[highlightedSnaps[id]['direction']]['distance'] > distance) {
+						toApply[highlightedSnaps[id]['direction']] = { 'from': from, 'to': to, 'link': link, 'distance': distance };
+					}
+				}
+			} else if (highlightedSnaps[id]['direction'] == 'southStart') {
+				from = highlightedSnaps[id]['id'];
+				to = highlightedSnaps[id]['selected'];
+				link = "Entry";
+				fromX = Number(__icons[from].icon.getAttr("__x"));
+				fromY = Number(__icons[from].icon.getAttr("__y"));
+				toX = toCheckX;
+				toY = toCheckY;
+				a = fromX - toX;
+				b = fromY - toY;
+				distance = Math.sqrt(a * a + b * b);
+				if (!toApply.hasOwnProperty(highlightedSnaps[id]['direction'])) {
+					toApply[highlightedSnaps[id]['direction']] = { 'from': from, 'to': to, 'link': link, 'distance': distance };
+				} else {
+					if (toApply[highlightedSnaps[id]['direction']]['distance'] > distance) {
+						toApply[highlightedSnaps[id]['direction']] = { 'from': from, 'to': to, 'link': link, 'distance': distance };
+					}
+				}
+			} else if (highlightedSnaps[id]['direction'] == 'success') {
+				from = highlightedSnaps[id]['id'];
+				to = highlightedSnaps[id]['selected'];
+				link = "success";
+				fromX = Number(__icons[from].icon.getAttr("__x"));
+				fromY = Number(__icons[from].icon.getAttr("__y"));
+				toX = toCheckX;
+				toY = toCheckY;
+				a = fromX - toX;
+				b = fromY - toY;
+				distance = Math.sqrt(a * a + b * b);
+				if (!toApply.hasOwnProperty(highlightedSnaps[id]['direction'])) {
+					toApply[highlightedSnaps[id]['direction']] = { 'from': from, 'to': to, 'link': link, 'distance': distance };
+				} else {
+					if (toApply[highlightedSnaps[id]['direction']]['distance'] > distance) {
+						toApply[highlightedSnaps[id]['direction']] = { 'from': from, 'to': to, 'link': link, 'distance': distance };
+					}
+				}
+			} else if (highlightedSnaps[id]['direction'] == 'fail') {
+				from = highlightedSnaps[id]['id'];
+				to = highlightedSnaps[id]['selected'];
+				link = "fail";
+				fromX = Number(__icons[from].icon.getAttr("__x"));
+				fromY = Number(__icons[from].icon.getAttr("__y"));
+				toX = toCheckX;
+				toY = toCheckY;
+				a = fromX - toX;
+				b = fromY - toY;
+				distance = Math.sqrt(a * a + b * b);
+				if (!toApply.hasOwnProperty(highlightedSnaps[id]['direction'])) {
+					toApply[highlightedSnaps[id]['direction']] = { 'from': from, 'to': to, 'link': link, 'distance': distance };
+				} else {
+					if (toApply[highlightedSnaps[id]['direction']]['distance'] > distance) {
+						toApply[highlightedSnaps[id]['direction']] = { 'from': from, 'to': to, 'link': link, 'distance': distance };
 					}
 				}
 			}
@@ -164,9 +318,8 @@ function __makeConnectionsWhenDropped() {
 		__icons[highlightedSnaps[id]['id']].icon.unhighlight();
 	}
 	if(highlightedSnaps.length!=0) {
-		__select();
 		highlightedSnaps = [];
-		BehaviorManager.goToIDLE();
+		BehaviorManager.goToSomethingSelectedState();
 	}
 }
 
@@ -441,7 +594,6 @@ function __getCanvasSelectionOverlayContents(max)
 
 /* initialize a Raphael.rect originating at (x,y), appropriately styled, and
 	that reports events (specifically, mouseup) as if it were the canvas 
-
 	NOTE:: _x0 and _y0 are use to remember the point from where the selection 
 			 began */
 function __initCanvasSelectionOverlay(x,y)

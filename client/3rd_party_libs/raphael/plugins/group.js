@@ -158,6 +158,24 @@ Raphael.fn.group = function() {
 						 case 'west':
 						     this.highlight({'color':'red','bbox':{'x':8,'y':10,'width':1,'height':45},'width':3,'opacity':1});
 						     break;
+						 case 'southRule':
+					 		 this.highlight({ 'color': 'red', 'bbox': { 'x': 10, 'y': 285, 'width': 620, 'height': 1 }, 'width': 5, 'opacity': 1 });
+							 break;
+						 case 'northRule':
+							 this.highlight({ 'color': 'red', 'bbox': { 'x': 10, 'y': 0, 'width': 619, 'height': 1 }, 'width': 5, 'opacity': 1 });
+							 break;
+						 case 'southStart':
+							 this.highlight({ 'color': 'red', 'bbox': { 'x': 10, 'y': 55, 'width': 50, 'height': 1 }, 'width': 5, 'opacity': 1 });
+							 break;
+						 case 'northQuery':
+							 this.highlight({ 'color': 'red', 'bbox': { 'x': 10, 'y': 0, 'width': 435, 'height': 1 }, 'width': 5, 'opacity': 1 });
+							 break;
+						 case 'success':
+							 this.highlight({ 'color': 'green', 'bbox': { 'x': 10, 'y': 285, 'width': 217, 'height': 1 }, 'width': 5, 'opacity': 1 });
+							 break;
+						 case 'fail':
+							 this.highlight({ 'color': 'red', 'bbox': { 'x': 217, 'y': 285, 'width': 217, 'height': 1 }, 'width': 5, 'opacity': 1 });
+							 break;
 					 }
 				 },
 
