@@ -153,6 +153,9 @@ function __handleChangelog(changelog,seqNum,hitchhiker)
 				{
 					latestIconID = latestIcon;
 					latestIcon = [];
+					if (getUnderneathID() == undefined)
+						setUnderneathID(UnderneathIcon);
+					underneathID = getUnderneathID();
 
 					if(SelectedItems.length == 1)
 					{
@@ -161,8 +164,7 @@ function __handleChangelog(changelog,seqNum,hitchhiker)
 					}
 					else
 					{
-						underneathID = UnderneathIcon;
-					    __Target = UnderneathIcon.getAttribute('__csuri');
+						__Target = underneathID.getAttribute('__csuri');
 					    UnderneathIcon = null;
 					}
 

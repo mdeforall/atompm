@@ -1542,3 +1542,10 @@ function __createRuleLink(underneathID, latestIconID, target)
 		}
 	}
 }
+UnderneathItem = undefined;
+function setUnderneathID(id) {
+	UnderneathItem = id;
+}
+function getUnderneathID() {
+	return UnderneathItem;
+}
