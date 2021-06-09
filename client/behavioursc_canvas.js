@@ -222,13 +222,16 @@ __canvasBehaviourStatechart = {
 							name == __EVENT_MIDDLE_RELEASE_CANVAS 		||
 							name == __EVENT_MIDDLE_RELEASE_ICON 		||
 							name == __EVENT_SHIFT_MIDDLE_RELEASE_ICON ||
-							name == __EVENT_RIGHT_RELEASE_CANVAS 		||
 							name == __EVENT_RIGHT_RELEASE_ICON )
 				{
 					__select();
 					this.__T(this.__STATE_IDLE,event);
 				}
-
+				else if( name == __EVENT_RIGHT_RELEASE_CANVAS )
+				{
+					__select();
+					DataUtils.create(GUIUtils.convertToCanvasX(event), GUIUtils.convertToCanvasY(event));
+				}
 				else if( name == __EVENT_RIGHT_PRESS_ICON )
 				{
 					__select();
