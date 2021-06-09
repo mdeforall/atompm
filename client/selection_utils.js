@@ -129,7 +129,6 @@ function __highlightCloseSnappingSides(someURI,someX=undefined,someY=undefined) 
 			}
 		}
 	} else if (someURI.includes("RuleIcon") || someURI.includes("QueryIcon") || someURI.includes("StartIcon") || someURI.includes("RuleExitIcon")) { //Snapping for rules
-		//console.log("Tunnel Snakes Rule!")
 		toCheckX = someX == undefined ? Number(__icons[someURI].icon.getAttr("__x")) : someX;
 		toCheckY = someY == undefined ? Number(__icons[someURI].icon.getAttr("__y")) : someY;
 
@@ -279,6 +278,37 @@ function __highlightCloseSnappingSides(someURI,someX=undefined,someY=undefined) 
 					if (toApply[highlightedSnaps[id]['direction']]['distance'] > distance) {
 						toApply[highlightedSnaps[id]['direction']] = { 'from': from, 'to': to, 'link': link, 'distance': distance };
 					}
+				}
+			}
+		}
+	} else if (someURI.includes("BirdIcon") || someURI.includes("PigIcon"))
+	{
+		toCheckX = someX==undefined?Number(__icons[someURI].icon.getAttr("__x")):someX;
+		toCheckY = someY==undefined?Number(__icons[someURI].icon.getAttr("__y")):someY;
+
+		for(id in highlightedSnaps) {
+			__icons[highlightedSnaps[id]['id']].icon.unhighlight();
+		}
+		
+		highlightedSnaps = [];
+		for(id in __icons) {
+			bbox = __icons[id].icon.getBBox();
+			nextX = bbox["x"];
+			nextY = bbox["y"];
+		
+			if (!__icons[id].icon.node.hasAttribute("__linkStyle")
+				&& __icons[id].icon.getAttr("__csuri").includes("EmptyIcon") // let's focus on tiles around for now
+				&& __icons[id].icon.getAttr("__csuri") != someURI) {
+
+				snapArea = { 'x': nextX - 8, 'y': nextY - 8, 'width': 24, 'height': 24 };
+
+				toApply = {}
+
+				if (snapArea['x'] < toCheckX && toCheckX < snapArea['x'] + snapArea['width']
+					&& snapArea['y'] < toCheckY && toCheckY < snapArea['y'] + snapArea['height']) {
+					__icons[id].icon.highlightSnap({ 'direction': 'on' });
+					highlightedSnaps.push({ 'id': id, 'direction': 'on', 'selected': someURI });
+					toApply[highlightedSnaps[0]['direction']] = { 'from': highlightedSnaps[0]['id'], 'to': highlightedSnaps[0]['selected'], 'link': 'on', 'distance': 0 };
 				}
 			}
 		}

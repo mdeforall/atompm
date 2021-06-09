@@ -176,6 +176,8 @@ Raphael.fn.group = function() {
 						 case 'fail':
 							 this.highlight({ 'color': 'red', 'bbox': { 'x': 217, 'y': 285, 'width': 217, 'height': 1 }, 'width': 5, 'opacity': 1 });
 							 break;
+						 case 'on':
+							this.highlight({'color':'red','bbox':{'x':10,'y':10,'width':45,'height':45},'width':3,'opacity':1});
 					 }
 				 },
 

@@ -361,9 +361,9 @@ __canvasBehaviourStatechart = {
 								var dropPositionY = canvasY - (overlayY0 - overlayY);
 
 								if(itemX <= dropPositionX 
-												&& dropPositionX <= itemX + 48 
+												&& dropPositionX <= itemX + 40 
 												&& itemY <= dropPositionY 
-												&& dropPositionY <= itemY + 48) 
+												&& dropPositionY <= itemY + 40)
 								{
 									__removeOnLinks(__selection.items[0]);
 									__createVisualLink(__selection.items[0], item);
