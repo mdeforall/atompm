@@ -1823,7 +1823,7 @@
 							"99": {
 								"textContent": {
 									"type": "string",
-									"value": ""
+									"value": "+ tileType : ENUM(Wood,HalfWood,Stone,HalfStone,Glass) = Wood"
 								},
 								"style": {
 									"type": "map<string,string>",
@@ -3977,7 +3977,13 @@
 				},
 				"attributes": {
 					"type": "list<$ATTRIBUTE>",
-					"value": []
+					"value": [
+						{
+							"name": "tileType",
+							"type": "ENUM(Wood,HalfWood,Stone,HalfStone,Glass)",
+							"default": "Wood"
+						}
+					]
 				},
 				"constraints": {
 					"type": "list<$EVENT_HANDLER>",

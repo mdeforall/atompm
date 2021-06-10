@@ -47,6 +47,11 @@
 		],
 		"Tile": [
 			{
+				"name": "tileType",
+				"type": "ENUM(Wood,HalfWood,Stone,HalfStone,Glass)",
+				"default": "Wood"
+			},
+			{
 				"name": "position",
 				"type": "list<int>",
 				"default": [
