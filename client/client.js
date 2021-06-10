@@ -1542,10 +1542,35 @@ function __createRuleLink(underneathID, latestIconID, target)
 		}
 	}
 }
+
 UnderneathItem = undefined;
+
 function setUnderneathID(id) {
 	UnderneathItem = id;
 }
+
 function getUnderneathID() {
 	return UnderneathItem;
+}
+
+function isClickingATile(canvasX, canvasY) 
+{			
+	if( __typeToCreate != undefined && (__typeToCreate.includes("BirdIcon") || __typeToCreate.includes("PigIcon")))
+	{
+		return false;
+	}
+	for(item in __icons) {
+		itemX = Number(__icons[item].icon.getBBox()['x']);
+		itemY = Number(__icons[item].icon.getBBox()['y']);
+		if ((__icons[item].icon.node.getAttribute('id').includes("EmptyIcon") 
+						|| __icons[item].icon.node.getAttribute('id').includes("TileIcon"))
+						&& canvasX >= itemX 
+						&& canvasX <= itemX + 48 
+						&& canvasY >= itemY 
+						&& canvasY <= itemY + 48)
+		{
+			return true;
+		}
+	}
+	return false;
 }

@@ -142,6 +142,10 @@ __canvasBehaviourStatechart = {
 				
 				else if( name == __EVENT_RIGHT_PRESS_ICON )
 				{
+					isClickingTile = isClickingATile(Number(GUIUtils.convertToCanvasX(event)), Number(GUIUtils.convertToCanvasY(event)));
+					if(isClickingTile)
+						return;
+					
 					this.__T(this.__STATE_DRAWING_EDGE,event);
 				}
 
@@ -234,12 +238,20 @@ __canvasBehaviourStatechart = {
 				}
 				else if( name == __EVENT_RIGHT_PRESS_ICON )
 				{
+					isClickingTile = isClickingATile(Number(GUIUtils.convertToCanvasX(event)), Number(GUIUtils.convertToCanvasY(event)));
+					if(isClickingTile)
+						return;
+					
 					__select();
 					this.__T(this.__STATE_DRAWING_EDGE,event);
 				}
 
 				else if (name == __EVENT_RIGHT_PRESS_SELECTION)
 				{
+					isClickingTile = isClickingATile(Number(GUIUtils.convertToCanvasX(event)), Number(GUIUtils.convertToCanvasY(event)));
+					if(isClickingTile)
+						return;
+					
 					SelectedItems = __selection.items;
 					
 					this.__T(this.__STATE_DRAWING_EDGE,event);

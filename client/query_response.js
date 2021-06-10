@@ -201,14 +201,6 @@ function __handleChangelog(changelog,seqNum,hitchhiker)
 
 							Key_E_S_W_N = null;
 						}
-						else if (__Target.toString().substring(0, 44) == latestIconID.toString().substring(0, 44)) {
-							__icons[latestIconID]['icon'].remove();
-							__icons[latestIconID]['edgesOut'].forEach(__removeEdge);
-							__icons[latestIconID]['edgesIn'].forEach(__removeEdge);
-							delete __icons[latestIconID];
-							__select();
-							latestIconID = [];
-						}
 						else {
 							NewIconCreated = latestIconID[0];
 							__createVisualLink(__Target, latestIconID[0]);
