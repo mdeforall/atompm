@@ -1131,8 +1131,6 @@ function __changeFacing(uri)
 }
 function __changeTileType(uri, previousTile)
 {
-	uri = uri.toString();
-	console.log(uri, previousTile);
 	if(__IconType(uri)=="/TileIcon" && __IconType(previousTile)=="/TileIcon")
 	{
 		HttpUtils.httpReq(
