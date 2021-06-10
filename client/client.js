@@ -1129,6 +1129,23 @@ function __changeFacing(uri)
 			);
 	}
 }
+function __changeTileType(uri, previousTile)
+{
+	uri = uri.toString();
+	console.log(uri, previousTile);
+	if(__IconType(uri)=="/TileIcon" && __IconType(previousTile)=="/TileIcon")
+	{
+		HttpUtils.httpReq(
+			'GET', 
+			HttpUtils.url(previousTile), 
+			undefined, 
+			function(statusCode, resp){
+				previousTileType = utils.jsonp( utils.jsonp(resp)['data'] )['tileType']['value'];
+				DataUtils.update(uri,{tileType: previousTileType});
+			}
+			);
+	}
+}
 
 
 /**
