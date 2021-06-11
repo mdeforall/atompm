@@ -1823,7 +1823,7 @@
 							"99": {
 								"textContent": {
 									"type": "string",
-									"value": "+ tileType : ENUM(Wood,HalfWood,Stone,HalfStone,Glass) = Wood"
+									"value": "+ tileType : ENUM(Wood,HalfWood,Stone,HalfStone,Glass,TNT) = Wood"
 								},
 								"style": {
 									"type": "map<string,string>",
@@ -3836,7 +3836,9 @@
 		},
 		"edges": [],
 		"metamodels": [
-			"/Formalisms/__LanguageSyntax__/SimpleClassDiagram/SimpleClassDiagram.umlIcons"
+			"/Formalisms/__LanguageSyntax__/SimpleClassDiagram/SimpleClassDiagram.umlIcons",
+			"/Formalisms/Bird/Bird.defaultIcons",
+			"/Formalisms/BlockBasedMDE/BlockBasedMDE.defaultIcons"
 		]
 	},
 	"asm": {
@@ -3980,7 +3982,7 @@
 					"value": [
 						{
 							"name": "tileType",
-							"type": "ENUM(Wood,HalfWood,Stone,HalfStone,Glass)",
+							"type": "ENUM(Wood,HalfWood,Stone,HalfStone,Glass,TNT)",
 							"default": "Wood"
 						}
 					]
@@ -4229,7 +4231,9 @@
 			}
 		],
 		"metamodels": [
-			"/Formalisms/__LanguageSyntax__/SimpleClassDiagram/SimpleClassDiagram"
+			"/Formalisms/__LanguageSyntax__/SimpleClassDiagram/SimpleClassDiagram",
+			"/Formalisms/Bird/Bird",
+			"/Formalisms/BlockBasedMDE/BlockBasedMDE"
 		]
 	}
 }

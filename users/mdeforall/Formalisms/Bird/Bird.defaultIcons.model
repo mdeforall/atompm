@@ -10122,7 +10122,7 @@
 				},
 				"mapper": {
 					"type": "code",
-					"value": "if(getAttr('tileType')=='Wood')\n{\n({\nsrc:\"/Formalisms/Bird/icons/Wood.png\"\n})\n}\n\nelse{if(getAttr('tileType')=='HalfWood')\n{\n({\nsrc:\"/Formalisms/Bird/icons/HalfWood.png\"\n})\n}\n\nelse{if(getAttr('tileType')=='Stone')\n{\n({\nsrc:\"/Formalisms/Bird/icons/Stone.png\"\n})\n}\n\nelse{if(getAttr('tileType')=='HalfStone')\n{\n({\nsrc:\"/Formalisms/Bird/icons/HalfStone.png\"\n})\n}\n\nelse{if(getAttr('tileType')=='Glass')\n{\n({\nsrc:\"/Formalisms/Bird/icons/Glass.png\"\n})\n}\n\n}}}}"
+					"value": "if(getAttr('tileType')=='Wood')\n{\n({\nsrc:\"/Formalisms/Bird/icons/Wood.png\"\n})\n}\n\nelse{if(getAttr('tileType')=='HalfWood')\n{\n({\nsrc:\"/Formalisms/Bird/icons/HalfWood.png\"\n})\n}\n\nelse{if(getAttr('tileType')=='Stone')\n{\n({\nsrc:\"/Formalisms/Bird/icons/Stone.png\"\n})\n}\n\nelse{if(getAttr('tileType')=='HalfStone')\n{\n({\nsrc:\"/Formalisms/Bird/icons/HalfStone.png\"\n})\n}\n\nelse{if(getAttr('tileType')=='Glass')\n{\n({\nsrc:\"/Formalisms/Bird/icons/Glass.png\"\n})\n}\n\nelse{if(getAttr('tileType')=='TNT')\n{\n({\nsrc:\"/Formalisms/Bird/icons/TNT.png\"\n})\n}\n\n}}}}}"
 				},
 				"parser": {
 					"type": "code",

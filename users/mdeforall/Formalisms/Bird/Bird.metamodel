@@ -48,7 +48,7 @@
 		"Tile": [
 			{
 				"name": "tileType",
-				"type": "ENUM(Wood,HalfWood,Stone,HalfStone,Glass)",
+				"type": "ENUM(Wood,HalfWood,Stone,HalfStone,Glass,TNT)",
 				"default": "Wood"
 			},
 			{
