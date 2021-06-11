@@ -1232,6 +1232,7 @@ function __findSurroundingIconsAndConnect(uri, origConnect)
 			if (!__isConnectionType(item) 
 							&& item != uri 
 							&& !__icons[item].icon.node.getAttribute('id').includes("BirdIcon") 
+							&& !__icons[item].icon.node.getAttribute('id').includes("PigIcon") 
 							&& item != origConnect) 
 			{
 				var itemX = __icons[item].icon.node.getAttribute('__x');
