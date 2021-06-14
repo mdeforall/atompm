@@ -487,6 +487,8 @@ __canvasBehaviourStatechart = {
 				else if( name == __EVENT_RIGHT_RELEASE_ICON )
 				{ 
 					UnderneathIcon = event.currentTarget;
+					if(getUnderneathID() != UnderneathIcon)
+						setUnderneathID(UnderneathIcon);
 					if( ConnectionUtils.getConnectionPath().getTotalLength() <= 15 ){
 						console.warn('to avoid accidental path creations, paths must '+
 										 'measure at least 5px');
