@@ -1075,15 +1075,11 @@ class MdeContext(TransformationContext) :
                 targetLinkID=None
                 resString = None
                 LinkID=edgesFromLastStep[0]['dest']
-                # make sure it check for success or failer only if the current node is query otherwise it take anytype and pass it
-                if self.t['nodes'][edgesFromLastStep[0]['src']]['$type'] == self.metamodel+"/Query":
-                    if self._lastStep['applicationInfo'] == TC.SUCCEEDED :
-                        resString = self.metamodel+"/success"
-                    elif  self._lastStep['applicationInfo'] == TC.FAILED :
-                        resString = self.metamodel+"/fail"
-                else:
-                    resString = self.t['nodes'][LinkID]['$type']
-                if self.t['nodes'][LinkID]['$type'] == self.metamodel+"/Rule":
+                resString = self.t['nodes'][LinkID]['$type']
+                if resString == self.metamodel+"/Rule" \
+                        or resString == self.metamodel+"/RuleExit" \
+                        or resString == self.metamodel+"/RuleEntry" \
+                        or resString == self.metamodel+"/Query":
                     return LinkID
                 
                 for edgeLS in edgesFromLastStep:
@@ -1123,7 +1119,20 @@ class MdeContext(TransformationContext) :
                 self._expired = True
                 return ai
             else :
-                nextStepID = getNextStepId(filteredEdgesFromLastStep[0]['dest'])
+                if len(filteredEdgesFromLastStep) == 2:
+                    firstEdge = self.t['nodes'][filteredEdgesFromLastStep[0]['dest']]['$type']
+                    if self._lastStep['applicationInfo'] == TC.SUCCEEDED:
+                        if firstEdge == self.metamodel+"/success":
+                            nextStepID = getNextStepId(filteredEdgesFromLastStep[0]['dest'])
+                        else:
+                            nextStepID = getNextStepId(filteredEdgesFromLastStep[1]['dest'])
+                    else:
+                        if firstEdge == self.metamodel+"/success":
+                            nextStepID = getNextStepId(filteredEdgesFromLastStep[1]['dest'])
+                        else:
+                            nextStepID = getNextStepId(filteredEdgesFromLastStep[0]['dest'])
+                else:
+                    nextStepID = getNextStepId(filteredEdgesFromLastStep[0]['dest'])
                 
 
                 if nextStepID in self.rules:
