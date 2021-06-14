@@ -108,7 +108,8 @@ __canvasBehaviourStatechart = {
 					} else if (event.currentTarget.getAttribute('__csuri').includes("TileIcon"))
 					{
 						__changeTileType(event.currentTarget.getAttribute('__csuri'));
-					} else if (event.currentTarget.getAttribute('__csuri').includes("RuleIcon"))
+					} else if (event.currentTarget.getAttribute('__csuri').includes("RuleIcon")
+									|| event.currentTarget.getAttribute('__csuri').includes("QueryIcon"))
 					{
 						__editRuleIconAttributes(event.currentTarget.getAttribute('__csuri'));
 					} 

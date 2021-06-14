@@ -1465,36 +1465,67 @@ function __editRuleIconAttributes(ruleIcon)
 				ruleIcon.match(/.*\/(.*)Link\/(.*)\.instance/),
 				type 	= matches[1],
 				id		= matches[2];
-
-	if (ruleY <= canvasY && canvasY <= ruleY + 60 && canvasX >= ruleX + 580) 
+	if(ruleIcon.toString().includes("RuleIcon"))
 	{
-		HttpUtils.httpReq(
-			'GET',
-			HttpUtils.url(ruleIcon),
-			undefined,
-			function(statusCode,resp)
-			{
-				if( ! utils.isHttpSuccessCode(statusCode) ) {
-					return error(resp);
+		if (ruleY <= canvasY && canvasY <= ruleY + 60 && canvasX >= ruleX + 580) 
+		{
+			HttpUtils.httpReq(
+				'GET',
+				HttpUtils.url(ruleIcon),
+				undefined,
+				function(statusCode,resp)
+				{
+					if( ! utils.isHttpSuccessCode(statusCode) ) {
+						return error(resp);
+					}
+					return openDialog(
+						_DICTIONARY_EDITOR,
+						{'data':		utils.jsonp( utils.jsonp(resp)['data'] ),
+							'ignoreKey':	
+								function(attr) 
+								{
+									return attr != 'count';
+								},
+							'keepEverything':
+								function() 
+								{
+									return __changed(ruleIcon);
+								},
+							'title':'edit '+type+' #'+id+'\'s loop count'},
+						function(changes) {DataUtils.update(ruleIcon,changes);});
 				}
-				return openDialog(
-					_DICTIONARY_EDITOR,
-					{'data':		utils.jsonp( utils.jsonp(resp)['data'] ),
-						'ignoreKey':	
-							function(attr) 
-							{
-								return attr != 'count';
-							},
-						'keepEverything':
-							function() 
-							{
-								return __changed(ruleIcon);
-							},
-						'title':'edit '+type+' #'+id+'\'s loop count'},
-					function(changes) {DataUtils.update(ruleIcon,changes);});
-			}
-		);	
-	} else if (ruleX <= canvasX && canvasX <= ruleX + 310) 
+			);	
+		} else if (ruleX <= canvasX && canvasX <= ruleX + 310) 
+		{
+			HttpUtils.httpReq(
+				'GET',
+				HttpUtils.url(ruleIcon),
+				undefined,
+				function(statusCode,resp)
+				{
+					if( ! utils.isHttpSuccessCode(statusCode) ) {
+						return error(resp);
+					}
+					return openDialog(
+						_DICTIONARY_EDITOR,
+						{'data':		utils.jsonp( utils.jsonp(resp)['data'] ),
+							'ignoreKey':	
+								function(attr) 
+								{
+									return attr != 'name';
+								},
+							'keepEverything':
+								function() 
+								{
+									return __changed(ruleIcon);
+								},
+							'title':'edit '+type+' #'+id+'\'s name'},
+						function(changes) {DataUtils.update(ruleIcon,changes);});
+				}
+			);	
+		}
+	}
+	else if (ruleIcon.toString().includes("QueryIcon"))
 	{
 		HttpUtils.httpReq(
 			'GET',
@@ -1523,7 +1554,6 @@ function __editRuleIconAttributes(ruleIcon)
 			}
 		);	
 	}
-	
 }
 
 function __createRuleLink(underneathID, latestIconID, target)
