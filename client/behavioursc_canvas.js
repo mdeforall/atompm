@@ -404,6 +404,7 @@ __canvasBehaviourStatechart = {
 					{
 						__removeOnLinks(srcIcon);
 						__createVisualLink( srcIcon, __Target);
+						__createRuleLink(getUnderneathID(), __selection.items, __Target);
 					}
 					else
 					{
