@@ -105,10 +105,13 @@ __canvasBehaviourStatechart = {
 					if (event.currentTarget.getAttribute('__csuri').includes("BirdIcon")) 
 					{
 						__changeFacing(event.currentTarget.getAttribute('__csuri'));
+					} else if (event.currentTarget.getAttribute('__csuri').includes("TileIcon"))
+					{
+						__changeTileType(event.currentTarget.getAttribute('__csuri'));
 					} else if (event.currentTarget.getAttribute('__csuri').includes("RuleIcon"))
 					{
 						__editRuleIconAttributes(event.currentTarget.getAttribute('__csuri'));
-					}
+					} 
 				}
 		
 				else if( name == __EVENT_MIDDLE_RELEASE_ICON )

@@ -1131,17 +1131,43 @@ function __changeFacing(uri)
 }
 function __changeTileType(uri, previousTile)
 {
-	if(__IconType(uri)=="/TileIcon" && __IconType(previousTile)=="/TileIcon")
+	if(__IconType(uri)=="/TileIcon")
 	{
-		HttpUtils.httpReq(
-			'GET', 
-			HttpUtils.url(previousTile), 
-			undefined, 
-			function(statusCode, resp){
-				previousTileType = utils.jsonp( utils.jsonp(resp)['data'] )['tileType']['value'];
-				DataUtils.update(uri,{tileType: previousTileType});
-			}
-			);
+		if(previousTile == undefined)
+		{
+			HttpUtils.httpReq(
+				'GET', 
+				HttpUtils.url(uri), 
+				undefined, 
+				function(statusCode, resp){
+					tileType = utils.jsonp( utils.jsonp(resp)['data'] )['tileType']['value'];
+					if(tileType == "Wood")
+						DataUtils.update(uri,{tileType: "HalfWood"});
+					else if(tileType == "HalfWood")
+						DataUtils.update(uri,{tileType: "Stone"});
+					else if(tileType == "Stone")
+						DataUtils.update(uri,{tileType: "HalfStone"});	
+					else if(tileType == "HalfStone")
+						DataUtils.update(uri,{tileType: "Glass"});
+					else if(tileType == "Glass")
+						DataUtils.update(uri,{tileType: "TNT"});
+					else if(tileType == "TNT")
+						DataUtils.update(uri,{tileType: "Wood"});
+				}
+				);
+		}
+		else if(__IconType(previousTile)=="/TileIcon")
+		{
+			HttpUtils.httpReq(
+				'GET', 
+				HttpUtils.url(previousTile), 
+				undefined, 
+				function(statusCode, resp){
+					previousTileType = utils.jsonp( utils.jsonp(resp)['data'] )['tileType']['value'];
+					DataUtils.update(uri,{tileType: previousTileType});
+				}
+				);
+		}
 	}
 }
 
