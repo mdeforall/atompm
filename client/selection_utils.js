@@ -315,28 +315,34 @@ function __highlightCloseSnappingSides(someURI,someX=undefined,someY=undefined) 
 	}
 }
 
-function __makeConnectionsWhenDropped() {
-	for(id in toApply) {
+function __makeConnectionsWhenDropped() 
+{
+	for(id in toApply) 
+	{
 		connections = __legalConnections(toApply[id]['from'],toApply[id]['to'],__VISUAL_LINK);
-		if(connections.length>0) {
-			for(index in connections) {
+		if(connections.length>0) 
+		{
+			for(index in connections) 
+			{
 				if(connections[index].includes(toApply[id]['link']) 
 								&& __icons[toApply[id]['from']] != undefined 
 								&& __icons[toApply[id]['to']] != undefined) 
 				{
-					if((!__icons[toApply[id]['from']]["edgesOut"].toString().includes(toApply[id]['link']) 
-									&& !__icons[toApply[id]['to']]["edgesOut"].toString().includes(toApply[id]['link']))) 
+					__createVisualLink(toApply[id]['from'], toApply[id]['to'], toApply[id]['link']);
+					if(__selection != undefined) 
 					{
-						__createVisualLink(toApply[id]['from'],toApply[id]['to'],toApply[id]['link']);
-					}
-					if(__selection != undefined) {
-						if(__selection['items'][0] == toApply[id]['to']) {
-							__findSurroundingIconsAndConnect(toApply[id]['to'],toApply[id]['from']);
-						} else {
-							__findSurroundingIconsAndConnect(toApply[id]['from'],toApply[id]['to']);
+						if(__selection['items'][0] == toApply[id]['to']) 
+						{
+							__findSurroundingIconsAndConnect(toApply[id]['to'], toApply[id]['from']);
+							__createRuleLink(getUnderneathID(), [ toApply[id]['to'] ], toApply[id]['from']);
+						} else 
+						{
+							__findSurroundingIconsAndConnect(toApply[id]['from'], toApply[id]['to']);
+							__createRuleLink(getUnderneathID(), [ toApply[id]['from'] ], toApply[id]['to']);
 						}
-					} else {
-						__findSurroundingIconsAndConnect(latestIcon[0],toApply[id]['from']);
+					} else 
+					{
+						__findSurroundingIconsAndConnect(latestIcon[0], toApply[id]['from']);
 					}
 					break;
 				}

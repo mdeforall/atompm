@@ -1645,3 +1645,32 @@ function isClickingATile(canvasX, canvasY)
 	}
 	return false;
 }
+
+function __deleteLinksOnMove()
+{
+
+	var toDelete = [];
+	var toKeep = [__selection.items[0]];
+
+	for(var edgeI in __icons[__selection.items[0]]['edgesIn'])
+	{
+		edgeIdToRemove = __icons[__selection.items[0]]['edgesIn'][edgeI].toString().split("-")[0];
+		toDelete.push(__icons[edgeIdToRemove]['edgesOut'][0]);
+		toDelete.push(__icons[edgeIdToRemove]['edgesIn'][0]);
+		toDelete.push(edgeIdToRemove);
+	}
+	for(var edgeI in __icons[__selection.items[0]]['edgesOut'])
+	{
+		edgeIdToRemove = __icons[__selection.items[0]]['edgesOut'][edgeI].toString().split("-")[2];
+		toDelete.push(__icons[edgeIdToRemove]['edgesOut'][0]);
+		toDelete.push(__icons[edgeIdToRemove]['edgesIn'][0]);
+		toDelete.push(edgeIdToRemove);
+	}
+	if(toDelete.length != 0)
+	{
+		__select(toDelete);
+		DataUtils.del();
+		__select(toKeep);
+	}
+
+}

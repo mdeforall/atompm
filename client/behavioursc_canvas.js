@@ -357,6 +357,10 @@ __canvasBehaviourStatechart = {
 				{
 					GeometryUtils.transformSelection(__SELECTION_DRAG);
 					this.__T(this.__STATE_SOMETHING_SELECTED,event);
+
+					if(__selection.items.length==1)
+						__deleteLinksOnMove();
+					
 					if ((__selection.items[0].includes("BirdIcon") 
 									|| __selection.items[0].includes("PigIcon")) 
 									&& __selection.items.length == 1 
@@ -397,6 +401,10 @@ __canvasBehaviourStatechart = {
 				}
 				else if( name == __EVENT_LEFT_RELEASE_ICON )
 				{
+
+					if(__selection.items.length==1)
+						__deleteLinksOnMove();
+
 					__Target = event.currentTarget.getAttribute('__csuri');
 					srcIcon = __selection.items[0];
 
