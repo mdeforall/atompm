@@ -635,11 +635,13 @@ class MdeContext(TransformationContext) :
             if lhsBirdFacing == 'Right' and rhsBirdFacing == 'Up' or lhsBirdFacing == 'Up' and rhsBirdFacing == 'Left' or lhsBirdFacing == 'Left' and rhsBirdFacing == 'Down' or lhsBirdFacing == 'Down' and rhsBirdFacing == 'Right':
                 rule ['nodes'][str(rhsNode)]['Action']['value']= turnLeft
                 self.action.append([ruleId,'left'])
+                self.birdMazeFacing = rhsBirdFacing
                 
             #turn right
             elif lhsBirdFacing == 'Right' and rhsBirdFacing == 'Down' or lhsBirdFacing == 'Down' and rhsBirdFacing == 'Left' or lhsBirdFacing == 'Left' and rhsBirdFacing == 'Up' or lhsBirdFacing == 'Up' and rhsBirdFacing == 'Right':
                 rule ['nodes'][str(rhsNode)]['Action']['value']= turnRight
                 self.action.append([ruleId,'right'])
+                self.birdMazeFacing = rhsBirdFacing
                
 
                
