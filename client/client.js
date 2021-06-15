@@ -56,7 +56,8 @@ var __user = undefined,
 	 __option = '',
 	 __trafo = '',
 	 __msg = '',
-	 __name = '';
+	 __name = '',
+	 __underneathItem = undefined;
 /******************************** GLOBAL VARS *********************************/
 
 AtomPMClient = function(){
@@ -1615,14 +1616,12 @@ function __createRuleLink(underneathID, latestIconID, target)
 	}
 }
 
-UnderneathItem = undefined;
-
 function setUnderneathID(id) {
-	UnderneathItem = id;
+	__underneathItem = id;
 }
 
 function getUnderneathID() {
-	return UnderneathItem;
+	return __underneathItem;
 }
 
 function isClickingATile(canvasX, canvasY) 
