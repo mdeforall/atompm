@@ -188,7 +188,12 @@ class MdeContext(TransformationContext) :
         if len(edges) == 1:
             return edges[0]
         else:
+            if len(idList) == 0:
+                return []
+            elif len(idList) != 1 and (self.t['nodes'][idList[0]]['$type'] != self.birdmodel+"/Bird" or self.t['nodes'][idList[0]]['$type'] != self.birdmodel+"/Pig"):
             raise RuntimeError('There is a problem with the links in the rule')
+            else:
+                return []
     
     
     
