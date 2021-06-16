@@ -1027,12 +1027,12 @@ class MdeContext(TransformationContext) :
     after that it recreate the rules list
     '''
     def updateStep(self,id):
-        if len(self.action) > 0 and self.action[-1][0] == id and (self.action[-1][1] == 'left'  or self.action[-1][1] == 'right'):
+        if len(self.action) > 0 and self.action[0][0] == id and (self.action[0][1] == 'left'  or self.action[0][1] == 'right'):
                     self.birdMazeFacing = self.birdTurn(self.birdMazeFacing, self.action[-1][1])
                     if [id,False] in self.ruleId:
                         indexOfMovePattern = self.ruleId.index([id,False])
                         self.ruleId[indexOfMovePattern]= [id, True]
-                    self.action = []
+        self.action = []
         self.compiler.forgetCompiledRules()
         self.createRuleList()
        
