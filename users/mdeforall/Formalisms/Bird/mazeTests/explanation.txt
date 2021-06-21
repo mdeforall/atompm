@@ -1,0 +1,36 @@
+An explanation for how the tests are formatted:
+puzzle[#]_{[Rule#][RType][Direction][LoopCount#]}_[S/F/E]_[OtherNotes].model
+
+
+#: The number of the puzzle. For puzzle 1, this looks like puzzle1
+
+Rule#: Which step the rule is on. Doesn't count the start rule. For example,
+       the first rule gets the number "1" and the 6th rule gets "6"
+
+RType: Whether the rule is a normal LHS/RHS rule (R), or a Query rule (Q).
+       If it's a Query rule, the Direction and LoopCount# are ignored.
+
+Direction: Whether the bird in the rule is facing NSEW or is turning (T).
+       If turning, LoopCount# is ignored.
+
+LoopCount#: The number of times the rule loops before moving to the next.
+
+The section surrounded by {} is repeated for every rule.
+
+S/F/E: Whether the puzzle rules make the pattern succeed (S), fail (F),
+       or error (E). Fails or Errors usually contain context in OtherNotes.
+       If not supposed to fail or error, will include S immediately after.
+
+OtherNotes: When a puzzle pattern requires context for some aspect of
+       the rules.
+
+
+Example:
+
+puzzle7_1RT_2RE5_S_TileBG.model
+- 7th puzzle
+- 2 rules:
+  - First is a Rule (R), and is a turn rule (T)
+  - Second is a Rule (R), birds are facing east (E), and it loops 5 times
+- The puzzle succeeds
+- Context: The turn rule has tiles underneath the birds
