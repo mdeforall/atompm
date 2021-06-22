@@ -45,6 +45,8 @@ class MdeContext(TransformationContext) :
         self.ruleId=[]
         self.queryId=[]
         self.action=[]
+        self.actualFacing=''
+        self.rhsBirdFacing=''
 
 
         '''
@@ -635,13 +637,31 @@ class MdeContext(TransformationContext) :
             if lhsBirdFacing == 'Right' and rhsBirdFacing == 'Up' or lhsBirdFacing == 'Up' and rhsBirdFacing == 'Left' or lhsBirdFacing == 'Left' and rhsBirdFacing == 'Down' or lhsBirdFacing == 'Down' and rhsBirdFacing == 'Right':
                 rule ['nodes'][str(rhsNode)]['Action']['value']= turnLeft
                 self.action.append([ruleId,'left'])
-                self.birdMazeFacing = rhsBirdFacing
+                if self.actualFacing != self.birdMazeFacing and self.actualFacing != '':
+                    self.birdMazeFacing = self.actualFacing
+                    self.actualFacing = self.birdTurn(self.birdMazeFacing, 'left')
+                elif self.actualFacing == self.birdMazeFacing:
+                    self.birdMazeFacing = rhsBirdFacing
+                    self.actualFacing = self.birdTurn(self.actualFacing, 'left')
+                else:
+                    self.actualFacing = self.birdTurn(self.birdMazeFacing, 'left')
+                    self.birdMazeFacing = self.birdTurn(self.birdMazeFacing, 'left')
+                self.rhsBirdFacing = rhsBirdFacing
                 
             #turn right
             elif lhsBirdFacing == 'Right' and rhsBirdFacing == 'Down' or lhsBirdFacing == 'Down' and rhsBirdFacing == 'Left' or lhsBirdFacing == 'Left' and rhsBirdFacing == 'Up' or lhsBirdFacing == 'Up' and rhsBirdFacing == 'Right':
                 rule ['nodes'][str(rhsNode)]['Action']['value']= turnRight
                 self.action.append([ruleId,'right'])
-                self.birdMazeFacing = rhsBirdFacing
+                if self.actualFacing != self.birdMazeFacing and self.actualFacing != '':
+                    self.birdMazeFacing = self.actualFacing
+                    self.actualFacing = self.birdTurn(self.birdMazeFacing, 'right')
+                elif self.actualFacing == self.birdMazeFacing:
+                    self.birdMazeFacing = rhsBirdFacing
+                    self.actualFacing = self.birdTurn(self.actualFacing, 'right')
+                else:
+                    self.actualFacing = self.birdTurn(self.birdMazeFacing, 'right')
+                    self.birdMazeFacing = self.birdTurn(self.birdMazeFacing, 'right')
+                self.rhsBirdFacing = rhsBirdFacing
                
 
                
@@ -1027,14 +1047,19 @@ class MdeContext(TransformationContext) :
     after that it recreate the rules list
     '''
     def updateStep(self,id):
-        if len(self.action) > 0 and self.action[0][0] == id and (self.action[0][1] == 'left'  or self.action[0][1] == 'right'):
-                    self.birdMazeFacing = self.birdTurn(self.birdMazeFacing, self.action[-1][1])
-                    if [id,False] in self.ruleId:
-                        indexOfMovePattern = self.ruleId.index([id,False])
-                        self.ruleId[indexOfMovePattern]= [id, True]
-        self.action = []
-        self.compiler.forgetCompiledRules()
-        self.createRuleList()
+        if self.t['nodes'][id]['$type'] == self.metamodel+"/Rule":
+            if len(self.action) > 0 and self.action[0][0] == id and (self.action[0][1] == 'left'  or self.action[0][1] == 'right'):
+                        if self.rhsBirdFacing != self.actualFacing:
+                            if self.birdMazeFacing == self.actualFacing:
+                                self.birdMazeFacing = self.birdTurn(self.birdMazeFacing, self.action[0][1])
+                            else:
+                                self.birdMazeFacing = self.actualFacing
+                        if [id,False] in self.ruleId:
+                            indexOfMovePattern = self.ruleId.index([id,False])
+                            self.ruleId[indexOfMovePattern]= [id, True]
+                        self.action = []
+            self.compiler.forgetCompiledRules()
+            self.createRuleList()
        
 
 
