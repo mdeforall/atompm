@@ -1561,7 +1561,7 @@ function __createRuleLink(underneathID, latestIconID, target)
 {
 	for(var edgeI in __icons[target]['edgesIn'])
 	{
-		if (__icons[target]['edgesIn'][edgeI] != undefined) {
+		if (__icons[target]['edgesIn'][edgeI] != undefined && underneathID != undefined) {
 			if (__icons[target]['edgesIn'][edgeI].toString().includes("lhs"))
 			{
 				var edgeId = __icons[target]['edgesIn'][edgeI].toString().split("-")[0];
