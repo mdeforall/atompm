@@ -143,7 +143,7 @@ function __highlightCloseSnappingSides(someURI,someX=undefined,someY=undefined) 
 			nextY = bbox["y"];
 
 			if (!__icons[id].icon.node.hasAttribute("__linkStyle")
-				&& ((__icons[id].icon.getAttr("__csuri").includes("RuleIcon")) || (__icons[id].icon.getAttr("__csuri").includes("QueryIcon")) || (__icons[id].icon.getAttr("__csuri").includes("StartIcon")) || (__icons[id].icon.getAttr("__csuri").includes("RuleExitIcon")) || (__icons[id].icon.getAttr("__csuri").includes("RuleEntryIcon"))) // let's focus on rules for now
+				&& ((__icons[id].icon.getAttr("__csuri").includes("RuleIcon")) || (__icons[id].icon.getAttr("__csuri").includes("QueryIcon")) || (__icons[id].icon.getAttr("__csuri").includes("StartIcon")) || (__icons[id].icon.getAttr("__csuri").includes("RuleEntryIcon"))) // let's focus on rules for now
 				&& __icons[id].icon.getAttr("__csuri") != someURI) {
 
 				if (id.includes("StartIcon")) {
@@ -534,7 +534,7 @@ function __highlight(uri,followCrossFormalismLinks,timeout,color)
 	if( ! isHighlighted(uri) )
 	{
 		__unhighlight(uri);
-
+		console.log(__icons[uri]['icon']);
 		__icons[uri]['icon'].highlight({'color':color || 'DarkTurquoise','fill':true});
 
 		if( followCrossFormalismLinks != undefined )

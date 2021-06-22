@@ -309,6 +309,160 @@ function __createIcon(node,id)
 	return icon;
 }
 
+function resetMaze() {
+	//Gets Coordinates and Direction for Each Maze
+		//Maze 1
+	if (__saveas == "/Formalisms/Bird/hoc/maze1.model") {
+		var birdEmpty = "/Formalisms/Bird/Bird.defaultIcons/EmptyIcon/13.instance";
+		var pigEmpty = "/Formalisms/Bird/Bird.defaultIcons/EmptyIcon/19.instance";
+		var birdDirection = "Down";
+		//Puzzle 1
+	} else if (__saveas == "/Formalisms/Bird/hoc/puzzle1.model") {
+		var birdEmpty = "/Formalisms/Bird/Bird.defaultIcons/EmptyIcon/546.instance";
+		var pigEmpty = "/Formalisms/Bird/Bird.defaultIcons/EmptyIcon/554.instance";
+		var birdDirection = "Down";
+		//Puzzle 2
+	} else if (__saveas == "/Formalisms/Bird/hoc/puzzle2.model") {
+		var birdEmpty = "/Formalisms/Bird/Bird.defaultIcons/EmptyIcon/245.instance";
+		var pigEmpty = "/Formalisms/Bird/Bird.defaultIcons/EmptyIcon/257.instance";
+		var birdDirection = "Right";
+		//Puzzle 3
+	} else if (__saveas == "/Formalisms/Bird/hoc/puzzle3.model") {
+		var birdEmpty = "/Formalisms/Bird/Bird.defaultIcons/EmptyIcon/155.instance";
+		var pigEmpty = "/Formalisms/Bird/Bird.defaultIcons/EmptyIcon/166.instance";
+		var birdDirection = "Right";
+		//Puzzle 4
+	} else if (__saveas == "/Formalisms/Bird/hoc/puzzle4.model") {
+		var birdEmpty = "/Formalisms/Bird/Bird.defaultIcons/EmptyIcon/913.instance";
+		var pigEmpty = "/Formalisms/Bird/Bird.defaultIcons/EmptyIcon/908.instance";
+		var birdDirection = "Right";
+		//Puzzle 5
+	} else if (__saveas == "/Formalisms/Bird/hoc/puzzle5.model") {
+		var birdEmpty = "/Formalisms/Bird/Bird.defaultIcons/EmptyIcon/148.instance";
+		var pigEmpty = "/Formalisms/Bird/Bird.defaultIcons/EmptyIcon/171.instance";
+		var birdDirection = "Right";
+		//Puzzle 6
+	} else if (__saveas == "/Formalisms/Bird/hoc/puzzle6.model") {
+		var birdEmpty = "/Formalisms/Bird/Bird.defaultIcons/EmptyIcon/151.instance";
+		var pigEmpty = "/Formalisms/Bird/Bird.defaultIcons/EmptyIcon/171.instance";
+		var birdDirection = "Right";
+		//Puzzle 7
+	} else if (__saveas == "/Formalisms/Bird/hoc/puzzle7.model") {
+		var birdEmpty = "/Formalisms/Bird/Bird.defaultIcons/EmptyIcon/152.instance";
+		var pigEmpty = "/Formalisms/Bird/Bird.defaultIcons/EmptyIcon/172.instance";
+		var birdDirection = "Right";
+		//Puzzle 8
+	} else if (__saveas == "/Formalisms/Bird/hoc/puzzle8.model") {
+		var birdEmpty = "/Formalisms/Bird/Bird.defaultIcons/EmptyIcon/171.instance";
+		var pigEmpty = "/Formalisms/Bird/Bird.defaultIcons/EmptyIcon/135.instance";
+		var birdDirection = "Right";
+		//Puzzle 9
+	} else if (__saveas == "/Formalisms/Bird/hoc/puzzle9.model") {
+		var birdEmpty = "/Formalisms/Bird/Bird.defaultIcons/EmptyIcon/147.instance";
+		var pigEmpty = "/Formalisms/Bird/Bird.defaultIcons/EmptyIcon/171.instance";
+		var birdDirection = "Right";
+		//Puzzle 10
+	} else if (__saveas == "/Formalisms/Bird/hoc/puzzle10.model") {
+		var birdEmpty = "/Formalisms/Bird/Bird.defaultIcons/EmptyIcon/151.instance";
+		var pigEmpty = "/Formalisms/Bird/Bird.defaultIcons/EmptyIcon/171.instance";
+		var birdDirection = "Right";
+		//Puzzle 11
+	} else if (__saveas == "/Formalisms/Bird/hoc/puzzle11.model") {
+		var birdEmpty = "/Formalisms/Bird/Bird.defaultIcons/EmptyIcon/171.instance";
+		var pigEmpty = "/Formalisms/Bird/Bird.defaultIcons/EmptyIcon/147.instance";
+		var birdDirection = "Right";
+	}
+
+	//Initializing Variables
+	var bird = "";
+	var pig = "";
+	var birdX = Number(__icons[birdEmpty].icon.getAttr('__x'));
+	var birdY = Number(__icons[birdEmpty].icon.getAttr('__y'));
+	var pigX = Number(__icons[pigEmpty].icon.getAttr('__x'));
+	var pigY = Number(__icons[pigEmpty].icon.getAttr('__y'));
+	var edgesToRemove = [];
+	
+	//Selecting Icons and Edges to be deleted
+	for (var id in __icons) {
+		if (__icons[id].icon.getAttr('__x') <= 650 && id.includes("BirdIcon")) {
+			edgesToRemove.push(__icons[id].icon.getAttr('__csuri'));
+		}
+		else if ((__icons[id].icon.getAttr('__x') <= 650 && id.includes("PigIcon")) && !id.includes("166")) {
+			edgesToRemove.push(__icons[id].icon.getAttr('__csuri'));
+		} else if (__icons[id].icon.getAttr('__x') <= 650 && id.includes("OnLink")) {
+			edgesToRemove.push(__icons[id].icon.getAttr('__csuri'));
+		}
+	}
+
+	for (var uri in edgesToRemove) {
+		if (__isConnectionType(edgesToRemove[uri])) {
+			for (var edgeI in __icons[edgesToRemove[uri]]['edgesIn'])
+				edgesToRemove.push(__icons[edgesToRemove[uri]]['edgesIn'][edgeI]);
+			for (var edgeO in __icons[edgesToRemove[uri]]['edgesOut'])
+				edgesToRemove.push(__icons[edgesToRemove[uri]]['edgesOut'][edgeO]);
+		}
+	}
+	
+	if (edgesToRemove.length > 0) {
+		__select();
+		__select(edgesToRemove);
+		DataUtils.del();
+		__select();
+	}
+	
+	//Creating New Bird and Pig Icons
+	newIcon(pigX, pigY, "Pig");
+	newIcon(birdX, birdY, "Bird");
+
+	setTimeout(function () {
+		for (var id in __icons) {
+			if ((__icons[id].icon.getAttr('__x') <= 650 && id.includes("PigIcon"))) {
+				pig = (__icons[id].icon.getAttr('__csuri'));
+			} else if ((__icons[id].icon.getAttr('__x') <= 650 && id.includes("BirdIcon"))) {
+				bird = (__icons[id].icon.getAttr('__csuri'));
+			}
+		}
+		setFacing(bird, birdDirection);
+	}, 100);
+
+	//Creating New Onlinks for Bird and Pig
+	setTimeout(function () { moveIcon(bird, birdEmpty); }, 200);
+	setTimeout(function () { moveIcon(pig, pigEmpty); }, 300);
+}
+
+function setFacing(uri, initFacing)
+{
+    if(__IconType(uri)=="/BirdIcon")
+    {
+        HttpUtils.httpReq(
+            'GET', 
+            HttpUtils.url(uri), 
+            undefined, 
+            function(statusCode, resp){
+                DataUtils.update(uri,{facing: initFacing});
+            }
+            );
+    }
+}
+
+function newIcon(x,y,type) {
+	var typeToReplace = __typeToCreate
+	__typeToCreate = "/Formalisms/Bird/Bird.defaultIcons/" + type + "Icon";
+	DataUtils.create(x, y);
+	__typeToCreate = typeToReplace
+}
+
+function moveIcon(birdpig, tile) {
+	connectionType = "/Formalisms/Bird/Bird.defaultIcons/OnLink.type";
+	HttpUtils.httpReq(
+		'POST',
+		HttpUtils.url(connectionType, __NO_USERNAME),
+		{
+			'src': birdpig,
+			'dest': tile,
+			'pos': [__icons[birdpig].icon.getAttr('__x'), __icons[birdpig].icon.getAttr('__y')]
+		});
+}
 
 /* icon positions may be set to [x,a%,y,b%], meaning that the point at a% of the
   	icon's width and at b% of the icon's height should be located at x,y... for
