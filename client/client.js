@@ -1260,8 +1260,8 @@ function __findSurroundingIconsAndConnect(uri, origConnect)
 							&& item != uri 
 							&& (__icons[uri].icon.node.getAttribute('id').includes("EmptyIcon") 
 							|| __icons[uri].icon.node.getAttribute('id').includes("TileIcon")) 
-							&& (!__icons[item].icon.node.getAttribute('id').includes("EmptyIcon") 
-							|| !__icons[item].icon.node.getAttribute('id').includes("TileIcon")) 
+							&& (__icons[item].icon.node.getAttribute('id').includes("EmptyIcon") 
+							|| __icons[item].icon.node.getAttribute('id').includes("TileIcon")) 
 							&& item != origConnect) 
 			{
 				var itemX = __icons[item].icon.node.getAttribute('__x');
