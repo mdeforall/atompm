@@ -1258,8 +1258,10 @@ function __findSurroundingIconsAndConnect(uri, origConnect)
 		{
 			if (!__isConnectionType(item) 
 							&& item != uri 
-							&& !__icons[item].icon.node.getAttribute('id').includes("BirdIcon") 
-							&& !__icons[item].icon.node.getAttribute('id').includes("PigIcon") 
+							&& (__icons[uri].icon.node.getAttribute('id').includes("EmptyIcon") 
+							|| __icons[uri].icon.node.getAttribute('id').includes("TileIcon")) 
+							&& (!__icons[item].icon.node.getAttribute('id').includes("EmptyIcon") 
+							|| !__icons[item].icon.node.getAttribute('id').includes("TileIcon")) 
 							&& item != origConnect) 
 			{
 				var itemX = __icons[item].icon.node.getAttribute('__x');

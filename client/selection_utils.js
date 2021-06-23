@@ -326,7 +326,9 @@ function __makeConnectionsWhenDropped()
 			{
 				if(connections[index].includes(toApply[id]['link']) 
 								&& __icons[toApply[id]['from']] != undefined 
-								&& __icons[toApply[id]['to']] != undefined) 
+								&& __icons[toApply[id]['to']] != undefined
+								&& toApply[id]['from'].includes("EmptyIcon") || toApply[id]['from'].includes("TileIcon")
+								&& toApply[id]['to'].includes("EmptyIcon") || toApply[id]['to'].includes("TileIcon")) 
 				{
 					__createVisualLink(toApply[id]['from'], toApply[id]['to'], toApply[id]['link']);
 					if(__selection != undefined) 
@@ -534,7 +536,6 @@ function __highlight(uri,followCrossFormalismLinks,timeout,color)
 	if( ! isHighlighted(uri) )
 	{
 		__unhighlight(uri);
-		console.log(__icons[uri]['icon']);
 		__icons[uri]['icon'].highlight({'color':color || 'DarkTurquoise','fill':true});
 
 		if( followCrossFormalismLinks != undefined )

@@ -167,8 +167,10 @@ function __handleChangelog(changelog,seqNum,hitchhiker)
 						__Target = underneathID.getAttribute('__csuri');
 					    UnderneathIcon = null;
 					}
-
-					
+					if (__Target == null) 
+					{
+						return
+					}
 					if (__isContainmentLink(latestIconID[0], __Target)) {
 						DataUtils.getInsertConnectionType(
 							underneathID,
