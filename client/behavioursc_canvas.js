@@ -402,6 +402,10 @@ __canvasBehaviourStatechart = {
 				else if( name == __EVENT_LEFT_RELEASE_ICON )
 				{
 
+					UnderneathIcon = event.currentTarget;
+					if(getUnderneathID() != UnderneathIcon)
+						setUnderneathID(UnderneathIcon);
+
 					if(__selection.items.length==1)
 						__deleteLinksOnMove();
 
