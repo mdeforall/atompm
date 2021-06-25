@@ -37,7 +37,7 @@ class MdeContext(TransformationContext) :
 
         self.startStateID = None
         self.lastNode= 0 # used to know the last node id and start the nodes for the patterns after the last node
-        self.MazePosition = 650
+        self.MazePosition = 500
         self.mazeNodesId =[]
         self.birdMazeId = -1
         self.birdMazeFacing= ''
