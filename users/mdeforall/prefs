@@ -18,7 +18,9 @@
 	"autoloaded-toolbars": {
 		"type": "list<string>",
 		"value": [
-			"/Formalisms/Bird/toolbars/LoadCalmBirds.buttons.model"
+			"/Formalisms/Bird/toolbars/A_Mde.buttons.model",
+			"/Formalisms/Bird/toolbars/MazeSelector.buttons.model",
+            "/Formalisms/Bird/toolbars/Run.buttons.model"
 		]
 	},
 	"autoloaded-model": {

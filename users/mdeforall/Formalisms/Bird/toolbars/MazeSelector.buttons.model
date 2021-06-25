@@ -189,8 +189,8 @@
 				"position": {
 					"type": "list<double>",
 					"value": [
-						575,
-						325
+						576,
+						378
 					]
 				},
 				"orientation": {
@@ -369,8 +369,8 @@
 				"position": {
 					"type": "list<double>",
 					"value": [
-						725,
-						325
+						727,
+						429
 					]
 				},
 				"orientation": {
@@ -550,7 +550,7 @@
 					"type": "list<double>",
 					"value": [
 						875,
-						325
+						480
 					]
 				},
 				"orientation": {
@@ -729,8 +729,8 @@
 				"position": {
 					"type": "list<double>",
 					"value": [
-						1025,
-						325
+						1023,
+						527
 					]
 				},
 				"orientation": {
@@ -909,8 +909,8 @@
 				"position": {
 					"type": "list<double>",
 					"value": [
-						1175,
-						325
+						1176,
+						598
 					]
 				},
 				"orientation": {
@@ -1089,8 +1089,8 @@
 				"position": {
 					"type": "list<double>",
 					"value": [
-						425,
-						400
+						424,
+						676
 					]
 				},
 				"orientation": {
@@ -1269,8 +1269,8 @@
 				"position": {
 					"type": "list<double>",
 					"value": [
-						575,
-						400
+						568,
+						725
 					]
 				},
 				"orientation": {
@@ -1449,8 +1449,8 @@
 				"position": {
 					"type": "list<double>",
 					"value": [
-						725,
-						400
+						702,
+						779
 					]
 				},
 				"orientation": {
@@ -1629,8 +1629,8 @@
 				"position": {
 					"type": "list<double>",
 					"value": [
-						875,
-						400
+						848,
+						835
 					]
 				},
 				"orientation": {
@@ -1809,8 +1809,8 @@
 				"position": {
 					"type": "list<double>",
 					"value": [
-						1025,
-						400
+						1000,
+						884
 					]
 				},
 				"orientation": {
@@ -1989,8 +1989,8 @@
 				"position": {
 					"type": "list<double>",
 					"value": [
-						1175,
-						400
+						1150,
+						950
 					]
 				},
 				"orientation": {
@@ -2164,7 +2164,9 @@
 		},
 		"edges": [],
 		"metamodels": [
-			"/Formalisms/__Utilities__/Buttons/Buttons.defaultIcons"
+			"/Formalisms/__Utilities__/Buttons/Buttons.defaultIcons",
+			"/Formalisms/Bird/Bird.defaultIcons",
+			"/Formalisms/BlockBasedMDE/BlockBasedMDE.defaultIcons"
 		]
 	},
 	"asm": {
@@ -2180,7 +2182,7 @@
 				},
 				"code": {
 					"type": "code",
-					"value": "_loadModel('/Formalisms/Bird/hoc/maze1.model');"
+					"value": ""
 				},
 				"$type": "/Formalisms/__Utilities__/Buttons/Buttons/Button"
 			},
@@ -2195,7 +2197,7 @@
 				},
 				"code": {
 					"type": "code",
-					"value": "_loadModel('/Formalisms/Bird/hoc/puzzle1.model');"
+					"value": "window.open(\"http://localhost:8124/atompm?fname=/Formalisms/Bird/hoc/puzzle1.model\", \"_self\");\n"
 				},
 				"$type": "/Formalisms/__Utilities__/Buttons/Buttons/Button"
 			},
@@ -2210,7 +2212,7 @@
 				},
 				"code": {
 					"type": "code",
-					"value": "_loadModel('/Formalisms/Bird/hoc/puzzle2.model');"
+					"value": "window.open(\"http://localhost:8124/atompm?fname=/Formalisms/Bird/hoc/puzzle2.model\", \"_self\");\n"
 				},
 				"$type": "/Formalisms/__Utilities__/Buttons/Buttons/Button"
 			},
@@ -2225,7 +2227,7 @@
 				},
 				"code": {
 					"type": "code",
-					"value": "_loadModel('/Formalisms/Bird/hoc/puzzle3.model');"
+					"value": "window.open(\"http://localhost:8124/atompm?fname=/Formalisms/Bird/hoc/puzzle3.model\", \"_self\");"
 				},
 				"$type": "/Formalisms/__Utilities__/Buttons/Buttons/Button"
 			},
@@ -2240,7 +2242,7 @@
 				},
 				"code": {
 					"type": "code",
-					"value": "_loadModel('/Formalisms/Bird/hoc/puzzle4.model');"
+					"value": "window.open(\"http://localhost:8124/atompm?fname=/Formalisms/Bird/hoc/puzzle4.model\", \"_self\");"
 				},
 				"$type": "/Formalisms/__Utilities__/Buttons/Buttons/Button"
 			},
@@ -2255,7 +2257,7 @@
 				},
 				"code": {
 					"type": "code",
-					"value": "_loadModel('/Formalisms/Bird/hoc/puzzle5.model');"
+					"value": "window.open(\"http://localhost:8124/atompm?fname=/Formalisms/Bird/hoc/puzzle5.model\", \"_self\");"
 				},
 				"$type": "/Formalisms/__Utilities__/Buttons/Buttons/Button"
 			},
@@ -2270,7 +2272,7 @@
 				},
 				"code": {
 					"type": "code",
-					"value": "_loadModel('/Formalisms/Bird/hoc/puzzle6.model');"
+					"value": "window.open(\"http://localhost:8124/atompm?fname=/Formalisms/Bird/hoc/puzzle6.model\", \"_self\");"
 				},
 				"$type": "/Formalisms/__Utilities__/Buttons/Buttons/Button"
 			},
@@ -2285,7 +2287,7 @@
 				},
 				"code": {
 					"type": "code",
-					"value": "_loadModel('/Formalisms/Bird/hoc/puzzle7.model');"
+					"value": "window.open(\"http://localhost:8124/atompm?fname=/Formalisms/Bird/hoc/puzzle7.model\", \"_self\");"
 				},
 				"$type": "/Formalisms/__Utilities__/Buttons/Buttons/Button"
 			},
@@ -2300,7 +2302,7 @@
 				},
 				"code": {
 					"type": "code",
-					"value": "_loadModel('/Formalisms/Bird/hoc/puzzle8.model');"
+					"value": "window.open(\"http://localhost:8124/atompm?fname=/Formalisms/Bird/hoc/puzzle8.model\", \"_self\");"
 				},
 				"$type": "/Formalisms/__Utilities__/Buttons/Buttons/Button"
 			},
@@ -2315,7 +2317,7 @@
 				},
 				"code": {
 					"type": "code",
-					"value": "_loadModel('/Formalisms/Bird/hoc/puzzle9.model');"
+					"value": "window.open(\"http://localhost:8124/atompm?fname=/Formalisms/Bird/hoc/puzzle9.model\", \"_self\");"
 				},
 				"$type": "/Formalisms/__Utilities__/Buttons/Buttons/Button"
 			},
@@ -2330,7 +2332,7 @@
 				},
 				"code": {
 					"type": "code",
-					"value": "_loadModel('/Formalisms/Bird/hoc/puzzle10.model');"
+					"value": "window.open(\"http://localhost:8124/atompm?fname=/Formalisms/Bird/hoc/puzzle10.model\", \"_self\");"
 				},
 				"$type": "/Formalisms/__Utilities__/Buttons/Buttons/Button"
 			},
@@ -2345,14 +2347,16 @@
 				},
 				"code": {
 					"type": "code",
-					"value": "_loadModel('/Formalisms/Bird/hoc/puzzle11.model');"
+					"value": "window.open(\"http://localhost:8124/atompm?fname=/Formalisms/Bird/hoc/puzzle11.model\", \"_self\");"
 				},
 				"$type": "/Formalisms/__Utilities__/Buttons/Buttons/Button"
 			}
 		},
 		"edges": [],
 		"metamodels": [
-			"/Formalisms/__Utilities__/Buttons/Buttons"
+			"/Formalisms/__Utilities__/Buttons/Buttons",
+			"/Formalisms/Bird/Bird",
+			"/Formalisms/BlockBasedMDE/BlockBasedMDE"
 		]
 	}
 }

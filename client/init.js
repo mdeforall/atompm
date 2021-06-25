@@ -63,7 +63,7 @@ function __initClient()
 				{
 					_loadToolbar(__MAINMENU_PATH);
 					
-					if( window.location.search == '' )
+					if( window.location.search == '' || 'fname' in params )
 						HttpUtils.httpReq(
 							'PUT',
 							'/aswSubscription?wid='+__wid,
@@ -84,7 +84,7 @@ function __initClient()
 											forEach(_loadToolbar);
 										if( prefs['autoloaded-model']['value'] != '' )
 											_loadModel(prefs['autoloaded-model']['value']);
-
+										_loadModel(params.fname);
 										Collaboration.enableCollaborationLinks();
 										__launchAutosave();
 									});
@@ -145,7 +145,7 @@ function __initClient()
 		function()	
 		{  
 			if( window.location.search == '' ||
-				 ('aswid' in params && 'cswid' in params) )
+				 ('aswid' in params && 'cswid' in params) || 'fname' in params )
 				HttpUtils.httpReq(
 					'POST',
 					'/csworker',
