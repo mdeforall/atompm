@@ -326,9 +326,7 @@ function __makeConnectionsWhenDropped()
 			{
 				if(connections[index].includes(toApply[id]['link']) 
 								&& __icons[toApply[id]['from']] != undefined 
-								&& __icons[toApply[id]['to']] != undefined
-								&& toApply[id]['from'].includes("EmptyIcon") || toApply[id]['from'].includes("TileIcon")
-								&& toApply[id]['to'].includes("EmptyIcon") || toApply[id]['to'].includes("TileIcon")) 
+								&& __icons[toApply[id]['to']] != undefined )
 				{
 					__createVisualLink(toApply[id]['from'], toApply[id]['to'], toApply[id]['link']);
 					if(__selection != undefined) 
