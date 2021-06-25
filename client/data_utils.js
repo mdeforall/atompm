@@ -180,6 +180,11 @@ DataUtils = function(){
 			 (__selection == undefined	|| __selection['items'].length == 0) )
 			return callback();
 		items = (items || __selection['items']);
+		if( (intouri.includes("RuleIcon") || intouri.includes("QueryIcon"))
+						&& (items[0].includes("RuleIcon") || items[0].includes("QueryIcon")) )
+		{
+			return callback();
+		}
 	
 		WindowManagement.openDialog(
 				_LEGAL_CONNECTIONS,
