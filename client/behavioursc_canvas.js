@@ -214,8 +214,9 @@ __canvasBehaviourStatechart = {
 
 				else if(name == __EVENT_KEYDOWN_E_W_S_N_ICON_SELECTION)
 				{
-					__createIconInDirectionESWN();
-					__select();
+					setTimeout(function() {
+						__createIconInDirectionESWN();
+						__select();}, 50);
 					this.__T(this.__STATE_IDLE,event);
 				}
 				else if(name == __EVENT_KEYDOWN_R_RULE_SELECTION)
