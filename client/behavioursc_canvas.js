@@ -93,7 +93,7 @@ __canvasBehaviourStatechart = {
 			{
 				if( name == __EVENT_RIGHT_RELEASE_CANVAS ){
 					
-					DataUtils.create(GUIUtils.convertToCanvasX(event), GUIUtils.convertToCanvasY(event));
+					setTimeout(function(){DataUtils.create(GUIUtils.convertToCanvasX(event), GUIUtils.convertToCanvasY(event));},10);
 					
 				}
 			
@@ -216,7 +216,7 @@ __canvasBehaviourStatechart = {
 				{
 					setTimeout(function() {
 						__createIconInDirectionESWN();
-						__select();}, 50);
+						__select();}, 25);
 					this.__T(this.__STATE_IDLE,event);
 				}
 				else if(name == __EVENT_KEYDOWN_R_RULE_SELECTION)
@@ -239,7 +239,7 @@ __canvasBehaviourStatechart = {
 				else if( name == __EVENT_RIGHT_RELEASE_CANVAS )
 				{
 					__select();
-					DataUtils.create(GUIUtils.convertToCanvasX(event), GUIUtils.convertToCanvasY(event));
+					setTimeout(function(){DataUtils.create(GUIUtils.convertToCanvasX(event), GUIUtils.convertToCanvasY(event));},10);
 				}
 				else if( name == __EVENT_RIGHT_PRESS_ICON )
 				{
@@ -475,7 +475,7 @@ __canvasBehaviourStatechart = {
 					ConnectionUtils.hideConnectionPath();
 					if(SelectedItems.length == 1)
 					{
-						DataUtils.create(GUIUtils.convertToCanvasX(event), GUIUtils.convertToCanvasY(event));
+						setTimeout(function(){DataUtils.create(GUIUtils.convertToCanvasX(event), GUIUtils.convertToCanvasY(event));},10);
 					}
 					else if(SelectedItems.length != 1)
 					{
@@ -510,7 +510,7 @@ __canvasBehaviourStatechart = {
 						ConnectionUtils.hideConnectionPath();	
 
 						//creates icons on top of other icons	 
-						DataUtils.create(GUIUtils.convertToCanvasX(event), GUIUtils.convertToCanvasY(event));
+						setTimeout(function(){DataUtils.create(GUIUtils.convertToCanvasX(event), GUIUtils.convertToCanvasY(event));},10);
 					}
 					// creates visual links from a selected icon to another icon
 					else if(SelectedItems.length != 0)
