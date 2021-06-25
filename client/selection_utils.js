@@ -147,11 +147,11 @@ function __highlightCloseSnappingSides(someURI,someX=undefined,someY=undefined) 
 				&& __icons[id].icon.getAttr("__csuri") != someURI) {
 
 				if (id.includes("StartIcon")) {
-					southSnapArea = { 'x': nextX - 50, 'y': nextY + 55, 'width': 50, 'height': 55 };
+					southSnapArea = { 'x': nextX - 50, 'y': nextY + 55, 'width': 150, 'height': 55 };
 
 					snapAreas = { 'southStart': southSnapArea };
 				} else if (id.includes("RuleEntryIcon")) {
-					southSnapArea = { 'x': nextX - 50, 'y': nextY + 35, 'width': 50, 'height': 35 };
+					southSnapArea = { 'x': nextX - 50, 'y': nextY + 35, 'width': 150, 'height': 35 };
 
 					snapAreas = { 'southStart': southSnapArea };
 				} else if (id.includes("QueryIcon")) {
