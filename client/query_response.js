@@ -171,7 +171,7 @@ function __handleChangelog(changelog,seqNum,hitchhiker)
 					{
 						return
 					}
-					if (__isContainmentLink(latestIconID[0], __Target)) {
+					if (__isContainmentLink(latestIconID[0], __Target) && __Target != undefined && underneathID != undefined) {
 						DataUtils.getInsertConnectionType(
 							underneathID,
 							latestIconID,
