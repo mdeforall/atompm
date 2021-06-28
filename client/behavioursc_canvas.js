@@ -473,15 +473,16 @@ __canvasBehaviourStatechart = {
 				else if(name == __EVENT_RIGHT_RELEASE_SELECTION)
 				{
 					ConnectionUtils.hideConnectionPath();
-					if(SelectedItems.length == 1)
-					{
-						setTimeout(function(){DataUtils.create(GUIUtils.convertToCanvasX(event), GUIUtils.convertToCanvasY(event));},10);
-					}
-					else if(SelectedItems.length != 1)
+					if(SelectedItems.length != 1 || SelectedItems[0].includes("RuleIcon") || SelectedItems[0].includes("QueryIcon"))
 					{
 						SelectedItems = [];
 						__select();
 					}
+					else if(SelectedItems.length == 1)
+					{
+						setTimeout(function(){DataUtils.create(GUIUtils.convertToCanvasX(event), GUIUtils.convertToCanvasY(event));},10);
+					}
+					
 					this.__T(this.__STATE_IDLE,event);
 				}
 
