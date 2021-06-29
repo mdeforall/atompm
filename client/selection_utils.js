@@ -161,10 +161,10 @@ function __highlightCloseSnappingSides(someURI,someX=undefined,someY=undefined) 
 
 					snapAreas = { 'northQuery': northSnapArea, 'success': successSnapArea, 'fail': failSnapArea }
 				} else {
-					//northSnapArea = { 'x': nextX - 285, 'y': nextY - 335, 'width': 620, 'height': 150 };
+					northSnapArea = { 'x': nextX - 285, 'y': nextY - 335, 'width': 620, 'height': 150 };
 					southSnapArea = { 'x': nextX - 285, 'y': nextY + 235, 'width': 620, 'height': 150 };
 
-					snapAreas = { /*'northRule': northSnapArea,*/ 'southRule': southSnapArea };
+					snapAreas = { 'northRule': northSnapArea, 'southRule': southSnapArea };
 				}
 
 				for (snapID in snapAreas) {
@@ -208,8 +208,6 @@ function __highlightCloseSnappingSides(someURI,someX=undefined,someY=undefined) 
 			} else if (highlightedSnaps[id]['direction'] == 'northRule') {
 				to = highlightedSnaps[id]['id'];
 				from = highlightedSnaps[id]['selected'];
-				console.log(to);
-				console.log(from);
 				link = "next";
 				fromX = toCheckX;
 				fromY = toCheckY;
