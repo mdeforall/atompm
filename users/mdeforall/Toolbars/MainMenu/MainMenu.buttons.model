@@ -2707,7 +2707,9 @@
 			"/Formalisms/__Utilities__/Buttons/Buttons.defaultIcons",
 			"/Formalisms/__LanguageSyntax__/ConcreteSyntax/ConcreteSyntax.defaultIcons",
 			"/Formalisms/__LanguageSyntax__/SimpleClassDiagram/SimpleClassDiagram.defaultIcons",
-			"/Formalisms/SCCD/SCCD.defaultIcons"
+			"/Formalisms/SCCD/SCCD.defaultIcons",
+			"/Formalisms/Bird/Bird.defaultIcons",
+			"/Formalisms/BlockBasedMDE/BlockBasedMDE.defaultIcons"
 		]
 	},
 	"asm": {
@@ -2858,7 +2860,7 @@
 				},
 				"code": {
 					"type": "code",
-					"value": "WindowManagement.spawnClient();\n"
+					"value": "window.open(\"http://localhost:8124/atompm\")\n"
 				},
 				"$type": "/Formalisms/__Utilities__/Buttons/Buttons/Button"
 			},
@@ -2943,7 +2945,9 @@
 			"/Formalisms/__Utilities__/Buttons/Buttons",
 			"/Formalisms/__LanguageSyntax__/ConcreteSyntax/ConcreteSyntax",
 			"/Formalisms/__LanguageSyntax__/SimpleClassDiagram/SimpleClassDiagram",
-			"/Formalisms/SCCD/SCCD"
+			"/Formalisms/SCCD/SCCD",
+			"/Formalisms/Bird/Bird",
+			"/Formalisms/BlockBasedMDE/BlockBasedMDE"
 		]
 	}
 }
