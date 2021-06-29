@@ -1651,29 +1651,146 @@ function isClickingATile(canvasX, canvasY)
 
 function __deleteLinksOnMove()
 {
+	if (__selection.items[0].includes("TileIcon") || __selection.items[0].includes("EmptyIcon") 
+					|| __selection.items[0].includes("QueryIcon") || __selection.items[0].includes("RuleIcon"))
+		{
+		var toDelete = [];
+		var toKeep = [__selection.items[0]];
 
-	var toDelete = [];
-	var toKeep = [__selection.items[0]];
+		for(var edgeI in __icons[__selection.items[0]]['edgesIn'])
+		{
+			edgeIdToRemove = __icons[__selection.items[0]]['edgesIn'][edgeI].toString().split("-")[0];
+			toDelete.push(__icons[edgeIdToRemove]['edgesOut'][0]);
+			toDelete.push(__icons[edgeIdToRemove]['edgesIn'][0]);
+			toDelete.push(edgeIdToRemove);
+		}
+		for(var edgeI in __icons[__selection.items[0]]['edgesOut'])
+		{
+			edgeIdToRemove = __icons[__selection.items[0]]['edgesOut'][edgeI].toString().split("-")[2];
+			toDelete.push(__icons[edgeIdToRemove]['edgesOut'][0]);
+			toDelete.push(__icons[edgeIdToRemove]['edgesIn'][0]);
+			toDelete.push(edgeIdToRemove);
+		}
+		if(toDelete.length != 0)
+		{
+			__select(toDelete);
+			DataUtils.del();
+			__select(toKeep);
+		}
+	}
+}
 
-	for(var edgeI in __icons[__selection.items[0]]['edgesIn'])
-	{
-		edgeIdToRemove = __icons[__selection.items[0]]['edgesIn'][edgeI].toString().split("-")[0];
-		toDelete.push(__icons[edgeIdToRemove]['edgesOut'][0]);
-		toDelete.push(__icons[edgeIdToRemove]['edgesIn'][0]);
-		toDelete.push(edgeIdToRemove);
-	}
-	for(var edgeI in __icons[__selection.items[0]]['edgesOut'])
-	{
-		edgeIdToRemove = __icons[__selection.items[0]]['edgesOut'][edgeI].toString().split("-")[2];
-		toDelete.push(__icons[edgeIdToRemove]['edgesOut'][0]);
-		toDelete.push(__icons[edgeIdToRemove]['edgesIn'][0]);
-		toDelete.push(edgeIdToRemove);
-	}
-	if(toDelete.length != 0)
-	{
-		__select(toDelete);
-		DataUtils.del();
-		__select(toKeep);
-	}
+function __moveRuleChain(orig, origInBBox)
+{
+	height = 252.5;
 
+	origNewX = origInBBox['x'];
+	origNewY = origInBBox['y'] + height;
+	origBBox = {'x': origInBBox['x'], 'y': origInBBox['y'] + height};
+
+	origX = __icons[orig].icon.getBBox()['x'];
+	origY = __icons[orig].icon.getBBox()['y'];
+	
+	for(var edgeO in __icons[orig].edgesOut)
+	{
+		edgeId = __icons[orig]['edgesOut'][edgeO].toString().split("-")[2];
+		icon = __icons[edgeId]['edgesOut'].toString().split("-")[2];
+		if (orig.includes("RuleIcon"))
+		{
+			if (icon.includes("RuleIcon") || icon.includes("QueryIcon"))
+			{
+				DataUtils.update(icon, {position: [origNewX, origNewY + height]});
+				__moveRuleChain(icon, origBBox);
+			}
+			else if (icon.includes("RuleExit"))
+				DataUtils.update(icon, {position: [origNewX + 26, origNewY + height + 7.5]});
+		}
+		else if (orig.includes("QueryIcon"))
+		{
+			if (edgeId.includes("success"))
+			{
+				if (icon.includes("RuleExit"))
+					DataUtils.update(icon, {position: [origNewX + 38, origNewY + height + 7.5]});
+			}
+			else if (edgeId.includes("fail"))
+			{
+				if (icon.includes("RuleIcon") || icon.includes("QueryIcon"))
+				{
+					DataUtils.update(icon, {position: [origNewX + 272.5, origNewY + height + 1]});
+					__moveRuleChain(icon, origBBox);
+				}
+				else if (icon.includes("RuleExit"))
+					DataUtils.update(icon, {position: [origNewX + 298, origNewY + height + 7.5]});
+				
+			}
+		}
+	}
+}
+
+function __createSuccessLink(source, target)
+{
+	ruleExit = "/Formalisms/BlockBasedMDE/BlockBasedMDE.defaultIcons/RuleExitIcon";
+	ruleEntry = "/Formalisms/BlockBasedMDE/BlockBasedMDE.defaultIcons/RuleEntryIcon";
+	ruleEntryType = "/Formalisms/BlockBasedMDE/BlockBasedMDE.defaultIcons/EntryLink.type";
+	sameConnectorType = "/Formalisms/BlockBasedMDE/BlockBasedMDE.defaultIcons/SameConnectorLink.type";
+	entry = '';
+	exit = '';
+
+	sourceX = __icons[source].icon.getBBox()['x'];
+	sourceY = __icons[source].icon.getBBox()['y'];
+
+	targetX = __icons[target].icon.getBBox()['x'];
+	targetY = __icons[target].icon.getBBox()['y'];
+
+	__newIcon(sourceX + 38, sourceY + 260, ruleExit);
+	__newIcon(targetX + 25, targetY - 30, ruleEntry);
+
+	setTimeout(function() {
+		for (var id in __icons) {
+			if ((__icons[id].icon.getAttr('__x') >= sourceX + 35  
+						&& __icons[id].icon.getAttr('__x') <= sourceX + 41
+						&& __icons[id].icon.getAttr('__y') >= sourceY + 257 
+						&& __icons[id].icon.getAttr('__y') <= sourceY + 263
+						&& id.includes("RuleExit"))) 
+			{
+				exit = (__icons[id].icon.getAttr('__csuri'));
+			} 
+			else if ((__icons[id].icon.getAttr('__x') >= targetX + 22 
+						&& __icons[id].icon.getAttr('__x') <= targetX + 28
+						&& __icons[id].icon.getAttr('__y') <= targetY - 27 
+						&& __icons[id].icon.getAttr('__y') >= targetY - 33 
+						&& id.includes("RuleEntry"))) 
+			{
+				entry = (__icons[id].icon.getAttr('__csuri'));
+			}
+		}
+	}, 25);
+
+	setTimeout(function() {__manualLink(entry, target, ruleEntryType)}, 50);
+	setTimeout(function() {__manualLink(exit, entry, sameConnectorType)}, 50);
+	/*setTimeout(function() {
+		for (edgeI in __icons[entry].edgesIn) {
+			edgeToMove = __icons[entry]['edgesIn'][edgeI].toString().split("-")[0];
+			DataUtils.update(edge, {position: [__icons[exit].icon.getBBox()['x'], __icons[exit].icon.getBBox()['y']]});
+		}
+	}, 400);*/
+	
+}
+
+function __newIcon(x,y,type) {
+	var typeToReplace = __typeToCreate
+	__typeToCreate = type
+	DataUtils.create(x, y);
+	__typeToCreate = typeToReplace
+}
+
+function __manualLink(source, target, type) {
+	HttpUtils.httpReq(
+		'POST',
+		HttpUtils.url(type, __NO_USERNAME),
+		{
+			'src': source,
+			'dest': target,
+			'pos': [__icons[source].icon.getAttr('__x'), __icons[source].icon.getAttr('__y')]
+		});
 }

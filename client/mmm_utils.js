@@ -381,6 +381,7 @@ function resetMaze() {
 	var pigX = Number(__icons[pigEmpty].icon.getAttr('__x'));
 	var pigY = Number(__icons[pigEmpty].icon.getAttr('__y'));
 	var edgesToRemove = [];
+	var onLink = "/Formalisms/Bird/Bird.defaultIcons/OnLink.type";
 	
 	//Selecting Icons and Edges to be deleted
 	for (var id in __icons) {
@@ -411,8 +412,8 @@ function resetMaze() {
 	}
 	
 	//Creating New Bird and Pig Icons
-	newIcon(pigX, pigY, "Pig");
-	newIcon(birdX, birdY, "Bird");
+	__newIcon(pigX, pigY, "/Formalisms/Bird/Bird.defaultIcons/PigIcon");
+	__newIcon(birdX, birdY, "/Formalisms/Bird/Bird.defaultIcons/BirdIcon");
 
 	setTimeout(function () {
 		for (var id in __icons) {
@@ -426,8 +427,8 @@ function resetMaze() {
 	}, 100);
 
 	//Creating New Onlinks for Bird and Pig
-	setTimeout(function () { moveIcon(bird, birdEmpty); }, 200);
-	setTimeout(function () { moveIcon(pig, pigEmpty); }, 300);
+	setTimeout(function () { __manualLink(bird, birdEmpty, onLink); }, 200);
+	setTimeout(function () { __manualLink(pig, pigEmpty, onLink); }, 300);
 }
 
 function setFacing(uri, initFacing)
@@ -443,25 +444,6 @@ function setFacing(uri, initFacing)
             }
             );
     }
-}
-
-function newIcon(x,y,type) {
-	var typeToReplace = __typeToCreate
-	__typeToCreate = "/Formalisms/Bird/Bird.defaultIcons/" + type + "Icon";
-	DataUtils.create(x, y);
-	__typeToCreate = typeToReplace
-}
-
-function moveIcon(birdpig, tile) {
-	connectionType = "/Formalisms/Bird/Bird.defaultIcons/OnLink.type";
-	HttpUtils.httpReq(
-		'POST',
-		HttpUtils.url(connectionType, __NO_USERNAME),
-		{
-			'src': birdpig,
-			'dest': tile,
-			'pos': [__icons[birdpig].icon.getAttr('__x'), __icons[birdpig].icon.getAttr('__y')]
-		});
 }
 
 /* icon positions may be set to [x,a%,y,b%], meaning that the point at a% of the

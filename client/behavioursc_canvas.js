@@ -13,6 +13,7 @@ __canvasBehaviourStatechart = {
 	'__STATE_DRAGGING_CONNECTION_PATH_CTRL_POINT': 6,
 	'__currentState' 						 				: undefined,
 	'__Target': undefined,
+	'__clickX': undefined,
 	'__entryActions':{
 		1:
 			function(event)
@@ -149,7 +150,7 @@ __canvasBehaviourStatechart = {
 					isClickingTile = isClickingATile(Number(GUIUtils.convertToCanvasX(event)), Number(GUIUtils.convertToCanvasY(event)));
 					if(isClickingTile)
 						return;
-					
+					__clickX = Number(GUIUtils.convertToCanvasX(event));
 					this.__T(this.__STATE_DRAWING_EDGE,event);
 				}
 
@@ -246,7 +247,7 @@ __canvasBehaviourStatechart = {
 					isClickingTile = isClickingATile(Number(GUIUtils.convertToCanvasX(event)), Number(GUIUtils.convertToCanvasY(event)));
 					if(isClickingTile)
 						return;
-					
+					__clickX = Number(GUIUtils.convertToCanvasX(event));
 					__select();
 					this.__T(this.__STATE_DRAWING_EDGE,event);
 				}
@@ -258,7 +259,7 @@ __canvasBehaviourStatechart = {
 						return;
 					
 					SelectedItems = __selection.items;
-					
+					__clickX = Number(GUIUtils.convertToCanvasX(event));
 					this.__T(this.__STATE_DRAWING_EDGE,event);
 					
 				}
@@ -336,8 +337,8 @@ __canvasBehaviourStatechart = {
 					canvasY = GUIUtils.convertToCanvasY(event);
 					GeometryUtils.previewSelectionTranslation(canvasX, canvasY);
 					
-					if(__selection.items.length==1) {
-										
+					if(__selection.items.length == 1 || __selection.items[0].includes("RuleIcon") || __selection.items[0].includes("QueryIcon")) {
+
 						// overlayX - overlayX0 gives us the difference from the top-left to mouse click coordinates on a selected item.
 						overlayX = GeometryUtils.getOverlay().node.getAttribute('x');
 						overlayY = GeometryUtils.getOverlay().node.getAttribute('y');
@@ -399,7 +400,7 @@ __canvasBehaviourStatechart = {
 						}
 					}
 					if(!__selection.items[0].includes("RuleEntry"))
-					__makeConnectionsWhenDropped();
+						__makeConnectionsWhenDropped();
 				}
 				else if( name == __EVENT_LEFT_RELEASE_ICON )
 				{
@@ -550,7 +551,16 @@ __canvasBehaviourStatechart = {
 					else
 						{
 							UnderneathIcon = null;
-							DataUtils.connect(event.target);
+							iconX = __icons[ConnectionUtils.getConnectionSource()].icon.getBBox()['x'];
+
+							if (ConnectionUtils.getConnectionSource().includes("QueryIcon")
+										&& iconX <= __clickX && __clickX <= iconX + 218)
+							{
+								__createSuccessLink(ConnectionUtils.getConnectionSource(), __vobj2uri(event.target));
+								ConnectionUtils.hideConnectionPath();
+							}
+							else
+								DataUtils.connect(event.target);
 						}	
 					this.__T(this.__STATE_IDLE,event);
 				}

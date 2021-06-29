@@ -145,7 +145,7 @@ function __handleChangelog(changelog,seqNum,hitchhiker)
 					BehaviorManager.goToSomethingSelectedState();
 					__highlightCloseSnappingSides(icon.getAttr("__csuri"));
 					if(!__selection.items[0].includes("RuleEntry"))
-					__makeConnectionsWhenDropped();
+						__makeConnectionsWhenDropped();
 					creationInitializedByUser = false;
 				}
 
