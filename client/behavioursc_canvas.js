@@ -398,6 +398,7 @@ __canvasBehaviourStatechart = {
 							}
 						}
 					}
+					if(!__selection.items[0].includes("RuleEntry"))
 					__makeConnectionsWhenDropped();
 				}
 				else if( name == __EVENT_LEFT_RELEASE_ICON )
