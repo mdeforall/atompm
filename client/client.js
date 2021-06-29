@@ -58,6 +58,7 @@ var __user = undefined,
 	 __msg = '',
 	 __name = '',
 	 __underneathItem = undefined;
+	 __firstStepRun = true;
 /******************************** GLOBAL VARS *********************************/
 
 AtomPMClient = function(){
