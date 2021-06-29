@@ -1063,7 +1063,10 @@ function __createVisualLink(srcUri, tarUri,choice=undefined)
 			?{ 'uri1': srcUri, 'uri2': tarUri, ctype: __VISUAL_LINK}
 			:{ 'uri1': srcUri, 'uri2': tarUri, ctype: __VISUAL_LINK,"choice":choice},
     	callback
-  );
+    );
+
+	if (__icons[tarUri].edgesOut.length > 0 && (tarUri.includes("RuleIcon") || tarUri.includes("QueryIcon")))
+		__moveRuleChain(tarUri, __icons[srcUri].icon.getBBox());
 }
 
 /**
@@ -1242,12 +1245,12 @@ function __findSurroundingIconsAndConnect(uri, origConnect)
 		var canvasX = GUIUtils.convertToCanvasX(event);
 		var overlayX = GeometryUtils.getOverlay().node.getAttribute('x');
 		var overlayX0 = GeometryUtils.getOverlay().node.getAttribute('_x0');
-		var dropPositionX = canvasX - (overlayX0 - overlayX);
+		var dropPositionX = Number(canvasX - (overlayX0 - overlayX));
 
 		var canvasY = GUIUtils.convertToCanvasY(event);
 		var overlayY = GeometryUtils.getOverlay().node.getAttribute('y');
 		var overlayY0 = GeometryUtils.getOverlay().node.getAttribute('_y0');
-		var dropPositionY = canvasY - (overlayY0 - overlayY);
+		var dropPositionY = Number(canvasY - (overlayY0 - overlayY));
 	} else 
 	{
 		var dropPositionX = Number(__icons[uri].icon.getAttr('__x'));
@@ -1255,23 +1258,26 @@ function __findSurroundingIconsAndConnect(uri, origConnect)
 	}
 
 
-		for (var item in __icons) 
+	for (var item in __icons) 
+	{
+		if (!__isConnectionType(item) 
+						&& item != uri 
+						&& item != origConnect) 
 		{
-			if (!__isConnectionType(item) 
-							&& item != uri 
-							&& (__icons[uri].icon.node.getAttribute('id').includes("EmptyIcon") 
+
+			var itemX = Number(__icons[item].icon.node.getAttribute('__x'));
+			var itemY = Number(__icons[item].icon.node.getAttribute('__y'));
+
+			if( (__icons[uri].icon.node.getAttribute('id').includes("EmptyIcon") 
 							|| __icons[uri].icon.node.getAttribute('id').includes("TileIcon")) 
 							&& (__icons[item].icon.node.getAttribute('id').includes("EmptyIcon") 
-							|| __icons[item].icon.node.getAttribute('id').includes("TileIcon")) 
-							&& item != origConnect) 
+							|| __icons[item].icon.node.getAttribute('id').includes("TileIcon")) )
 			{
-				var itemX = __icons[item].icon.node.getAttribute('__x');
-				var itemY = __icons[item].icon.node.getAttribute('__y');
-
+				
 				//for icons in east or south of newly created icon
-				if ((((Number(dropPositionX) + 27 <= itemX && itemX <= Number(dropPositionX) + 67) 
-								|| (Number(dropPositionX) + 31 <= itemX && itemX <= Number(dropPositionX) + 71)) 
-								&& (Number(dropPositionY) - 20 <= itemY && itemY <= Number(dropPositionY) + 20))) 
+				if ((((dropPositionX + 27 <= itemX && itemX <= dropPositionX + 67) 
+								|| (dropPositionX + 31 <= itemX && itemX <= dropPositionX + 71)) 
+								&& (dropPositionY - 20 <= itemY && itemY <= dropPositionY + 20))) 
 				{
 					if (!__icons[uri]["edgesOut"].toString().includes("east") && !__icons[item]["edgesIn"].toString().includes("east")) {
 						if (__IconType(uri) == "/EmptyIcon" || __IconType(uri) == "/TileIcon")
@@ -1282,9 +1288,9 @@ function __findSurroundingIconsAndConnect(uri, origConnect)
 						__createVisualLink(uri, item);
 					}
 				}
-				else if (((Number(dropPositionX) - 20 <= itemX && itemX <= Number(dropPositionX) + 20) 
-								&& ((Number(dropPositionY) + 27 <= itemY && itemY <= Number(dropPositionY) + 67) 
-								|| (Number(dropPositionY) + 31 <= itemY && itemY <= Number(dropPositionY) + 71)))) 
+				else if (((dropPositionX - 20 <= itemX && itemX <= dropPositionX + 20) 
+								&& ((dropPositionY + 27 <= itemY && itemY <= dropPositionY + 67) 
+								|| (dropPositionY + 31 <= itemY && itemY <= dropPositionY + 71)))) 
 				{
 					if (!__icons[uri]["edgesOut"].toString().includes("south") && !__icons[item]["edgesIn"].toString().includes("south")) {
 						if (__IconType(uri) == "/EmptyIcon" || __IconType(uri) == "/TileIcon")
@@ -1296,9 +1302,9 @@ function __findSurroundingIconsAndConnect(uri, origConnect)
 					}
 				}
 				// for icons in west and north of newly created icon
-				else if ((((Number(dropPositionX) - 32 >= itemX && itemX >= Number(dropPositionX) - 62) 
-								|| (Number(dropPositionX) - 36 >= itemX && itemX >= Number(dropPositionX) - 66)) 
-								&& (Number(dropPositionY) - 20 <= itemY && itemY <= Number(dropPositionY) + 20))) 
+				else if ((((dropPositionX - 32 >= itemX && itemX >= dropPositionX - 62) 
+								|| (dropPositionX - 36 >= itemX && itemX >= dropPositionX - 66)) 
+								&& (dropPositionY - 20 <= itemY && itemY <= dropPositionY + 20))) 
 				{
 					if (!__icons[uri]["edgesIn"].toString().includes("east") && !__icons[item]["edgesOut"].toString().includes("east")) {
 						if (__IconType(uri) == "/EmptyIcon" || __IconType(uri) == "/TileIcon")
@@ -1309,9 +1315,9 @@ function __findSurroundingIconsAndConnect(uri, origConnect)
 						__createVisualLink(item, uri);
 					}
 				}
-				else if (((Number(dropPositionX) - 20 <= itemX && itemX <= Number(dropPositionX) + 20) 
-								&& ((Number(dropPositionY) - 32 >= itemY && itemY >= Number(dropPositionY) - 62) 
-								|| (Number(dropPositionY) - 36 >= itemY && itemY >= Number(dropPositionY) - 66)))) 
+				else if (((dropPositionX - 20 <= itemX && itemX <= dropPositionX + 20) 
+								&& ((dropPositionY - 32 >= itemY && itemY >= dropPositionY - 62) 
+								|| (dropPositionY - 36 >= itemY && itemY >= dropPositionY - 66)))) 
 				{
 					if (!__icons[uri]["edgesIn"].toString().includes("south") && !__icons[item]["edgesOut"].toString().includes("south")) {
 						if (__IconType(uri) == "/EmptyIcon" || __IconType(uri) == "/TileIcon")
@@ -1323,9 +1329,122 @@ function __findSurroundingIconsAndConnect(uri, origConnect)
 					}
 				}
 			}
+			else if( __icons[uri].icon.node.getAttribute('id').includes("RuleIcon") 
+							&& (__icons[item].icon.node.getAttribute('id').includes("RuleIcon") 
+							|| __icons[item].icon.node.getAttribute('id').includes("QueryIcon")
+							|| __icons[item].icon.node.getAttribute('id').includes("RuleExit")
+							|| __icons[item].icon.node.getAttribute('id').includes("RuleEntry")
+							|| __icons[item].icon.node.getAttribute('id').includes("StartIcon")) )
+			{
 
+				//For Rules/Queries/RuleExits to the south
+				if (((dropPositionX - 30 <= itemX && itemX <= dropPositionX + 30) 
+								&& dropPositionY + 50 <= itemY && itemY <= dropPositionY + 300 ) )
+				{
+					if (!__icons[uri]["edgesOut"].toString().includes("next") && !__icons[item]["edgesIn"].toString().includes("next")
+									&& !__icons[uri]["edgesOut"].toString().includes("exit") && !__icons[item]["edgesIn"].toString().includes("exit")) {
+						if (item.includes("RuleIcon") || item.includes("QueryIcon"))
+						{
+							ESconnection.push("/Formalisms/BlockBasedMDE/BlockBasedMDE.defaultIcons/next");
+							__createVisualLink(uri, item);
+						}
+						else if (item.includes("RuleExit"))
+						{
+							ESconnection.push("/Formalisms/BlockBasedMDE/BlockBasedMDE.defaultIcons/exit");
+							__createVisualLink(uri, item);
+						}
+						else
+							return;
+					}
+				}
+				//For Rules/Queries/Start/RuleEntries to the north
+				else if (((dropPositionX - 30 <= itemX && itemX <= dropPositionX + 30) 
+								&& ((dropPositionY - 50 >= itemY && itemY >= dropPositionY - 285 )
+								|| dropPositionY - 20 <= itemY && itemY <= dropPositionY + 20))) 
+				{
+					if (!__icons[item]["edgesIn"].toString().includes("next") && !__icons[uri]["edgesOut"].toString().includes("next")
+								&& !__icons[uri]["edgesOut"].toString().includes("exit") && !__icons[item]["edgesIn"].toString().includes("exit")) {
+						if (item.includes("RuleIcon") || item.includes("QueryIcon"))
+						{
+							ESconnection.push("/Formalisms/BlockBasedMDE/BlockBasedMDE.defaultIcons/next");
+							__createVisualLink(item, uri);
+						}
+						else if (item.includes("Start") || item.includes("RuleEntry"))
+						{
+							ESconnection.push("/Formalisms/BlockBasedMDE/BlockBasedMDE.defaultIcons/Entry");
+							__createVisualLink(item, uri);
+						}
+						else
+							return;
+					}
+				}
+			}
+			else if( __icons[uri].icon.node.getAttribute('id').includes("QueryIcon") 
+							&& (__icons[item].icon.node.getAttribute('id').includes("RuleIcon") 
+							|| __icons[item].icon.node.getAttribute('id').includes("QueryIcon")
+							|| __icons[item].icon.node.getAttribute('id').includes("RuleExit")
+							|| __icons[item].icon.node.getAttribute('id').includes("RuleEntry")
+							|| __icons[item].icon.node.getAttribute('id').includes("StartIcon")) )
+			{
+
+				//For Rules/Queries/RuleExits to the south and left
+				if (((dropPositionX - 75 <= itemX && itemX <= dropPositionX + 75) 
+								&& dropPositionY + 50 <= itemY && itemY <= dropPositionY + 300 ) )
+				{
+					if (!__icons[uri]["edgesOut"].toString().includes("success") && !__icons[item]["edgesIn"].toString().includes("success")) {
+						if (item.includes("RuleExit"))
+						{
+							ESconnection.push("/Formalisms/BlockBasedMDE/BlockBasedMDE.defaultIcons/success");
+							__createVisualLink(uri, item, "success");
+						}
+						else
+							return;
+					}
+				}
+				//For Rules/Queries/RuleExits to the south and right
+				else if (((dropPositionX - 300 <= itemX && itemX <= dropPositionX + 435) 
+								&& dropPositionY + 50 <= itemY && itemY <= dropPositionY + 300 ) )
+				{
+					if (!__icons[uri]["edgesOut"].toString().includes("fail") && !__icons[item]["edgesIn"].toString().includes("fail")
+								&& !__icons[uri]["edgesOut"].toString().includes("failToAbstractRule") && !__icons[item]["edgesIn"].toString().includes("failToAbstractRule")) {
+						if (item.includes("RuleExit"))
+						{
+							ESconnection.push("/Formalisms/BlockBasedMDE/BlockBasedMDE.defaultIcons/fail");
+							__createVisualLink(uri, item, "fail");
+						}
+						else if (item.includes("RuleIcon") || item.includes("QueryIcon"))
+						{
+							ESconnection.push("/Formalisms/BlockBasedMDE/BlockBasedMDE.defaultIcons/failToAbstractRule");
+							__createVisualLink(uri, item, "fail");
+						}
+						else
+							return;
+					}
+				}
+				//For Rules/Queries/Start/RuleEntries to the north
+				else if (dropPositionX - 30 <= itemX && itemX <= dropPositionX + 30
+								&& ((dropPositionY - 50 >= itemY && itemY >= dropPositionY - 285)
+								|| (dropPositionY - 20 >= itemY && itemY >= dropPositionY + 20)))
+				{
+					if (!__icons[item]["edgesIn"].toString().includes("next") && !__icons[uri]["edgesOut"].toString().includes("next")
+								&& !__icons[uri]["edgesOut"].toString().includes("exit") && !__icons[item]["edgesIn"].toString().includes("exit")) {
+						if (item.includes("RuleIcon") || item.includes("QueryIcon"))
+						{
+							ESconnection.push("/Formalisms/BlockBasedMDE/BlockBasedMDE.defaultIcons/next");
+							__createVisualLink(item, uri);
+						}
+						else if (item.includes("Start") || item.includes("RuleEntry"))
+						{
+							ESconnection.push("/Formalisms/BlockBasedMDE/BlockBasedMDE.defaultIcons/Entry");
+							__createVisualLink(item, uri);
+						}
+						else
+							return;
+					}
+				}
+			}
 		}
-
+	}
 }
 
 /**
