@@ -181,9 +181,12 @@ ConnectionUtils = function(){
 	 * Hide and delete the connection path
 	 */
 	this.hideConnectionPath = function(){
-		connectionPath.remove();
-		connectionPath = undefined;
-		connectionSource = undefined;
+		if(connectionPath != undefined)
+		{
+			connectionPath.remove();
+			connectionPath = undefined;
+			connectionSource = undefined;
+		}
 	};
 	
 	/**

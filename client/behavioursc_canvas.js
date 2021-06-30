@@ -560,7 +560,9 @@ __canvasBehaviourStatechart = {
 								ConnectionUtils.hideConnectionPath();
 							}
 							else
-								DataUtils.connect(event.target);
+								__createVisualLink(ConnectionUtils.getConnectionSource(), __vobj2uri(event.target));
+								ConnectionUtils.hideConnectionPath();
+								//DataUtils.connect(event.target);
 						}	
 					this.__T(this.__STATE_IDLE,event);
 				}
