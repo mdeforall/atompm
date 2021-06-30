@@ -1065,7 +1065,7 @@ function __createVisualLink(srcUri, tarUri,choice=undefined)
     	callback
     );
 
-	if (__icons[tarUri].edgesOut.length > 0 && (tarUri.includes("RuleIcon") || tarUri.includes("QueryIcon")))
+	if ((choice == undefined || choice != false) && __icons[tarUri].edgesOut.length > 0 && (tarUri.includes("RuleIcon") || tarUri.includes("QueryIcon")))
 		__moveRuleChain(tarUri, srcUri, __icons[srcUri].icon.getBBox());
 }
 
@@ -1811,6 +1811,7 @@ function __deleteLinksOnMove()
 function __moveRuleChain(orig, origIn, origInBBox)
 {
 	height = 252.5;
+	var emptySpace = true;
 
 	//Rule we are moving another rule under
 	origNewX = origInBBox['x'];
@@ -1829,7 +1830,8 @@ function __moveRuleChain(orig, origIn, origInBBox)
 					&& __icons[id].icon.getAttr('__y') <= origNewY + 270
 					&& ( id.includes("RuleIcon") || id.includes("QueryIcon") ))) 
 		{
-			return;
+			emptySpace = false;
+			__createVisualLink(orig, id, false);
 		} 
 	}
 
@@ -1855,22 +1857,26 @@ function __moveRuleChain(orig, origIn, origInBBox)
 		{
 			if (icon.includes("RuleIcon") || icon.includes("QueryIcon"))
 			{
-				DataUtils.update(icon, {position: [origNewX, origNewY + height]});
-				__moveRuleChain(icon, orig, origBBox);
+				if (emptySpace)
+				{
+					DataUtils.update(icon, {position: [origNewX, origNewY + height]});
+					__moveRuleChain(icon, orig, origBBox);
+				}
 			}
 			/*else if (icon.includes("RuleExit"))
 				DataUtils.update(icon, {position: [origNewX + 26, origNewY + height + 7.5]});*/
 			else if (icon.includes("TileIcon") || icon.includes("EmptyIcon") || icon.includes("BirdIcon") || icon.includes("PigIcon"))
 			{
+				//Get Icons original location
 				iconX = __icons[icon].icon.getBBox()['x'];
 				iconY = __icons[icon].icon.getBBox()['y'];
 
+				//Get Icons original location relative to Rule's original location
 				posX = iconX - origX - 8;
 				posY = iconY - origY - 8;
 
 				DataUtils.update(icon, {position: [origNewX + posX, origNewY + posY]});
 			}
-			//DataUtils.update(edgeId, {position: [origNewX, origNewY]});
 		}
 
 		//Query Icon being moved (and items in/under it)
@@ -1885,16 +1891,21 @@ function __moveRuleChain(orig, origIn, origInBBox)
 			{
 				if (icon.includes("RuleIcon") || icon.includes("QueryIcon"))
 				{
-					DataUtils.update(icon, {position: [origNewX + 272.5, origNewY + height + 1]});
-					__moveRuleChain(icon, orig, origBBox);
+					if (emptySpace)
+					{
+						DataUtils.update(icon, {position: [origNewX + 272.5, origNewY + height + 1]});
+						__moveRuleChain(icon, orig, origBBox);
+					}
 				}
 				/*else if (icon.includes("RuleExit"))
 					DataUtils.update(icon, {position: [origNewX + 298, origNewY + height + 7.5]});*/
 				else if (icon.includes("TileIcon") || icon.includes("EmptyIcon") || icon.includes("BirdIcon") || icon.includes("PigIcon"))
 				{
+					//Get Icons original location
 					iconX = __icons[icon].icon.getBBox()['x'];
 					iconY = __icons[icon].icon.getBBox()['y'];
-	
+
+					//Get Icons original location relative to Rule's original location
 					posX = iconX - origX - 8;
 					posY = iconY - origY - 8;
 	
