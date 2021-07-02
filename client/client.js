@@ -1246,7 +1246,7 @@ function __createIconInDirectionESWN()
 /**
  * finds the surounding icons of a newly created icon 'uri' and connect them if not already connected
  */
-function __findSurroundingIconsAndConnect(uri, origConnect)
+function __findSurroundingIconsAndConnect(uri, origConnect, chain=undefined)
 {
 	if(GeometryUtils.getOverlay() != undefined)
 	{
@@ -1349,20 +1349,21 @@ function __findSurroundingIconsAndConnect(uri, origConnect)
 			{
 
 				//For Rules/Queries/RuleExits to the south
-				if (((dropPositionX - 30 <= itemX && itemX <= dropPositionX + 30) 
-								&& dropPositionY - 450 <= itemY && itemY <= dropPositionY + 300 ) )
+				if (((dropPositionX - 300 <= itemX && itemX <= dropPositionX + 30) 
+								&& dropPositionY <= itemY && itemY <= dropPositionY + 300 ) )
 				{
 					if (!__icons[uri]["edgesOut"].toString().includes("next") && !__icons[item]["edgesIn"].toString().includes("next")
-									&& !__icons[uri]["edgesOut"].toString().includes("exit") && !__icons[item]["edgesIn"].toString().includes("exit")) {
+									&& !__icons[uri]["edgesOut"].toString().includes("exit") && !__icons[item]["edgesIn"].toString().includes("exit")) 
+					{
 						if (item.includes("RuleIcon") || item.includes("QueryIcon"))
 						{
 							ESconnection.push("/Formalisms/BlockBasedMDE/BlockBasedMDE.defaultIcons/next");
-							__createVisualLink(uri, item);
+							__createVisualLink(uri, item, chain);
 						}
 						else if (item.includes("RuleExit"))
 						{
 							ESconnection.push("/Formalisms/BlockBasedMDE/BlockBasedMDE.defaultIcons/exit");
-							__createVisualLink(uri, item);
+							__createVisualLink(uri, item, chain);
 						}
 						else
 							return;
@@ -1378,12 +1379,12 @@ function __findSurroundingIconsAndConnect(uri, origConnect)
 						if (item.includes("RuleIcon") || item.includes("QueryIcon"))
 						{
 							ESconnection.push("/Formalisms/BlockBasedMDE/BlockBasedMDE.defaultIcons/next");
-							__createVisualLink(item, uri);
+							__createVisualLink(item, uri, chain);
 						}
 						else if (item.includes("Start") || item.includes("RuleEntry"))
 						{
 							ESconnection.push("/Formalisms/BlockBasedMDE/BlockBasedMDE.defaultIcons/Entry");
-							__createVisualLink(item, uri);
+							__createVisualLink(item, uri, chain);
 						}
 						else
 							return;
@@ -1399,34 +1400,34 @@ function __findSurroundingIconsAndConnect(uri, origConnect)
 			{
 
 				//For Rules/Queries/RuleExits to the south and left
-				if (((dropPositionX - 75 <= itemX && itemX <= dropPositionX + 75) 
-								&& dropPositionY + 50 <= itemY && itemY <= dropPositionY + 300 ) )
+				if (((dropPositionX - 150 <= itemX && itemX <= dropPositionX + 150) 
+								&& dropPositionY <= itemY && itemY <= dropPositionY + 300 ) )
 				{
 					if (!__icons[uri]["edgesOut"].toString().includes("success") && !__icons[item]["edgesIn"].toString().includes("success")) {
 						if (item.includes("RuleExit"))
 						{
 							ESconnection.push("/Formalisms/BlockBasedMDE/BlockBasedMDE.defaultIcons/success");
-							__createVisualLink(uri, item, "success");
+							__createVisualLink(uri, item, ["success", chain]);
 						}
 						else
 							return;
 					}
 				}
 				//For Rules/Queries/RuleExits to the south and right
-				else if (((dropPositionX - 300 <= itemX && itemX <= dropPositionX + 435) 
-								&& dropPositionY + 50 <= itemY && itemY <= dropPositionY + 300 ) )
+				else if (((dropPositionX - 100 <= itemX && itemX <= dropPositionX + 335) 
+								&& dropPositionY <= itemY && itemY <= dropPositionY + 300 ) )
 				{
 					if (!__icons[uri]["edgesOut"].toString().includes("fail") && !__icons[item]["edgesIn"].toString().includes("fail")
 								&& !__icons[uri]["edgesOut"].toString().includes("failToAbstractRule") && !__icons[item]["edgesIn"].toString().includes("failToAbstractRule")) {
 						if (item.includes("RuleExit"))
 						{
 							ESconnection.push("/Formalisms/BlockBasedMDE/BlockBasedMDE.defaultIcons/fail");
-							__createVisualLink(uri, item, "fail");
+							__createVisualLink(uri, item, ["fail", chain]);
 						}
 						else if (item.includes("RuleIcon") || item.includes("QueryIcon"))
 						{
 							ESconnection.push("/Formalisms/BlockBasedMDE/BlockBasedMDE.defaultIcons/failToAbstractRule");
-							__createVisualLink(uri, item, "fail");
+							__createVisualLink(uri, item, ["fail", chain]);
 						}
 						else
 							return;
@@ -1442,12 +1443,12 @@ function __findSurroundingIconsAndConnect(uri, origConnect)
 						if (item.includes("RuleIcon") || item.includes("QueryIcon"))
 						{
 							ESconnection.push("/Formalisms/BlockBasedMDE/BlockBasedMDE.defaultIcons/next");
-							__createVisualLink(item, uri);
+							__createVisualLink(item, uri, chain);
 						}
 						else if (item.includes("Start") || item.includes("RuleEntry"))
 						{
 							ESconnection.push("/Formalisms/BlockBasedMDE/BlockBasedMDE.defaultIcons/Entry");
-							__createVisualLink(item, uri);
+							__createVisualLink(item, uri, chain);
 						}
 						else
 							return;
