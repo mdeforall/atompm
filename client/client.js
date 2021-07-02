@@ -1045,7 +1045,7 @@ function __setRecentDir(name,value) {
  */
 function __createVisualLink(srcUri, tarUri,choice=undefined)
 {
-	if (choice.length == 2)
+	if (choice && choice.length == 2)
 	{
 		ruleChain = choice[1];
 		choice = choice[0];
@@ -1774,17 +1774,20 @@ function isClickingATile(canvasX, canvasY)
 						&& canvasX >= itemX 
 						&& canvasX <= itemX + itemWidth
 						&& canvasY >= itemY 
-						&& canvasY <= itemY + itemHeight)
+						&& canvasY <= itemY + itemHeight
+						&& ConnectionUtils.getConnectionPath() != undefined)
 		{
 			return true;
 		}
-		else if ((__icons[item].icon.node.getAttribute('id').includes("RuleIcon") 
+		else if (__typeToCreate != undefined && 
+						(__icons[item].icon.node.getAttribute('id').includes("RuleIcon") 
 						|| __icons[item].icon.node.getAttribute('id').includes("QueryIcon"))
 						&& (__typeToCreate.includes("Rule") || __typeToCreate.includes("Query"))
 						&& canvasX >= itemX 
 						&& canvasX <= itemX + itemWidth 
 						&& canvasY >= itemY 
-						&& canvasY <= itemY + itemHeight)
+						&& canvasY <= itemY + itemHeight
+						&& ConnectionUtils.getConnectionPath() != undefined)
 		{
 			return true;
 		}
