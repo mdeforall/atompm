@@ -20,7 +20,7 @@
 				]
 			}
 		],
-		"AbstractRule": [
+		"AbstractRule`": [
 			{
 				"name": "name",
 				"type": "string",
@@ -116,7 +116,7 @@
 			"name": "noAbstractInstances",
 			"event": "pre-create",
 			"code": "false",
-			"targetType": "AbstractRule"
+			"targetType": "AbstractRule`"
 		},
 		{
 			"name": "noAbstractInstances",
@@ -174,36 +174,36 @@
 			{
 				"dir": "out",
 				"type": "next",
-				"min": "0",
-				"max": "Infinity"
+				"min": 0,
+				"max": 1
 			},
 			{
 				"dir": "out",
 				"type": "exit",
-				"min": "0",
-				"max": "Infinity"
-			},
-			{
-				"dir": "out",
-				"type": "rhs",
-				"min": "0",
-				"max": "Infinity"
-			},
-			{
-				"dir": "in",
-				"type": "Entry",
-				"min": "0",
-				"max": "Infinity"
+				"min": 0,
+				"max": 1
 			},
 			{
 				"dir": "in",
 				"type": "next",
-				"min": "0",
-				"max": "Infinity"
+				"min": 0,
+				"max": 1
+			},
+			{
+				"dir": "in",
+				"type": "Entry",
+				"min": 0,
+				"max": 1
 			},
 			{
 				"dir": "in",
 				"type": "failToAbstractRule",
+				"min": 0,
+				"max": 1
+			},
+			{
+				"dir": "out",
+				"type": "rhs",
 				"min": "0",
 				"max": "Infinity"
 			},
@@ -214,24 +214,24 @@
 				"max": "Infinity"
 			}
 		],
-		"AbstractRule": [
-			{
-				"dir": "in",
-				"type": "Entry",
-				"min": "0",
-				"max": "Infinity"
-			},
+		"AbstractRule`": [
 			{
 				"dir": "in",
 				"type": "next",
-				"min": "0",
-				"max": "Infinity"
+				"min": 0,
+				"max": 1
+			},
+			{
+				"dir": "in",
+				"type": "Entry",
+				"min": 0,
+				"max": 1
 			},
 			{
 				"dir": "in",
 				"type": "failToAbstractRule",
-				"min": "0",
-				"max": "Infinity"
+				"min": 0,
+				"max": 1
 			},
 			{
 				"dir": "out",
@@ -243,39 +243,39 @@
 		"Query": [
 			{
 				"dir": "out",
-				"type": "fail",
-				"min": "0",
-				"max": "Infinity"
+				"type": "success",
+				"min": 0,
+				"max": 1
 			},
 			{
 				"dir": "out",
-				"type": "success",
-				"min": "0",
-				"max": "Infinity"
+				"type": "fail",
+				"min": 0,
+				"max": 1
 			},
 			{
 				"dir": "out",
 				"type": "failToAbstractRule",
-				"min": "0",
-				"max": "Infinity"
-			},
-			{
-				"dir": "in",
-				"type": "Entry",
-				"min": "0",
-				"max": "Infinity"
+				"min": 0,
+				"max": 1
 			},
 			{
 				"dir": "in",
 				"type": "next",
-				"min": "0",
-				"max": "Infinity"
+				"min": 0,
+				"max": 1
+			},
+			{
+				"dir": "in",
+				"type": "Entry",
+				"min": 0,
+				"max": 1
 			},
 			{
 				"dir": "in",
 				"type": "failToAbstractRule",
-				"min": "0",
-				"max": "Infinity"
+				"min": 0,
+				"max": 1
 			},
 			{
 				"dir": "out",
@@ -287,35 +287,35 @@
 		"RuleExit": [
 			{
 				"dir": "in",
+				"type": "exit",
+				"min": 0,
+				"max": 1
+			},
+			{
+				"dir": "in",
 				"type": "fail",
-				"min": "0",
-				"max": "Infinity"
+				"min": 0,
+				"max": 1
 			},
 			{
 				"dir": "in",
 				"type": "success",
-				"min": "0",
-				"max": "Infinity"
-			},
-			{
-				"dir": "in",
-				"type": "exit",
-				"min": "0",
-				"max": "Infinity"
+				"min": 0,
+				"max": 1
 			},
 			{
 				"dir": "out",
 				"type": "SameConnector",
-				"min": "0",
-				"max": "Infinity"
+				"min": 0,
+				"max": 1
 			}
 		],
 		"AbstractEntry": [
 			{
 				"dir": "out",
 				"type": "Entry",
-				"min": "0",
-				"max": "Infinity"
+				"min": 0,
+				"max": 1
 			},
 			{
 				"dir": "in",
@@ -328,8 +328,8 @@
 			{
 				"dir": "out",
 				"type": "Entry",
-				"min": "0",
-				"max": "Infinity"
+				"min": 0,
+				"max": 1
 			},
 			{
 				"dir": "in",
@@ -342,8 +342,8 @@
 			{
 				"dir": "out",
 				"type": "Entry",
-				"min": "0",
-				"max": "Infinity"
+				"min": 0,
+				"max": 1
 			},
 			{
 				"dir": "in",
@@ -389,7 +389,7 @@
 			},
 			{
 				"dir": "out",
-				"type": "AbstractRule",
+				"type": "AbstractRule`",
 				"min": "0",
 				"max": "1"
 			},
@@ -427,7 +427,7 @@
 			},
 			{
 				"dir": "out",
-				"type": "AbstractRule",
+				"type": "AbstractRule`",
 				"min": "0",
 				"max": "1"
 			},
@@ -453,7 +453,7 @@
 			},
 			{
 				"dir": "out",
-				"type": "AbstractRule",
+				"type": "AbstractRule`",
 				"min": "0",
 				"max": "1"
 			},
@@ -528,7 +528,7 @@
 		"lhs": [
 			{
 				"dir": "in",
-				"type": "AbstractRule",
+				"type": "AbstractRule`",
 				"min": "0",
 				"max": "1"
 			},
@@ -568,7 +568,7 @@
 	},
 	"legalConnections": {
 		"Rule": {
-			"AbstractRule": [
+			"AbstractRule`": [
 				"next"
 			],
 			"Rule": [
@@ -585,17 +585,17 @@
 				"lhs"
 			]
 		},
-		"AbstractRule": {
+		"AbstractRule`": {
 			"$*": [
 				"lhs"
 			]
 		},
 		"Query": {
 			"RuleExit": [
-				"fail",
-				"success"
+				"success",
+				"fail"
 			],
-			"AbstractRule": [
+			"AbstractRule`": [
 				"failToAbstractRule"
 			],
 			"Rule": [
@@ -620,7 +620,7 @@
 			]
 		},
 		"AbstractEntry": {
-			"AbstractRule": [
+			"AbstractRule`": [
 				"Entry"
 			],
 			"Rule": [
@@ -631,7 +631,7 @@
 			]
 		},
 		"RuleEntry": {
-			"AbstractRule": [
+			"AbstractRule`": [
 				"Entry"
 			],
 			"Rule": [
@@ -642,7 +642,7 @@
 			]
 		},
 		"Start": {
-			"AbstractRule": [
+			"AbstractRule`": [
 				"Entry"
 			],
 			"Rule": [
@@ -667,14 +667,14 @@
 	"types2parentTypes": {
 		"Rule": [
 			"Positionable",
-			"AbstractRule"
+			"AbstractRule`"
 		],
-		"AbstractRule": [
+		"AbstractRule`": [
 			"Positionable"
 		],
 		"Query": [
 			"Positionable",
-			"AbstractRule"
+			"AbstractRule`"
 		],
 		"RuleExit": [
 			"Positionable"
