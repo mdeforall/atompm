@@ -1045,6 +1045,14 @@ function __setRecentDir(name,value) {
  */
 function __createVisualLink(srcUri, tarUri,choice=undefined)
 {
+	if (choice.length == 2)
+	{
+		ruleChain = choice[1];
+		choice = choice[0];
+	}
+	else
+		ruleChain = choice;
+
 	callback = function (connectionType) {
 		HttpUtils.httpReq(
 			"POST", 
@@ -1065,7 +1073,7 @@ function __createVisualLink(srcUri, tarUri,choice=undefined)
     	callback
     );
 
-	if ((choice == undefined || choice != false) && __icons[tarUri].edgesOut.length > 0 && (tarUri.includes("RuleIcon") || tarUri.includes("QueryIcon")))
+	if ((ruleChain == undefined || ruleChain != false) && __icons[tarUri].edgesOut.length > 0 && (tarUri.includes("RuleIcon") || tarUri.includes("QueryIcon")))
 		__moveRuleChain(tarUri, srcUri, __icons[srcUri].icon.getBBox());
 }
 

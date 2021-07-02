@@ -329,7 +329,11 @@ function __makeConnectionsWhenDropped()
 					__createVisualLink(toApply[id]['from'], toApply[id]['to'], toApply[id]['link']);
 					if(__selection != undefined) 
 					{
-						if(__selection['items'][0] == toApply[id]['to']) 
+						if (latestIcon[0] == toApply[id]['to'])
+						{
+							__findSurroundingIconsAndConnect(latestIcon[0], toApply[id]['from'], false);
+							__createRuleLink(getUnderneathID(), [ toApply[id]['from'] ], toApply[id]['to']);
+						} else if(__selection['items'][0] == toApply[id]['to']) 
 						{
 							__findSurroundingIconsAndConnect(toApply[id]['to'], toApply[id]['from']);
 							__createRuleLink(getUnderneathID(), [ toApply[id]['to'] ], toApply[id]['from']);
@@ -340,7 +344,7 @@ function __makeConnectionsWhenDropped()
 						}
 					} else 
 					{
-						__findSurroundingIconsAndConnect(latestIcon[0], toApply[id]['from']);
+						__findSurroundingIconsAndConnect(latestIcon[0], toApply[id]['from'], false);
 					}
 					break;
 				}
