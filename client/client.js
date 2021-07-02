@@ -1045,6 +1045,9 @@ function __setRecentDir(name,value) {
  */
 function __createVisualLink(srcUri, tarUri,choice=undefined)
 {
+	if(srcUri == tarUri)
+		return;
+	
 	if (choice && choice.length == 2)
 	{
 		ruleChain = choice[1];
@@ -1073,7 +1076,16 @@ function __createVisualLink(srcUri, tarUri,choice=undefined)
     	callback
     );
 
-	if ((ruleChain == undefined || ruleChain != false) && __icons[tarUri].edgesOut.length > 0 && (tarUri.includes("RuleIcon") || tarUri.includes("QueryIcon")))
+	for (var edgeO in __icons[tarUri].edgesOut)
+	{
+		edge = __icons[tarUri].edgesOut[edgeO].toString().split("-")[2];
+		if (__icons[edge].edgesOut[edgeO].toString().includes("RuleIcon"))
+			ruleNext = false;
+	}
+
+	if ((ruleChain == undefined || ruleChain != false) 
+					&& __icons[tarUri].edgesOut.length > 0 
+					&& (tarUri.includes("RuleIcon") || tarUri.includes("QueryIcon")))
 		__moveRuleChain(tarUri, srcUri, __icons[srcUri].icon.getBBox());
 }
 
@@ -1358,12 +1370,12 @@ function __findSurroundingIconsAndConnect(uri, origConnect, chain=undefined)
 						if (item.includes("RuleIcon") || item.includes("QueryIcon"))
 						{
 							ESconnection.push("/Formalisms/BlockBasedMDE/BlockBasedMDE.defaultIcons/next");
-							__createVisualLink(uri, item, chain);
+							__createVisualLink(uri, item, false);
 						}
 						else if (item.includes("RuleExit"))
 						{
 							ESconnection.push("/Formalisms/BlockBasedMDE/BlockBasedMDE.defaultIcons/exit");
-							__createVisualLink(uri, item, chain);
+							__createVisualLink(uri, item, false);
 						}
 						else
 							return;
@@ -1775,19 +1787,20 @@ function isClickingATile(canvasX, canvasY)
 						&& canvasX <= itemX + itemWidth
 						&& canvasY >= itemY 
 						&& canvasY <= itemY + itemHeight
-						&& ConnectionUtils.getConnectionPath() != undefined)
+						&& ConnectionUtils.getConnectionPath() != undefined
+						&& ConnectionUtils.getConnectionSource() != item)
 		{
 			return true;
 		}
 		else if (__typeToCreate != undefined && 
 						(__icons[item].icon.node.getAttribute('id').includes("RuleIcon") 
 						|| __icons[item].icon.node.getAttribute('id').includes("QueryIcon"))
-						&& (__typeToCreate.includes("Rule") || __typeToCreate.includes("Query"))
 						&& canvasX >= itemX 
 						&& canvasX <= itemX + itemWidth 
 						&& canvasY >= itemY 
 						&& canvasY <= itemY + itemHeight
-						&& ConnectionUtils.getConnectionPath() != undefined)
+						&& ConnectionUtils.getConnectionPath() != undefined
+						&& ConnectionUtils.getConnectionSource() != item)
 		{
 			return true;
 		}
@@ -1855,8 +1868,29 @@ function __moveRuleChain(orig, origIn, origInBBox)
 					&& ( id.includes("RuleIcon") || id.includes("QueryIcon") ))) 
 		{
 			emptySpace = false;
-			__createVisualLink(orig, id, false);
-		} 
+			edgesToRemove = [];
+			for (edgeO in __icons[orig].edgesOut)
+				if (__icons[orig]['edgesOut'][edgeO].toString().includes("next"))
+					edgesToRemove.push(__icons[orig]['edgesOut'][edgeO].toString().split("-")[2]);
+
+			for (var uri in edgesToRemove) {
+				if (__isConnectionType(edgesToRemove[uri])) {
+					for (var edgeI in __icons[edgesToRemove[uri]]['edgesIn'])
+						edgesToRemove.push(__icons[edgesToRemove[uri]]['edgesIn'][edgeI]);
+					for (var edgeO in __icons[edgesToRemove[uri]]['edgesOut'])
+						edgesToRemove.push(__icons[edgesToRemove[uri]]['edgesOut'][edgeO]);
+				}
+			}
+			
+			if (edgesToRemove.length > 0) {
+				__select();
+				__select(edgesToRemove);
+				DataUtils.del();
+				__select();
+			}
+			if(orig != id)
+				__createVisualLink(orig, id, false);
+		}
 	}
 
 	//If the icon above the orig icon matches the next icon to move, the function ends
