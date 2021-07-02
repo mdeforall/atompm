@@ -513,6 +513,9 @@ __canvasBehaviourStatechart = {
 						ConnectionUtils.hideConnectionPath();	
 
 						//creates icons on top of other icons	 
+						isClickingTile = isClickingATile(Number(GUIUtils.convertToCanvasX(event)), Number(GUIUtils.convertToCanvasY(event)));
+						if(isClickingTile)
+							return;
 						setTimeout(function(){DataUtils.create(GUIUtils.convertToCanvasX(event), GUIUtils.convertToCanvasY(event));},10);
 					}
 					// creates visual links from a selected icon to another icon

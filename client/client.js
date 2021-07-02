@@ -1758,12 +1758,24 @@ function isClickingATile(canvasX, canvasY)
 	for(item in __icons) {
 		itemX = Number(__icons[item].icon.getBBox()['x']);
 		itemY = Number(__icons[item].icon.getBBox()['y']);
+		itemWidth = Number(__icons[item].icon.getBBox()['width']);
+		itemHeight = Number(__icons[item].icon.getBBox()['height']);
 		if ((__icons[item].icon.node.getAttribute('id').includes("EmptyIcon") 
 						|| __icons[item].icon.node.getAttribute('id').includes("TileIcon"))
 						&& canvasX >= itemX 
-						&& canvasX <= itemX + 48 
+						&& canvasX <= itemX + itemWidth
 						&& canvasY >= itemY 
-						&& canvasY <= itemY + 48)
+						&& canvasY <= itemY + itemHeight)
+		{
+			return true;
+		}
+		else if ((__icons[item].icon.node.getAttribute('id').includes("RuleIcon") 
+						|| __icons[item].icon.node.getAttribute('id').includes("QueryIcon"))
+						&& (__typeToCreate.includes("Rule") || __typeToCreate.includes("Query"))
+						&& canvasX >= itemX 
+						&& canvasX <= itemX + itemWidth 
+						&& canvasY >= itemY 
+						&& canvasY <= itemY + itemHeight)
 		{
 			return true;
 		}
