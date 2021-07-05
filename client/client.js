@@ -1045,6 +1045,7 @@ function __setRecentDir(name,value) {
  */
 function __createVisualLink(srcUri, tarUri,choice=undefined)
 {
+	var ruleNext = true;
 	if(srcUri == tarUri)
 		return;
 	
@@ -1079,13 +1080,15 @@ function __createVisualLink(srcUri, tarUri,choice=undefined)
 	for (var edgeO in __icons[tarUri].edgesOut)
 	{
 		edge = __icons[tarUri].edgesOut[edgeO].toString().split("-")[2];
-		if (__icons[edge].edgesOut[edgeO].toString().includes("RuleIcon"))
+		if (!__icons[edge].edgesOut[0].toString().split("-")[2].includes("RuleIcon"))
 			ruleNext = false;
 	}
 
 	if ((ruleChain == undefined || ruleChain != false) 
 					&& __icons[tarUri].edgesOut.length > 0 
-					&& (tarUri.includes("RuleIcon") || tarUri.includes("QueryIcon")))
+					&& (srcUri.includes("RuleIcon") || srcUri.includes("QueryIcon"))
+					&& (tarUri.includes("RuleIcon") || tarUri.includes("QueryIcon"))
+					&& ruleNext)
 		__moveRuleChain(tarUri, srcUri, __icons[srcUri].icon.getBBox());
 }
 
@@ -1784,23 +1787,24 @@ function isClickingATile(canvasX, canvasY)
 		if ((__icons[item].icon.node.getAttribute('id').includes("EmptyIcon") 
 						|| __icons[item].icon.node.getAttribute('id').includes("TileIcon"))
 						&& canvasX >= itemX 
-						&& canvasX <= itemX + itemWidth
+						&& canvasX <= itemX + 48
 						&& canvasY >= itemY 
-						&& canvasY <= itemY + itemHeight
+						&& canvasY <= itemY + 48
 						&& ConnectionUtils.getConnectionPath() != undefined
-						&& ConnectionUtils.getConnectionSource() != item)
+						&& ConnectionUtils.getConnectionPath().getTotalLength() <= 15)
 		{
 			return true;
 		}
-		else if (__typeToCreate != undefined && 
+		else if (__typeToCreate != undefined &&
+						(__typeToCreate.includes("Rule") || __typeToCreate.includes("Query")) &&
 						(__icons[item].icon.node.getAttribute('id').includes("RuleIcon") 
 						|| __icons[item].icon.node.getAttribute('id').includes("QueryIcon"))
 						&& canvasX >= itemX 
-						&& canvasX <= itemX + itemWidth 
+						&& canvasX <= itemX + 620 
 						&& canvasY >= itemY 
-						&& canvasY <= itemY + itemHeight
+						&& canvasY <= itemY + 285
 						&& ConnectionUtils.getConnectionPath() != undefined
-						&& ConnectionUtils.getConnectionSource() != item)
+						&& ConnectionUtils.getConnectionPath().getTotalLength() <= 15)
 		{
 			return true;
 		}
@@ -1810,21 +1814,34 @@ function isClickingATile(canvasX, canvasY)
 
 function __deleteLinksOnMove()
 {
-	if (__selection.items[0].includes("TileIcon") || __selection.items[0].includes("EmptyIcon") 
-					|| __selection.items[0].includes("QueryIcon") || __selection.items[0].includes("RuleIcon"))
+	var toDelete = [];
+	var toKeep = [__selection.items[0]];
+	if (__selection.items[0].includes("TileIcon") || __selection.items[0].includes("EmptyIcon"))
 		{
-		var toDelete = [];
-		var toKeep = [__selection.items[0]];
 
 		for(var edgeI in __icons[__selection.items[0]]['edgesIn'])
 		{
-			if(!__icons[__selection.items[0]]['edgesIn'][edgeI].toString().includes("hs"))
-			{
-				edgeIdToRemove = __icons[__selection.items[0]]['edgesIn'][edgeI].toString().split("-")[0];
-				toDelete.push(__icons[edgeIdToRemove]['edgesOut'][0]);
-				toDelete.push(__icons[edgeIdToRemove]['edgesIn'][0]);
-				toDelete.push(edgeIdToRemove);
-			}
+			edgeIdToRemove = __icons[__selection.items[0]]['edgesIn'][edgeI].toString().split("-")[0];
+			toDelete.push(__icons[edgeIdToRemove]['edgesOut'][0]);
+			toDelete.push(__icons[edgeIdToRemove]['edgesIn'][0]);
+			toDelete.push(edgeIdToRemove);
+		}
+		for(var edgeO in __icons[__selection.items[0]]['edgesOut'])
+		{
+			edgeIdToRemove = __icons[__selection.items[0]]['edgesOut'][edgeO].toString().split("-")[2];
+			toDelete.push(__icons[edgeIdToRemove]['edgesOut'][0]);
+			toDelete.push(__icons[edgeIdToRemove]['edgesIn'][0]);
+			toDelete.push(edgeIdToRemove);
+		}
+	}
+	else if (__selection.items[0].includes("QueryIcon") || __selection.items[0].includes("RuleIcon"))
+	{
+		for(var edgeI in __icons[__selection.items[0]]['edgesIn'])
+		{
+			edgeIdToRemove = __icons[__selection.items[0]]['edgesIn'][edgeI].toString().split("-")[0];
+			toDelete.push(__icons[edgeIdToRemove]['edgesOut'][0]);
+			toDelete.push(__icons[edgeIdToRemove]['edgesIn'][0]);
+			toDelete.push(edgeIdToRemove);
 		}
 		for(var edgeO in __icons[__selection.items[0]]['edgesOut'])
 		{
@@ -1836,12 +1853,12 @@ function __deleteLinksOnMove()
 				toDelete.push(edgeIdToRemove);
 			}
 		}
-		if(toDelete.length != 0)
-		{
-			__select(toDelete);
-			DataUtils.del();
-			__select(toKeep);
-		}
+	}
+	if(toDelete.length != 0)
+	{
+		__select(toDelete);
+		DataUtils.del();
+		__select(toKeep);
 	}
 }
 
