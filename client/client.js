@@ -1045,7 +1045,7 @@ function __setRecentDir(name,value) {
  */
 function __createVisualLink(srcUri, tarUri,choice=undefined)
 {
-	var ruleNext = true;
+	var ruleNext = false;
 	if(srcUri == tarUri)
 		return;
 	
@@ -1080,16 +1080,25 @@ function __createVisualLink(srcUri, tarUri,choice=undefined)
 	for (var edgeO in __icons[tarUri].edgesOut)
 	{
 		edge = __icons[tarUri].edgesOut[edgeO].toString().split("-")[2];
-		if (!__icons[edge].edgesOut[0].toString().split("-")[2].includes("RuleIcon"))
+		if (__icons[edge].edgesOut[0].toString().split("-")[2].includes("RuleIcon")
+						|| __icons[edge].edgesOut[0].toString().split("-")[2].includes("QueryIcon"))
+		{
+			ruleNext = true;
+			break;
+		}
+		else
 			ruleNext = false;
 	}
 
+	
 	if ((ruleChain == undefined || ruleChain != false) 
 					&& __icons[tarUri].edgesOut.length > 0 
-					&& (srcUri.includes("RuleIcon") || srcUri.includes("QueryIcon"))
 					&& (tarUri.includes("RuleIcon") || tarUri.includes("QueryIcon"))
 					&& ruleNext)
-		__moveRuleChain(tarUri, srcUri, __icons[srcUri].icon.getBBox());
+	{
+		__moveRuleChain(tarUri, srcUri, __icons[srcUri].icon.getBBox(), ruleChain);
+	}
+	
 }
 
 /**
@@ -1812,42 +1821,47 @@ function isClickingATile(canvasX, canvasY)
 	return false;
 }
 
-function __deleteLinksOnMove()
+function __deleteLinksOnMove(rule)
 {
 	var toDelete = [];
-	var toKeep = [__selection.items[0]];
-	if (__selection.items[0].includes("TileIcon") || __selection.items[0].includes("EmptyIcon"))
+	if (rule)
+		var toKeep = [rule];
+	else
+		var toKeep = [__selection.items[0]];
+	if (toKeep[0].includes("TileIcon") || toKeep[0].includes("EmptyIcon"))
 		{
 
-		for(var edgeI in __icons[__selection.items[0]]['edgesIn'])
+		for(var edgeI in __icons[toKeep[0]]['edgesIn'])
 		{
-			edgeIdToRemove = __icons[__selection.items[0]]['edgesIn'][edgeI].toString().split("-")[0];
+			edgeIdToRemove = __icons[toKeep[0]]['edgesIn'][edgeI].toString().split("-")[0];
 			toDelete.push(__icons[edgeIdToRemove]['edgesOut'][0]);
 			toDelete.push(__icons[edgeIdToRemove]['edgesIn'][0]);
 			toDelete.push(edgeIdToRemove);
 		}
-		for(var edgeO in __icons[__selection.items[0]]['edgesOut'])
+		for(var edgeO in __icons[toKeep[0]]['edgesOut'])
 		{
-			edgeIdToRemove = __icons[__selection.items[0]]['edgesOut'][edgeO].toString().split("-")[2];
+			edgeIdToRemove = __icons[toKeep[0]]['edgesOut'][edgeO].toString().split("-")[2];
 			toDelete.push(__icons[edgeIdToRemove]['edgesOut'][0]);
 			toDelete.push(__icons[edgeIdToRemove]['edgesIn'][0]);
 			toDelete.push(edgeIdToRemove);
 		}
 	}
-	else if (__selection.items[0].includes("QueryIcon") || __selection.items[0].includes("RuleIcon"))
+	else if (toKeep[0].includes("QueryIcon") || toKeep[0].includes("RuleIcon"))
 	{
-		for(var edgeI in __icons[__selection.items[0]]['edgesIn'])
+		for(var edgeI in __icons[toKeep[0]]['edgesIn'])
 		{
-			edgeIdToRemove = __icons[__selection.items[0]]['edgesIn'][edgeI].toString().split("-")[0];
+			edgeIdToRemove = __icons[toKeep[0]]['edgesIn'][edgeI].toString().split("-")[0];
 			toDelete.push(__icons[edgeIdToRemove]['edgesOut'][0]);
 			toDelete.push(__icons[edgeIdToRemove]['edgesIn'][0]);
 			toDelete.push(edgeIdToRemove);
 		}
-		for(var edgeO in __icons[__selection.items[0]]['edgesOut'])
+		for(var edgeO in __icons[toKeep[0]]['edgesOut'])
 		{
-			if(!__icons[__selection.items[0]]['edgesOut'][edgeO].toString().includes("hs"))
+			if(!__icons[toKeep[0]]['edgesOut'][edgeO].toString().includes("hs"))
 			{
-				edgeIdToRemove = __icons[__selection.items[0]]['edgesOut'][edgeO].toString().split("-")[2];
+				edgeIdToRemove = __icons[toKeep[0]]['edgesOut'][edgeO].toString().split("-")[2];
+				nextRule = __icons[edgeIdToRemove]['edgesOut'][0].toString().split("-")[2];
+				__deleteLinksOnMove(nextRule);
 				toDelete.push(__icons[edgeIdToRemove]['edgesOut'][0]);
 				toDelete.push(__icons[edgeIdToRemove]['edgesIn'][0]);
 				toDelete.push(edgeIdToRemove);
@@ -1862,21 +1876,27 @@ function __deleteLinksOnMove()
 	}
 }
 
-function __moveRuleChain(orig, origIn, origInBBox)
+function __moveRuleChain(orig, origIn, origInBBox, ruleChain)
 {
-	height = 252.5;
-	var emptySpace = true;
+	//Get the height of origIn and adjust appropriately
+	height = origInBBox['height'] - 32.5;
 
+	//xOffset for proper placement later
+	var xOffset = 0;
+	if (origIn.includes("StartIcon") || origIn.includes("RuleEntry"))
+		xOffset = 35;
+	
 	//Rule we are moving another rule under
 	origNewX = origInBBox['x'];
-	origNewY = origInBBox['y'] + height;
-	origBBox = {'x': origInBBox['x'], 'y': origInBBox['y'] + height};
+	origNewY = origInBBox['y'] + 252.5;
+	origBBox = {'x': origInBBox['x'] - xOffset, 'y': origInBBox['y'] + height, 'height': __icons[orig].icon.getBBox()['height']};
 
 	//Rule that we are moving
 	origX = __icons[orig].icon.getBBox()['x'];
 	origY = __icons[orig].icon.getBBox()['y'];
 
 	//If spot we're moving to has only one empty space, the chain does not drag any underneath rules and function ends
+	var emptySpace = true;
 	for (var id in __icons) {
 		if ((__icons[id].icon.getAttr('__x') >= origNewX - 20  
 					&& __icons[id].icon.getAttr('__x') <= origNewX + 20
@@ -1887,7 +1907,10 @@ function __moveRuleChain(orig, origIn, origInBBox)
 			emptySpace = false;
 			edgesToRemove = [];
 			for (edgeO in __icons[orig].edgesOut)
-				if (__icons[orig]['edgesOut'][edgeO].toString().includes("next"))
+				if (__icons[orig]['edgesOut'][edgeO].toString().includes("next")
+								|| __icons[orig]['edgesOut'][edgeO].toString().includes("exit")
+								|| __icons[orig]['edgesOut'][edgeO].toString().includes("success")
+								|| __icons[orig]['edgesOut'][edgeO].toString().includes("fail"))
 					edgesToRemove.push(__icons[orig]['edgesOut'][edgeO].toString().split("-")[2]);
 
 			for (var uri in edgesToRemove) {
@@ -1921,25 +1944,26 @@ function __moveRuleChain(orig, origIn, origInBBox)
 			return;
 		}
 	}
-	
+		
 	for(var edgeO in __icons[orig].edgesOut)
 	{
 		edgeId = __icons[orig]['edgesOut'][edgeO].toString().split("-")[2];
 		icon = __icons[edgeId]['edgesOut'].toString().split("-")[2];
 
-		//Rule Icon being moved (and items in/under it)
-		if (orig.includes("RuleIcon"))
+		//When origIn is not a query, move an item (and items in/under it)
+		if (!origIn.includes("QueryIcon"))
 		{
 			if (icon.includes("RuleIcon") || icon.includes("QueryIcon"))
 			{
 				if (emptySpace)
 				{
-					DataUtils.update(icon, {position: [origNewX, origNewY + height]});
+					DataUtils.update(icon, {position: [origNewX - xOffset, origNewY + height]});
+					
+					if (__selection != undefined)
+						__createVisualLink(orig, icon, false);
 					__moveRuleChain(icon, orig, origBBox);
 				}
 			}
-			/*else if (icon.includes("RuleExit"))
-				DataUtils.update(icon, {position: [origNewX + 26, origNewY + height + 7.5]});*/
 			else if (icon.includes("TileIcon") || icon.includes("EmptyIcon") || icon.includes("BirdIcon") || icon.includes("PigIcon"))
 			{
 				//Get Icons original location
@@ -1950,30 +1974,31 @@ function __moveRuleChain(orig, origIn, origInBBox)
 				posX = iconX - origX - 8;
 				posY = iconY - origY - 8;
 
-				DataUtils.update(icon, {position: [origNewX + posX, origNewY + posY]});
+				DataUtils.update(icon, {position: [origNewX + posX - xOffset, origNewY + posY]});
 			}
 		}
 
-		//Query Icon being moved (and items in/under it)
-		else if (orig.includes("QueryIcon"))
+		//When origIn is a query, move an item (and items in/under it)
+		else
 		{
-			if (edgeId.includes("success"))
+			if (ruleChain != undefined && ruleChain.includes("success"))
 			{
 				if (icon.includes("RuleExit"))
-					DataUtils.update(icon, {position: [origNewX + 38, origNewY + height + 7.5]});
+					DataUtils.update(icon, {position: [origNewX + 38 - xOffset, origNewY + height + 7.5]});
 			}
-			else if (edgeId.includes("fail"))
+			else
 			{
 				if (icon.includes("RuleIcon") || icon.includes("QueryIcon"))
 				{
 					if (emptySpace)
 					{
-						DataUtils.update(icon, {position: [origNewX + 272.5, origNewY + height + 1]});
+						DataUtils.update(icon, {position: [origNewX + 272.5 - xOffset, origNewY + height + 1]});
+						origBBox['x'] = origNewX + 272.5 - xOffset;
+						if (__selection != undefined)
+							__createVisualLink(orig, icon, false);
 						__moveRuleChain(icon, orig, origBBox);
 					}
 				}
-				/*else if (icon.includes("RuleExit"))
-					DataUtils.update(icon, {position: [origNewX + 298, origNewY + height + 7.5]});*/
 				else if (icon.includes("TileIcon") || icon.includes("EmptyIcon") || icon.includes("BirdIcon") || icon.includes("PigIcon"))
 				{
 					//Get Icons original location
@@ -1984,7 +2009,7 @@ function __moveRuleChain(orig, origIn, origInBBox)
 					posX = iconX - origX - 8;
 					posY = iconY - origY - 8;
 	
-					DataUtils.update(icon, {position: [origNewX + posX, origNewY + posY]});
+					DataUtils.update(icon, {position: [origNewX + posX - xOffset, origNewY + posY]});
 				}
 			}
 		}

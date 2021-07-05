@@ -161,10 +161,10 @@ function __highlightCloseSnappingSides(someURI,someX=undefined,someY=undefined) 
 
 					snapAreas = { 'northQuery': northSnapArea, 'success': successSnapArea, 'fail': failSnapArea }
 				} else {
-					northSnapArea = { 'x': nextX - 285, 'y': nextY - 335, 'width': 620, 'height': 150 };
+					//northSnapArea = { 'x': nextX - 285, 'y': nextY - 335, 'width': 620, 'height': 150 };
 					southSnapArea = { 'x': nextX - 285, 'y': nextY + 235, 'width': 620, 'height': 150 };
 
-					snapAreas = { 'northRule': northSnapArea, 'southRule': southSnapArea };
+					snapAreas = { /*'northRule': northSnapArea,*/ 'southRule': southSnapArea };
 				}
 
 				for (snapID in snapAreas) {
@@ -342,9 +342,11 @@ function __makeConnectionsWhenDropped()
 							__findSurroundingIconsAndConnect(toApply[id]['from'], toApply[id]['to']);
 							__createRuleLink(getUnderneathID(), [ toApply[id]['from'] ], toApply[id]['to']);
 						}
-					} else 
+					} 
+					else 
 					{
-						__findSurroundingIconsAndConnect(latestIcon[0], toApply[id]['from'], false);
+						if (latestIcon[0] != undefined)
+							__findSurroundingIconsAndConnect(latestIcon[0], toApply[id]['from'], false);
 					}
 					break;
 				}
