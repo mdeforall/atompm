@@ -93,7 +93,8 @@ __canvasBehaviourStatechart = {
 			if( this.__currentState == this.__STATE_IDLE )
 			{
 				if( name == __EVENT_RIGHT_RELEASE_CANVAS ){
-					
+					UnderneathIcon = undefined;
+					setUnderneathID(undefined);
 					setTimeout(function(){DataUtils.create(GUIUtils.convertToCanvasX(event), GUIUtils.convertToCanvasY(event));},10);
 					
 				}
@@ -360,7 +361,7 @@ __canvasBehaviourStatechart = {
 					GeometryUtils.transformSelection(__SELECTION_DRAG);
 					this.__T(this.__STATE_SOMETHING_SELECTED,event);
 
-					if(__selection.items.length==1)
+					if(__selection.items.length==1 || __selection.items[0].includes("RuleIcon") || __selection.items[0].includes("QueryIcon"))
 						__deleteLinksOnMove();
 					
 					if ((__selection.items[0].includes("BirdIcon") 
@@ -409,7 +410,7 @@ __canvasBehaviourStatechart = {
 					if(getUnderneathID() != UnderneathIcon)
 						setUnderneathID(UnderneathIcon);
 
-					if(__selection.items.length==1)
+					if(__selection.items.length==1 || __selection.items[0].includes("RuleIcon") || __selection.items[0].includes("QueryIcon"))
 						__deleteLinksOnMove();
 
 					__Target = event.currentTarget.getAttribute('__csuri');
@@ -510,13 +511,13 @@ __canvasBehaviourStatechart = {
 						console.warn('to avoid accidental path creations, paths must '+
 										 'measure at least 5px');
 
-						ConnectionUtils.hideConnectionPath();	
-
 						//creates icons on top of other icons	 
 						isClickingTile = isClickingATile(Number(GUIUtils.convertToCanvasX(event)), Number(GUIUtils.convertToCanvasY(event)));
-						if(isClickingTile)
-							return;
-						setTimeout(function(){DataUtils.create(GUIUtils.convertToCanvasX(event), GUIUtils.convertToCanvasY(event));},10);
+						ConnectionUtils.hideConnectionPath();
+						if(!isClickingTile)
+						{
+							setTimeout(function(){DataUtils.create(GUIUtils.convertToCanvasX(event), GUIUtils.convertToCanvasY(event));},10);
+						}
 					}
 					// creates visual links from a selected icon to another icon
 					else if(SelectedItems.length != 0)
