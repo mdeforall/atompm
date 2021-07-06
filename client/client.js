@@ -1860,8 +1860,6 @@ function __deleteLinksOnMove(rule)
 			if(!__icons[toKeep[0]]['edgesOut'][edgeO].toString().includes("hs"))
 			{
 				edgeIdToRemove = __icons[toKeep[0]]['edgesOut'][edgeO].toString().split("-")[2];
-				nextRule = __icons[edgeIdToRemove]['edgesOut'][0].toString().split("-")[2];
-				__deleteLinksOnMove(nextRule);
 				toDelete.push(__icons[edgeIdToRemove]['edgesOut'][0]);
 				toDelete.push(__icons[edgeIdToRemove]['edgesIn'][0]);
 				toDelete.push(edgeIdToRemove);
@@ -1959,8 +1957,8 @@ function __moveRuleChain(orig, origIn, origInBBox, ruleChain)
 				{
 					DataUtils.update(icon, {position: [origNewX - xOffset, origNewY + height]});
 					
-					if (__selection != undefined)
-						__createVisualLink(orig, icon, false);
+					__deleteLinksOnMove(icon);
+					__createVisualLink(orig, icon, false);
 					__moveRuleChain(icon, orig, origBBox);
 				}
 			}
@@ -1994,8 +1992,9 @@ function __moveRuleChain(orig, origIn, origInBBox, ruleChain)
 					{
 						DataUtils.update(icon, {position: [origNewX + 272.5 - xOffset, origNewY + height + 1]});
 						origBBox['x'] = origNewX + 272.5 - xOffset;
-						if (__selection != undefined)
-							__createVisualLink(orig, icon, false);
+						
+						__deleteLinksOnMove(icon);
+						__createVisualLink(orig, icon, false);
 						__moveRuleChain(icon, orig, origBBox);
 					}
 				}
