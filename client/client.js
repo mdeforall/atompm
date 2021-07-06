@@ -1520,41 +1520,26 @@ function __removeOnLinks(uri)
  */
 function __copyLHSiconsToRHSinRuleIcon()
 {
-	var iconsBefore = [];
-	var ruleIcon;
 	if(__selection['items'].length >= 1 && __selection['items'][0].includes("RuleIcon"))
 	{   
+		var iconsBefore = [];
+		var newIcons = [];
 		var LHSIcons = [];
-		ruleIcon = __selection['items'][0];;
-		ruleX = __icons[ruleIcon].icon.node.getAttribute('__x');
-		ruleY = __icons[ruleIcon].icon.node.getAttribute('__y');
+		var ruleIcon = __selection['items'][0];;
+		var ruleWidth = Number(__icons[ruleIcon].icon.getBBox()['width']);
+		var connectionType = "/Formalisms/BlockBasedMDE/BlockBasedMDE.defaultIcons/rhsLink.type";
+
 		for(var item in __selection.items)
 		{
 			var currentItem = __selection['items'][item];
 			if(item != 0 && !currentItem.includes("lhsLink"))
-			{
 				LHSIcons.push(__icons[currentItem].icon.node.getAttribute('__csuri'));
-			}
 		}
 		
 		for(var item in __icons) 
-		{
 			iconsBefore.push(__icons[item].icon.node.getAttribute('__csuri'));
-		}
 
-		__select();
-
-		for(var uri in LHSIcons)
-		{ 
-			if( __isConnectionType(LHSIcons[uri]) )
-			{
-				for(var edgeI in __icons[LHSIcons[uri]]['edgesIn'])	
-					LHSIcons.push(__icons[LHSIcons[uri]]['edgesIn'][edgeI]);
-			
-				for(var edgeO in __icons[LHSIcons[uri]]['edgesOut'])	
-					LHSIcons.push(__icons[LHSIcons[uri]]['edgesOut'][edgeO]);
-			}	
-		}
+		LHSIcons = __grabEdgesAndDelete(LHSIcons, false);
 
 		__select(LHSIcons);
 		EditUtils.copy();
@@ -1564,20 +1549,15 @@ function __copyLHSiconsToRHSinRuleIcon()
 			}, 100);
 
 		setTimeout(function(){
-			newIcons = [];
-			for(var uri in __icons){
+			for(var uri in __icons)
 				newIcons.push(__icons[uri].icon.node.getAttribute('__csuri'));
-			}
 
 			for(var uri in newIcons)
 			{
 				for(var itm in iconsBefore)
 				{
 					if((newIcons[uri] == iconsBefore[itm]))
-					{
-						//delete newIcons[uri];
 						newIcons.splice(uri, 1);
-					}
 				}
 			}
 
@@ -1587,24 +1567,17 @@ function __copyLHSiconsToRHSinRuleIcon()
 				{
 					if( !__isConnectionType(newIcons[i]))
 					{
-						var x = Number(__icons[newIcons[i]].icon.getAttr('__x'))+315;
+						var x = Number(__icons[newIcons[i]].icon.getAttr('__x')) + (ruleWidth / 2);
 						var y = Number(__icons[newIcons[i]].icon.getAttr('__y'));
 						
 						DataUtils.update(newIcons[i], {position: [x, y]});
 
-						connectionType = "/Formalisms/BlockBasedMDE/BlockBasedMDE.defaultIcons/rhsLink.type";
-						HttpUtils.httpReq(
-								'POST',
-								HttpUtils.url(connectionType,__NO_USERNAME),
-								{'src':ruleIcon,
-								'dest':newIcons[i],
-								'pos':[__icons[newIcons[i]].icon.getAttr('__x'), __icons[newIcons[i]].icon.getAttr('__y')]
-								});
+						__manualLink(ruleIcon, newIcons[i], connectionType, newIcons[i]);
 					}
 				}
 			}
-		__select(newIcons);
-		},200);
+			__select(newIcons);
+		}, 200);
 	}
 	else
 	{
@@ -1624,151 +1597,102 @@ function __editRuleIconAttributes(ruleIcon)
 				ruleIcon.match(/.*\/(.*)Link\/(.*)\.instance/),
 				type 	= matches[1],
 				id		= matches[2];
+
+	var ignoreItem = '';
+	var editDetail = '';
+
+	//Check if Rule or Query and where user clicked
 	if(ruleIcon.toString().includes("RuleIcon"))
 	{
 		if (ruleY <= canvasY && canvasY <= ruleY + 60 && canvasX >= ruleX + 580) 
 		{
-			HttpUtils.httpReq(
-				'GET',
-				HttpUtils.url(ruleIcon),
-				undefined,
-				function(statusCode,resp)
-				{
-					if( ! utils.isHttpSuccessCode(statusCode) ) {
-						return error(resp);
-					}
-					return openDialog(
-						_DICTIONARY_EDITOR,
-						{'data':		utils.jsonp( utils.jsonp(resp)['data'] ),
-							'ignoreKey':	
-								function(attr) 
-								{
-									return attr != 'count';
-								},
-							'keepEverything':
-								function() 
-								{
-									return __changed(ruleIcon);
-								},
-							'title':'edit '+type+' #'+id+'\'s loop count'},
-						function(changes) {DataUtils.update(ruleIcon,changes);});
-				}
-			);	
-		} else if (ruleX <= canvasX && canvasX <= ruleX + 310) 
+			ignoreItem = 'count';
+			editDetail = 'loop count';
+		} 
+		else if (ruleX <= canvasX && canvasX <= ruleX + 310) 
 		{
-			HttpUtils.httpReq(
-				'GET',
-				HttpUtils.url(ruleIcon),
-				undefined,
-				function(statusCode,resp)
-				{
-					if( ! utils.isHttpSuccessCode(statusCode) ) {
-						return error(resp);
-					}
-					return openDialog(
-						_DICTIONARY_EDITOR,
-						{'data':		utils.jsonp( utils.jsonp(resp)['data'] ),
-							'ignoreKey':	
-								function(attr) 
-								{
-									return attr != 'name';
-								},
-							'keepEverything':
-								function() 
-								{
-									return __changed(ruleIcon);
-								},
-							'title':'edit '+type+' #'+id+'\'s name'},
-						function(changes) {DataUtils.update(ruleIcon,changes);});
-				}
-			);	
+			ignoreItem = 'name';
+			editDetail = 'name';	
 		}
+		else
+			return;
 	}
 	else if (ruleIcon.toString().includes("QueryIcon"))
 	{
-		HttpUtils.httpReq(
-			'GET',
-			HttpUtils.url(ruleIcon),
-			undefined,
-			function(statusCode,resp)
-			{
-				if( ! utils.isHttpSuccessCode(statusCode) ) {
-					return error(resp);
-				}
-				return openDialog(
-					_DICTIONARY_EDITOR,
-					{'data':		utils.jsonp( utils.jsonp(resp)['data'] ),
-						'ignoreKey':	
-							function(attr) 
-							{
-								return attr != 'name';
-							},
-						'keepEverything':
-							function() 
-							{
-								return __changed(ruleIcon);
-							},
-						'title':'edit '+type+' #'+id+'\'s name'},
-					function(changes) {DataUtils.update(ruleIcon,changes);});
-			}
-		);	
+		ignoreItem = 'name';
+		editDetail = 'name';
 	}
+	else
+		return;
+
+	//Pop up window to edit the rule/query
+	HttpUtils.httpReq(
+		'GET',
+		HttpUtils.url(ruleIcon),
+		undefined,
+		function(statusCode,resp)
+		{
+			if( ! utils.isHttpSuccessCode(statusCode) ) {
+				return error(resp);
+			}
+			return openDialog(
+				_DICTIONARY_EDITOR,
+				{'data':		utils.jsonp( utils.jsonp(resp)['data'] ),
+					'ignoreKey':	
+						function(attr) 
+						{
+							return attr != ignoreItem;
+						},
+					'keepEverything':
+						function() 
+						{
+							return __changed(ruleIcon);
+						},
+					'title':'edit '+type+' #'+id+'\'s ' + editDetail},
+				function(changes) {DataUtils.update(ruleIcon,changes);});
+		}
+	);	
 }
 
 function __createRuleLink(underneathID, latestIconID, target)
 {
+	var connection;
 	for(var edgeI in __icons[target]['edgesIn'])
 	{
-		if (__icons[target]['edgesIn'][edgeI] != undefined && underneathID != undefined) {
+		if (__icons[target]['edgesIn'][edgeI] != undefined && underneathID != undefined) 
+		{
 			if (__icons[target]['edgesIn'][edgeI].toString().includes("lhs"))
 			{
 				var edgeId = __icons[target]['edgesIn'][edgeI].toString().split("-")[0];
 				target = __icons[edgeId]['edgesIn'].toString().split("-")[0];
-				if(__isContainmentLink( latestIconID[0], target))
-				{
-					DataUtils.getInsertConnectionType(
-						underneathID,
-						latestIconID,
-						function(connectionType)
-						{
-							connectionType = "/Formalisms/BlockBasedMDE/BlockBasedMDE.defaultIcons/lhsLink.type";
-							HttpUtils.httpReq(
-									'POST',
-									HttpUtils.url(connectionType,__NO_USERNAME),
-									{'src':target,
-									'dest':latestIconID[0],
-									'pos':[__icons[latestIconID[0]].icon.getAttr('__x'), __icons[latestIconID[0]].icon.getAttr('__y')]
-									});
-
-						}
-						
-					);
-				}
+				connection = "/Formalisms/BlockBasedMDE/BlockBasedMDE.defaultIcons/lhsLink.type";
 			}
 			else if (__icons[target]['edgesIn'][edgeI].toString().includes("rhs"))
 			{
 				var edgeId = __icons[target]['edgesIn'][edgeI].toString().split("-")[0];
 				target = __icons[edgeId]['edgesIn'].toString().split("-")[0];
-				if(__isContainmentLink( latestIconID[0], target))
-				{
-					DataUtils.getInsertConnectionType(
-						underneathID,
-						latestIconID,
-						function(connectionType)
-						{
-							connectionType = "/Formalisms/BlockBasedMDE/BlockBasedMDE.defaultIcons/rhsLink.type";
-							HttpUtils.httpReq(
-									'POST',
-									HttpUtils.url(connectionType,__NO_USERNAME),
-									{'src':target,
-									'dest':latestIconID[0],
-									'pos':[__icons[latestIconID[0]].icon.getAttr('__x'), __icons[latestIconID[0]].icon.getAttr('__y')]
-									});
-
-						}
-						
-					);
-				}
+				connection = "/Formalisms/BlockBasedMDE/BlockBasedMDE.defaultIcons/rhsLink.type";
+			}
+			else
+				return;
+			
+			if(__isContainmentLink( latestIconID[0], target))
+			{
+				DataUtils.getInsertConnectionType(
+					underneathID,
+					latestIconID,
+					function(connectionType)
+					{
+						connectionType = connection;
+						HttpUtils.httpReq(
+								'POST',
+								HttpUtils.url(connectionType,__NO_USERNAME),
+								{'src':target,
+								'dest':latestIconID[0],
+								'pos':[__icons[latestIconID[0]].icon.getAttr('__x'), __icons[latestIconID[0]].icon.getAttr('__y')]
+								});
+					}
+				);
 			}
 		}
 	}
@@ -1783,24 +1707,25 @@ function getUnderneathID() {
 }
 
 function isClickingATile(canvasX, canvasY) 
-{			
+{
 	if( __typeToCreate != undefined && (__typeToCreate.includes("BirdIcon") || __typeToCreate.includes("PigIcon")))
 	{
 		return false;
 	}
 	for(item in __icons) {
-		itemX = Number(__icons[item].icon.getBBox()['x']);
-		itemY = Number(__icons[item].icon.getBBox()['y']);
-		itemWidth = Number(__icons[item].icon.getBBox()['width']);
-		itemHeight = Number(__icons[item].icon.getBBox()['height']);
+		var itemX = Number(__icons[item].icon.getBBox()['x']);
+		var itemY = Number(__icons[item].icon.getBBox()['y']);
+		var itemWidth = Number(__icons[item].icon.getBBox()['width']);
+		var itemHeight = Number(__icons[item].icon.getBBox()['height']);
 		if ((__icons[item].icon.node.getAttribute('id').includes("EmptyIcon") 
 						|| __icons[item].icon.node.getAttribute('id').includes("TileIcon"))
 						&& canvasX >= itemX 
-						&& canvasX <= itemX + 48
+						&& canvasX <= itemX + itemWidth
 						&& canvasY >= itemY 
-						&& canvasY <= itemY + 48
-						&& ConnectionUtils.getConnectionPath() != undefined
-						&& ConnectionUtils.getConnectionPath().getTotalLength() <= 15)
+						&& canvasY <= itemY + itemHeight
+						&& (ConnectionUtils.getConnectionPath() != undefined
+						&& ConnectionUtils.getConnectionPath().getTotalLength() <= 15
+						|| __selection != undefined))
 		{
 			return true;
 		}
@@ -1809,9 +1734,9 @@ function isClickingATile(canvasX, canvasY)
 						(__icons[item].icon.node.getAttribute('id').includes("RuleIcon") 
 						|| __icons[item].icon.node.getAttribute('id').includes("QueryIcon"))
 						&& canvasX >= itemX 
-						&& canvasX <= itemX + 620 
+						&& canvasX <= itemX + itemWidth 
 						&& canvasY >= itemY 
-						&& canvasY <= itemY + 285
+						&& canvasY <= itemY + itemHeight
 						&& ConnectionUtils.getConnectionPath() != undefined
 						&& ConnectionUtils.getConnectionPath().getTotalLength() <= 15)
 		{
@@ -1834,15 +1759,11 @@ function __deleteLinksOnMove(rule)
 		for(var edgeI in __icons[toKeep[0]]['edgesIn'])
 		{
 			edgeIdToRemove = __icons[toKeep[0]]['edgesIn'][edgeI].toString().split("-")[0];
-			toDelete.push(__icons[edgeIdToRemove]['edgesOut'][0]);
-			toDelete.push(__icons[edgeIdToRemove]['edgesIn'][0]);
 			toDelete.push(edgeIdToRemove);
 		}
 		for(var edgeO in __icons[toKeep[0]]['edgesOut'])
 		{
 			edgeIdToRemove = __icons[toKeep[0]]['edgesOut'][edgeO].toString().split("-")[2];
-			toDelete.push(__icons[edgeIdToRemove]['edgesOut'][0]);
-			toDelete.push(__icons[edgeIdToRemove]['edgesIn'][0]);
 			toDelete.push(edgeIdToRemove);
 		}
 	}
@@ -1851,8 +1772,6 @@ function __deleteLinksOnMove(rule)
 		for(var edgeI in __icons[toKeep[0]]['edgesIn'])
 		{
 			edgeIdToRemove = __icons[toKeep[0]]['edgesIn'][edgeI].toString().split("-")[0];
-			toDelete.push(__icons[edgeIdToRemove]['edgesOut'][0]);
-			toDelete.push(__icons[edgeIdToRemove]['edgesIn'][0]);
 			toDelete.push(edgeIdToRemove);
 		}
 		for(var edgeO in __icons[toKeep[0]]['edgesOut'])
@@ -1860,24 +1779,18 @@ function __deleteLinksOnMove(rule)
 			if(!__icons[toKeep[0]]['edgesOut'][edgeO].toString().includes("hs"))
 			{
 				edgeIdToRemove = __icons[toKeep[0]]['edgesOut'][edgeO].toString().split("-")[2];
-				toDelete.push(__icons[edgeIdToRemove]['edgesOut'][0]);
-				toDelete.push(__icons[edgeIdToRemove]['edgesIn'][0]);
 				toDelete.push(edgeIdToRemove);
 			}
 		}
 	}
-	if(toDelete.length != 0)
-	{
-		__select(toDelete);
-		DataUtils.del();
-		__select(toKeep);
-	}
+	__grabEdgesAndDelete(toDelete);
+	__select(toKeep);
 }
 
 function __moveRuleChain(orig, origIn, origInBBox, ruleChain)
 {
 	//Get the height of origIn and adjust appropriately
-	height = origInBBox['height'] - 32.5;
+	var height = origInBBox['height'] - 32.5;
 
 	//xOffset for proper placement later
 	var xOffset = 0;
@@ -1885,13 +1798,13 @@ function __moveRuleChain(orig, origIn, origInBBox, ruleChain)
 		xOffset = 35;
 	
 	//Rule we are moving another rule under
-	origNewX = origInBBox['x'];
-	origNewY = origInBBox['y'] + 252.5;
-	origBBox = {'x': origInBBox['x'] - xOffset, 'y': origInBBox['y'] + height, 'height': __icons[orig].icon.getBBox()['height']};
+	var origNewX = origInBBox['x'];
+	var origNewY = origInBBox['y'] + 252.5;
+	var origBBox = {'x': origInBBox['x'] - xOffset, 'y': origInBBox['y'] + height, 'height': __icons[orig].icon.getBBox()['height']};
 
 	//Rule that we are moving
-	origX = __icons[orig].icon.getBBox()['x'];
-	origY = __icons[orig].icon.getBBox()['y'];
+	var origX = __icons[orig].icon.getBBox()['x'];
+	var origY = __icons[orig].icon.getBBox()['y'];
 
 	//If spot we're moving to has only one empty space, the chain does not drag any underneath rules and function ends
 	var emptySpace = true;
@@ -1903,7 +1816,7 @@ function __moveRuleChain(orig, origIn, origInBBox, ruleChain)
 					&& ( id.includes("RuleIcon") || id.includes("QueryIcon") ))) 
 		{
 			emptySpace = false;
-			edgesToRemove = [];
+			var edgesToRemove = [];
 			for (edgeO in __icons[orig].edgesOut)
 				if (__icons[orig]['edgesOut'][edgeO].toString().includes("next")
 								|| __icons[orig]['edgesOut'][edgeO].toString().includes("exit")
@@ -1911,21 +1824,8 @@ function __moveRuleChain(orig, origIn, origInBBox, ruleChain)
 								|| __icons[orig]['edgesOut'][edgeO].toString().includes("fail"))
 					edgesToRemove.push(__icons[orig]['edgesOut'][edgeO].toString().split("-")[2]);
 
-			for (var uri in edgesToRemove) {
-				if (__isConnectionType(edgesToRemove[uri])) {
-					for (var edgeI in __icons[edgesToRemove[uri]]['edgesIn'])
-						edgesToRemove.push(__icons[edgesToRemove[uri]]['edgesIn'][edgeI]);
-					for (var edgeO in __icons[edgesToRemove[uri]]['edgesOut'])
-						edgesToRemove.push(__icons[edgesToRemove[uri]]['edgesOut'][edgeO]);
-				}
-			}
+			__grabEdgesAndDelete(edgesToRemove);
 			
-			if (edgesToRemove.length > 0) {
-				__select();
-				__select(edgesToRemove);
-				DataUtils.del();
-				__select();
-			}
 			if(orig != id)
 				__createVisualLink(orig, id, false);
 		}
@@ -1935,8 +1835,8 @@ function __moveRuleChain(orig, origIn, origInBBox, ruleChain)
 	//This only applies when moving one rule icon underneath the icon that was originally below it
 	for (var edgeI in __icons[origIn].edgesIn)
 	{
-		edgeId = __icons[origIn].edgesIn[edgeI].toString().split("-")[0];
-		icon = __icons[edgeId]['edgesIn'].toString().split("-")[0];
+		var edgeId = __icons[origIn].edgesIn[edgeI].toString().split("-")[0];
+		var icon = __icons[edgeId]['edgesIn'].toString().split("-")[0];
 		if (orig == icon)
 		{
 			return;
@@ -1945,8 +1845,8 @@ function __moveRuleChain(orig, origIn, origInBBox, ruleChain)
 		
 	for(var edgeO in __icons[orig].edgesOut)
 	{
-		edgeId = __icons[orig]['edgesOut'][edgeO].toString().split("-")[2];
-		icon = __icons[edgeId]['edgesOut'].toString().split("-")[2];
+		var edgeId = __icons[orig]['edgesOut'][edgeO].toString().split("-")[2];
+		var icon = __icons[edgeId]['edgesOut'].toString().split("-")[2];
 
 		//When origIn is not a query, move an item (and items in/under it)
 		if (!origIn.includes("QueryIcon"))
@@ -1965,12 +1865,12 @@ function __moveRuleChain(orig, origIn, origInBBox, ruleChain)
 			else if (icon.includes("TileIcon") || icon.includes("EmptyIcon") || icon.includes("BirdIcon") || icon.includes("PigIcon"))
 			{
 				//Get Icons original location
-				iconX = __icons[icon].icon.getBBox()['x'];
-				iconY = __icons[icon].icon.getBBox()['y'];
+				var iconX = __icons[icon].icon.getBBox()['x'];
+				var iconY = __icons[icon].icon.getBBox()['y'];
 
 				//Get Icons original location relative to Rule's original location
-				posX = iconX - origX - 8;
-				posY = iconY - origY - 8;
+				var posX = iconX - origX - 8;
+				var posY = iconY - origY - 8;
 
 				DataUtils.update(icon, {position: [origNewX + posX - xOffset, origNewY + posY]});
 			}
@@ -2001,12 +1901,12 @@ function __moveRuleChain(orig, origIn, origInBBox, ruleChain)
 				else if (icon.includes("TileIcon") || icon.includes("EmptyIcon") || icon.includes("BirdIcon") || icon.includes("PigIcon"))
 				{
 					//Get Icons original location
-					iconX = __icons[icon].icon.getBBox()['x'];
-					iconY = __icons[icon].icon.getBBox()['y'];
+					var iconX = __icons[icon].icon.getBBox()['x'];
+					var iconY = __icons[icon].icon.getBBox()['y'];
 
 					//Get Icons original location relative to Rule's original location
-					posX = iconX - origX - 8;
-					posY = iconY - origY - 8;
+					var posX = iconX - origX - 8;
+					var posY = iconY - origY - 8;
 	
 					DataUtils.update(icon, {position: [origNewX + 272.5 + posX - xOffset, origNewY + posY]});
 				}
@@ -2015,20 +1915,22 @@ function __moveRuleChain(orig, origIn, origInBBox, ruleChain)
 	}
 }
 
+//When using right-click to connect a query's success side and a rule,
+//this creates the icons and then the links
 function __createSuccessLink(source, target)
 {
-	ruleExit = "/Formalisms/BlockBasedMDE/BlockBasedMDE.defaultIcons/RuleExitIcon";
-	ruleEntry = "/Formalisms/BlockBasedMDE/BlockBasedMDE.defaultIcons/RuleEntryIcon";
-	ruleEntryType = "/Formalisms/BlockBasedMDE/BlockBasedMDE.defaultIcons/EntryLink.type";
-	sameConnectorType = "/Formalisms/BlockBasedMDE/BlockBasedMDE.defaultIcons/SameConnectorLink.type";
-	entry = '';
-	exit = '';
+	var ruleExit =          "/Formalisms/BlockBasedMDE/BlockBasedMDE.defaultIcons/RuleExitIcon";
+	var ruleEntry =         "/Formalisms/BlockBasedMDE/BlockBasedMDE.defaultIcons/RuleEntryIcon";
+	var ruleEntryType =     "/Formalisms/BlockBasedMDE/BlockBasedMDE.defaultIcons/EntryLink.type";
+	var sameConnectorType = "/Formalisms/BlockBasedMDE/BlockBasedMDE.defaultIcons/SameConnectorLink.type";
+	var entry = '';
+	var exit = '';
 
-	sourceX = __icons[source].icon.getBBox()['x'];
-	sourceY = __icons[source].icon.getBBox()['y'];
+	var sourceX = __icons[source].icon.getBBox()['x'];
+	var sourceY = __icons[source].icon.getBBox()['y'];
 
-	targetX = __icons[target].icon.getBBox()['x'];
-	targetY = __icons[target].icon.getBBox()['y'];
+	var targetX = __icons[target].icon.getBBox()['x'];
+	var targetY = __icons[target].icon.getBBox()['y'];
 
 	__newIcon(sourceX + 38, sourceY + 260, ruleExit);
 	__newIcon(targetX + 25, targetY - 30, ruleEntry);
@@ -2056,15 +1958,9 @@ function __createSuccessLink(source, target)
 
 	setTimeout(function() {__manualLink(entry, target, ruleEntryType)}, 50);
 	setTimeout(function() {__manualLink(exit, entry, sameConnectorType)}, 50);
-	/*setTimeout(function() {
-		for (edgeI in __icons[entry].edgesIn) {
-			edgeToMove = __icons[entry]['edgesIn'][edgeI].toString().split("-")[0];
-			DataUtils.update(edge, {position: [__icons[exit].icon.getBBox()['x'], __icons[exit].icon.getBBox()['y']]});
-		}
-	}, 400);*/
-	
 }
 
+//Create a new Icon that is not the __typeToCreate
 function __newIcon(x,y,type) {
 	var typeToReplace = __typeToCreate
 	__typeToCreate = type
@@ -2072,13 +1968,43 @@ function __newIcon(x,y,type) {
 	__typeToCreate = typeToReplace
 }
 
-function __manualLink(source, target, type) {
+//Manually create a link if you know the type to create
+//posChoice: when not specified, will set 'pos' to use the source's pos
+  // but will use the specified posChoice otherwise
+function __manualLink(source, target, type, posChoice) {
+	if (posChoice == undefined)
+		posChoice = source
 	HttpUtils.httpReq(
 		'POST',
 		HttpUtils.url(type, __NO_USERNAME),
 		{
 			'src': source,
 			'dest': target,
-			'pos': [__icons[source].icon.getAttr('__x'), __icons[source].icon.getAttr('__y')]
-		});
+			'pos': [__icons[posChoice].icon.getAttr('__x'), __icons[posChoice].icon.getAttr('__y')]
+		}
+	);
+}
+
+//Input: a list [] of edge icons to delete, gotten from the edgesIn or edgesOut of an icon
+//If ifDelete is false, does not delete and instead returns the new list
+function __grabEdgesAndDelete(edgesToRemove, ifDelete) {
+	if (ifDelete == undefined)
+		ifDelete = true;
+	for (var uri in edgesToRemove) {
+		if (__isConnectionType(edgesToRemove[uri])) {
+			for (var edgeI in __icons[edgesToRemove[uri]]['edgesIn'])
+				edgesToRemove.push(__icons[edgesToRemove[uri]]['edgesIn'][edgeI]);
+			for (var edgeO in __icons[edgesToRemove[uri]]['edgesOut'])
+				edgesToRemove.push(__icons[edgesToRemove[uri]]['edgesOut'][edgeO]);
+		}
+	}
+	
+	if (edgesToRemove.length > 0 && ifDelete) {
+		__select();
+		__select(edgesToRemove);
+		DataUtils.del();
+		__select();
+	}
+	else
+		return edgesToRemove;
 }

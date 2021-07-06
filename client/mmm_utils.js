@@ -395,21 +395,7 @@ function resetMaze() {
 		}
 	}
 
-	for (var uri in edgesToRemove) {
-		if (__isConnectionType(edgesToRemove[uri])) {
-			for (var edgeI in __icons[edgesToRemove[uri]]['edgesIn'])
-				edgesToRemove.push(__icons[edgesToRemove[uri]]['edgesIn'][edgeI]);
-			for (var edgeO in __icons[edgesToRemove[uri]]['edgesOut'])
-				edgesToRemove.push(__icons[edgesToRemove[uri]]['edgesOut'][edgeO]);
-		}
-	}
-	
-	if (edgesToRemove.length > 0) {
-		__select();
-		__select(edgesToRemove);
-		DataUtils.del();
-		__select();
-	}
+	__grabEdgesAndDelete(edgesToRemove);
 	
 	//Creating New Bird and Pig Icons
 	__newIcon(pigX, pigY, "/Formalisms/Bird/Bird.defaultIcons/PigIcon");
