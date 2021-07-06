@@ -470,15 +470,7 @@ WindowManagement = function(){
 				if (legalConnections.length == 2 &&
 								__icons[args['uri1']].icon.node.getAttribute('__csuri').includes("RuleIcon")) 
 				{
-					if(GeometryUtils.getOverlay() != undefined) {
-						var canvasX = GUIUtils.convertToCanvasX(event);
-						var overlayX = GeometryUtils.getOverlay().node.getAttribute('x');
-						var overlayX0 = GeometryUtils.getOverlay().node.getAttribute('_x0');
-						var dropPosition = canvasX - (overlayX0 - overlayX);
-
-					} else {
-						var dropPosition = Number(__icons[args['uri2']].icon.getAttr('__x'));
-					}
+					var dropPosition = __getDropPosition(args['uri2'])[0];
 											
 					var ruleX = __icons[args['uri1']].icon.node.getAttribute('__x');
 					var edgeIdToRemove;

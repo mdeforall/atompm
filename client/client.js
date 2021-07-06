@@ -1166,6 +1166,7 @@ function __changeFacing(uri)
 			);
 	}
 }
+
 function __changeTileType(uri, previousTile)
 {
 	if(__IconType(uri)=="/TileIcon")
@@ -1216,54 +1217,54 @@ function __changeTileType(uri, previousTile)
 function __createIconInDirectionESWN()
 {
 	if (__selection.items.length == 1) {
-		item = __selection.items[0];
+		var item = __selection.items[0];
+		var translateNumber = 0;
+		var formalismType = "/Formalisms/";
 
 		if (__IconType(item) == "/EmptyIcon" || __IconType(item) == "/TileIcon") {
-			if (__typeToCreate == "/Formalisms/Bird/Bird.defaultIcons/EmptyIcon" || __typeToCreate == "/Formalisms/Bird/Bird.defaultIcons/TileIcon") {
+			if (__typeToCreate == "/Formalisms/Bird/Bird.defaultIcons/EmptyIcon" || __typeToCreate == "/Formalisms/Bird/Bird.defaultIcons/TileIcon") 
+			{
 				SelectedItems = __selection.items;
-				if (Key_E_S_W_N == 'E') {
-					ESconnection.push("/Formalisms/Bird/Bird.defaultIcons/east");
-					DataUtils.create(Number(__icons[item].icon.node.getAttribute('__x')) + 47.5, Number(__icons[item].icon.node.getAttribute('__y')));
-				}
-				else if (Key_E_S_W_N == 'S') {
-					ESconnection.push("/Formalisms/Bird/Bird.defaultIcons/south");
-					DataUtils.create(Number(__icons[item].icon.node.getAttribute('__x')), Number(__icons[item].icon.node.getAttribute('__y')) + 47.5);
-				}
-				else if (Key_E_S_W_N == 'N') {
-					ESconnection.push("/Formalisms/Bird/Bird.defaultIcons/south");
-					DataUtils.create(Number(__icons[item].icon.node.getAttribute('__x')), Number(__icons[item].icon.node.getAttribute('__y')) - 47.5);
-				}
-				else if (Key_E_S_W_N == 'W') {
-					ESconnection.push("/Formalisms/Bird/Bird.defaultIcons/east");
-					DataUtils.create(Number(__icons[item].icon.node.getAttribute('__x')) - 47.5, Number(__icons[item].icon.node.getAttribute('__y')));
-				}
-
+				translateNumber = 47.5;
+				formalismType += "Bird/Bird.defaultIcons/";
 			}
 			else
 				Key_E_S_W_N = null;
 
 		}
-		else if (__IconType(item) == "/CellIcon" && __typeToCreate == "/Formalisms/Maze/Maze.defaultIcons/CellIcon") {
+		else if (__IconType(item) == "/CellIcon" && __typeToCreate == "/Formalisms/Maze/Maze.defaultIcons/CellIcon") 
+		{
 			SelectedItems = __selection.items;
-			if (Key_E_S_W_N == 'E') {
-				ESconnection.push("/Formalisms/Maze/Maze.defaultIcons/east");
-				DataUtils.create(Number(__icons[item].icon.node.getAttribute('__x')) + 51, Number(__icons[item].icon.node.getAttribute('__y')));
-			}
-			else if (Key_E_S_W_N == 'S') {
-				ESconnection.push("/Formalisms/Maze/Maze.defaultIcons/south");
-				DataUtils.create(Number(__icons[item].icon.node.getAttribute('__x')), Number(__icons[item].icon.node.getAttribute('__y')) + 51);
-			}
-			else if (Key_E_S_W_N == 'N') {
-				ESconnection.push("/Formalisms/Maze/Maze.defaultIcons/south");
-				DataUtils.create(Number(__icons[item].icon.node.getAttribute('__x')), Number(__icons[item].icon.node.getAttribute('__y')) - 51);
-			}
-			else if (Key_E_S_W_N == 'W') {
-				ESconnection.push("/Formalisms/Maze/Maze.defaultIcons/east");
-				DataUtils.create(Number(__icons[item].icon.node.getAttribute('__x')) - 51, Number(__icons[item].icon.node.getAttribute('__y')));
-			}
+			translateNumber = 51;
+			formalismType += "Maze/Maze.defaultIcons/";
 		}
 		else
+		{
 			Key_E_S_W_N = null;
+			return;
+		}
+		
+
+		if (Key_E_S_W_N == 'E') 
+		{
+			ESconnection.push(formalismType + "east");
+			DataUtils.create(Number(__icons[item].icon.node.getAttribute('__x')) + translateNumber, Number(__icons[item].icon.node.getAttribute('__y')));
+		}
+		else if (Key_E_S_W_N == 'S') 
+		{
+			ESconnection.push(formalismType + "south");
+			DataUtils.create(Number(__icons[item].icon.node.getAttribute('__x')), Number(__icons[item].icon.node.getAttribute('__y')) + translateNumber);
+		}
+		else if (Key_E_S_W_N == 'N') 
+		{
+			ESconnection.push(formalismType + "south");
+			DataUtils.create(Number(__icons[item].icon.node.getAttribute('__x')), Number(__icons[item].icon.node.getAttribute('__y')) - translateNumber);
+		}
+		else if (Key_E_S_W_N == 'W') 
+		{
+			ESconnection.push(formalismType + "east");
+			DataUtils.create(Number(__icons[item].icon.node.getAttribute('__x')) - translateNumber, Number(__icons[item].icon.node.getAttribute('__y')));
+		}
 	}
 }
 
@@ -1272,23 +1273,8 @@ function __createIconInDirectionESWN()
  */
 function __findSurroundingIconsAndConnect(uri, origConnect, chain=undefined)
 {
-	if(GeometryUtils.getOverlay() != undefined)
-	{
-		var canvasX = GUIUtils.convertToCanvasX(event);
-		var overlayX = GeometryUtils.getOverlay().node.getAttribute('x');
-		var overlayX0 = GeometryUtils.getOverlay().node.getAttribute('_x0');
-		var dropPositionX = Number(canvasX - (overlayX0 - overlayX));
-
-		var canvasY = GUIUtils.convertToCanvasY(event);
-		var overlayY = GeometryUtils.getOverlay().node.getAttribute('y');
-		var overlayY0 = GeometryUtils.getOverlay().node.getAttribute('_y0');
-		var dropPositionY = Number(canvasY - (overlayY0 - overlayY));
-	} else 
-	{
-		var dropPositionX = Number(__icons[uri].icon.getAttr('__x'));
-		var dropPositionY = Number(__icons[uri].icon.getAttr('__y'));
-	}
-
+	var dropPositionX = __getDropPosition(uri)[0];
+	var dropPositionY = __getDropPosition(uri)[1];
 
 	for (var item in __icons) 
 	{
@@ -1676,7 +1662,7 @@ function __createRuleLink(underneathID, latestIconID, target)
 			else
 				return;
 			
-			if(__isContainmentLink( latestIconID[0], target))
+			if(__isContainmentLink( latestIconID[0], target ))
 			{
 				DataUtils.getInsertConnectionType(
 					underneathID,
@@ -1753,7 +1739,7 @@ function __deleteLinksOnMove(rule)
 		var toKeep = [rule];
 	else
 		var toKeep = [__selection.items[0]];
-	if (toKeep[0].includes("TileIcon") || toKeep[0].includes("EmptyIcon"))
+	if (toKeep[0].includes("TileIcon") || toKeep[0].includes("EmptyIcon") || toKeep[0].includes("BirdIcon") || toKeep[0].includes("PigIcon"))
 		{
 
 		for(var edgeI in __icons[toKeep[0]]['edgesIn'])
@@ -2007,4 +1993,26 @@ function __grabEdgesAndDelete(edgesToRemove, ifDelete) {
 	}
 	else
 		return edgesToRemove;
+}
+
+function __getDropPosition(uri)
+{
+	if(GeometryUtils.getOverlay() != undefined)
+	{
+		var canvasX = GUIUtils.convertToCanvasX(event);
+		var overlayX = GeometryUtils.getOverlay().node.getAttribute('x');
+		var overlayX0 = GeometryUtils.getOverlay().node.getAttribute('_x0');
+		var dropPositionX = Number(canvasX - (overlayX0 - overlayX));
+
+		var canvasY = GUIUtils.convertToCanvasY(event);
+		var overlayY = GeometryUtils.getOverlay().node.getAttribute('y');
+		var overlayY0 = GeometryUtils.getOverlay().node.getAttribute('_y0');
+		var dropPositionY = Number(canvasY - (overlayY0 - overlayY));
+	} else 
+	{
+		var dropPositionX = Number(__icons[uri].icon.getAttr('__x'));
+		var dropPositionY = Number(__icons[uri].icon.getAttr('__y'));
+	}
+
+	return [dropPositionX, dropPositionY];
 }

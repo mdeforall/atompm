@@ -376,15 +376,8 @@ __canvasBehaviourStatechart = {
 								var itemX = Number(__icons[item].icon.node.getAttribute('__x'));
 								var itemY = Number(__icons[item].icon.node.getAttribute('__y'));
 
-								var canvasX = GUIUtils.convertToCanvasX(event);
-								var overlayX = GeometryUtils.getOverlay().node.getAttribute('x');
-								var overlayX0 = GeometryUtils.getOverlay().node.getAttribute('_x0');
-								var dropPositionX = canvasX - (overlayX0 - overlayX);
-
-								var canvasY = GUIUtils.convertToCanvasY(event);
-								var overlayY = GeometryUtils.getOverlay().node.getAttribute('y');
-								var overlayY0 = GeometryUtils.getOverlay().node.getAttribute('_y0');
-								var dropPositionY = canvasY - (overlayY0 - overlayY);
+								var dropPositionX = __getDropPosition(__selection.items[0])[0];
+								var dropPositionY = __getDropPosition(__selection.items[0])[1];
 
 								if(itemX <= dropPositionX 
 												&& dropPositionX <= itemX + 40 
