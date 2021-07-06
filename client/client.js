@@ -1992,7 +1992,7 @@ function __moveRuleChain(orig, origIn, origInBBox, ruleChain)
 					{
 						DataUtils.update(icon, {position: [origNewX + 272.5 - xOffset, origNewY + height + 1]});
 						origBBox['x'] = origNewX + 272.5 - xOffset;
-						
+
 						__deleteLinksOnMove(icon);
 						__createVisualLink(orig, icon, false);
 						__moveRuleChain(icon, orig, origBBox);
@@ -2008,7 +2008,7 @@ function __moveRuleChain(orig, origIn, origInBBox, ruleChain)
 					posX = iconX - origX - 8;
 					posY = iconY - origY - 8;
 	
-					DataUtils.update(icon, {position: [origNewX + posX - xOffset, origNewY + posY]});
+					DataUtils.update(icon, {position: [origNewX + 272.5 + posX - xOffset, origNewY + posY]});
 				}
 			}
 		}
