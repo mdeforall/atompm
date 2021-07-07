@@ -206,96 +206,96 @@ module.exports = {
 		{	
 			this.__setStepCheckpoint();
 
-			var metamodel = this.__getMetamodel(connectorType),
-				 t1 		  = this.__getType(this.model.nodes[id1]['$type']),
-				 t2		  = this.__getType(this.model.nodes[id2]['$type']),
-				 tc 		  = this.__getType(connectorType),
-				 into		  = (t1 == tc ? t2 : tc),
-				 from		  = (t2 == tc ? t1 : tc),
-				 card_into = undefined,
-				 card_from = undefined,
-				 num_id1to = 0,
-				 num_toid2 = 0,
-				 self		  = this;
+				var metamodel = this.__getMetamodel(connectorType),
+					t1 		  = this.__getType(this.model.nodes[id1]['$type']),
+					t2		  = this.__getType(this.model.nodes[id2]['$type']),
+					tc 		  = this.__getType(connectorType),
+					into		  = (t1 == tc ? t2 : tc),
+					from		  = (t2 == tc ? t1 : tc),
+					card_into = undefined,
+					card_from = undefined,
+					num_id1to = 0,
+					num_toid2 = 0,
+					self		  = this;
 
-			[t1,'$*','__p$*'].some(
-					function(t)
-					{
-						for( var i in self.metamodels[metamodel]['cardinalities'][t] )
+				[t1,'$*','__p$*'].some(
+						function(t)
 						{
-							var cardinality = self.metamodels[metamodel]['cardinalities'][t][i];
-							if( cardinality['type'] == into && cardinality['dir'] == 'out' )
+							for( var i in self.metamodels[metamodel]['cardinalities'][t] )
 							{
-								card_into = cardinality;
-								return true;
+								var cardinality = self.metamodels[metamodel]['cardinalities'][t][i];
+								if( cardinality['type'] == into && cardinality['dir'] == 'out' )
+								{
+									card_into = cardinality;
+									return true;
+								}
 							}
-						}
-					});
+						});
 
-			[t2,'$*','__p$*'].some(
-					function(t)
-					{
-						for( var i in self.metamodels[metamodel]['cardinalities'][t] )
+				[t2,'$*','__p$*'].some(
+						function(t)
 						{
-							var cardinality = self.metamodels[metamodel]['cardinalities'][t][i];
-							if( cardinality['type'] == from && cardinality['dir'] == 'in' )
+							for( var i in self.metamodels[metamodel]['cardinalities'][t] )
 							{
-								card_from = cardinality;
-								return true;
+								var cardinality = self.metamodels[metamodel]['cardinalities'][t][i];
+								if( cardinality['type'] == from && cardinality['dir'] == 'in' )
+								{
+									card_from = cardinality;
+									return true;
+								}
 							}
-						}
-					});
+						});
 
-			if( card_into == undefined || card_from == undefined )
-				return {'$err':'can not connect types '+t1+' and '+t2};
-			else if( card_into['max'] == 0 )
-				return {'$err':'maximum outbound multiplicity reached for '+t1+' ('+id1+') and type '+into};
-			else if( card_from['max'] == 0 )
-				return {'$err':'maximum inbound multiplicity reached for '+t2+' ('+id2+') and type '+from};
-
-			for( var i in this.model.edges )
-			{
-				var edge = this.model.edges[i];
-				if( edge['src'] == id1 && 
-					 this.__getType(this.model.nodes[edge['dest']]['$type']) == into &&
-					 ++num_id1to >= card_into['max'] )
+				if( card_into == undefined || card_from == undefined )
+					return {'$err':'can not connect types '+t1+' and '+t2};
+				else if( card_into['max'] == 0 )
 					return {'$err':'maximum outbound multiplicity reached for '+t1+' ('+id1+') and type '+into};
-
-				if( edge['dest'] == id2 && 
-					 this.__getType(this.model.nodes[edge['src']]['$type']) == from &&
-					 ++num_toid2 >= card_from['max'] )
+				else if( card_from['max'] == 0 )
 					return {'$err':'maximum inbound multiplicity reached for '+t2+' ('+id2+') and type '+from};
-			}
-			
-			if( t1 == tc || t2 == tc )
-			{
-				var connectorId = (t1 == tc ? id1 : id2),
- 					 err = this.__crudOp(
-						metamodel,
-						['connect'],
-						[id1,id2],
-						'__connectCN',
-						{'id1':id1,
-  						 'id2':id2,
-						 'connectorId':connectorId});
-				return err || 
-					 {'id':connectorId,
-					  'changelog':this.__changelog()};
-			}
-			else
-			{
-				var err = this.__crudOp(
-						metamodel,
-						['create'],
-						[this.next_id],
-						'__connectNN',
-						{'id1':id1,
-						 'id2':id2,
- 						 'connectorType':connectorType,
-						 'attrs':attrs});
-				return err || 
-					 {'id':this.next_id++,
-					  'changelog':this.__changelog()};
+
+				for( var i in this.model.edges )
+				{
+					var edge = this.model.edges[i];
+					if( edge['src'] == id1 && 
+						this.__getType(this.model.nodes[edge['dest']]['$type']) == into &&
+						++num_id1to >= card_into['max'] )
+						return {'$err':'maximum outbound multiplicity reached for '+t1+' ('+id1+') and type '+into};
+
+					if( edge['dest'] == id2 && 
+						this.__getType(this.model.nodes[edge['src']]['$type']) == from &&
+						++num_toid2 >= card_from['max'] )
+						return {'$err':'maximum inbound multiplicity reached for '+t2+' ('+id2+') and type '+from};
+				}
+				
+				if( t1 == tc || t2 == tc )
+				{
+					var connectorId = (t1 == tc ? id1 : id2),
+						err = this.__crudOp(
+							metamodel,
+							['connect'],
+							[id1,id2],
+							'__connectCN',
+							{'id1':id1,
+							'id2':id2,
+							'connectorId':connectorId});
+					return err || 
+						{'id':connectorId,
+						'changelog':this.__changelog()};
+				}
+				else
+				{
+					var err = this.__crudOp(
+							metamodel,
+							['create'],
+							[this.next_id],
+							'__connectNN',
+							{'id1':id1,
+							'id2':id2,
+							'connectorType':connectorType,
+							'attrs':attrs});
+					return err || 
+						{'id':this.next_id++,
+						'changelog':this.__changelog()};
 
 			}
 		},
