@@ -2860,7 +2860,7 @@
 				},
 				"code": {
 					"type": "code",
-					"value": "window.open(\"http://localhost:8124/atompm\")\n"
+					"value": "window.open(\"http://\" + self.location.hostname + \":\" + self.location.port + \"/atompm\")\n"
 				},
 				"$type": "/Formalisms/__Utilities__/Buttons/Buttons/Button"
 			},

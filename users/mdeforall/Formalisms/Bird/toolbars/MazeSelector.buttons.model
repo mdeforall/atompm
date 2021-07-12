@@ -2526,7 +2526,10 @@
 		"metamodels": [
 			"/Formalisms/__Utilities__/Buttons/Buttons.defaultIcons",
 			"/Formalisms/Bird/Bird.defaultIcons",
-			"/Formalisms/BlockBasedMDE/BlockBasedMDE.defaultIcons"
+			"/Formalisms/BlockBasedMDE/BlockBasedMDE.defaultIcons",
+			"/Formalisms/__LanguageSyntax__/ConcreteSyntax/ConcreteSyntax.defaultIcons",
+			"/Formalisms/__LanguageSyntax__/SimpleClassDiagram/SimpleClassDiagram.defaultIcons",
+			"/Formalisms/SCCD/SCCD.defaultIcons"
 		]
 	},
 	"asm": {
@@ -2557,7 +2560,7 @@
 				},
 				"code": {
 					"type": "code",
-					"value": "window.open(\"http://localhost:8124/atompm?fname=/Formalisms/Bird/hoc/puzzle1.model\", \"_self\");\n"
+					"value": "window.open(\"http://\" + self.location.hostname + \":\" + self.location.port + \"/atompm?fname=/Formalisms/Bird/hoc/puzzle1.model\", \"_self\");\n"
 				},
 				"$type": "/Formalisms/__Utilities__/Buttons/Buttons/Button"
 			},
@@ -2572,7 +2575,7 @@
 				},
 				"code": {
 					"type": "code",
-					"value": "window.open(\"http://localhost:8124/atompm?fname=/Formalisms/Bird/hoc/puzzle2.model\", \"_self\");\n"
+					"value": "window.open(\"http://\" + self.location.hostname + \":\" + self.location.port + \"/atompm?fname=/Formalisms/Bird/hoc/puzzle2.model\", \"_self\");\n"
 				},
 				"$type": "/Formalisms/__Utilities__/Buttons/Buttons/Button"
 			},
@@ -2587,7 +2590,7 @@
 				},
 				"code": {
 					"type": "code",
-					"value": "window.open(\"http://localhost:8124/atompm?fname=/Formalisms/Bird/hoc/puzzle3.model\", \"_self\");"
+					"value": "window.open(\"http://\" + self.location.hostname + \":\" + self.location.port + \"/atompm?fname=/Formalisms/Bird/hoc/puzzle3.model\", \"_self\");"
 				},
 				"$type": "/Formalisms/__Utilities__/Buttons/Buttons/Button"
 			},
@@ -2602,7 +2605,7 @@
 				},
 				"code": {
 					"type": "code",
-					"value": "window.open(\"http://localhost:8124/atompm?fname=/Formalisms/Bird/hoc/puzzle4.model\", \"_self\");"
+					"value": "window.open(\"http://\" + self.location.hostname + \":\" + self.location.port + \"/atompm?fname=/Formalisms/Bird/hoc/puzzle4.model\", \"_self\");"
 				},
 				"$type": "/Formalisms/__Utilities__/Buttons/Buttons/Button"
 			},
@@ -2617,7 +2620,7 @@
 				},
 				"code": {
 					"type": "code",
-					"value": "window.open(\"http://localhost:8124/atompm?fname=/Formalisms/Bird/hoc/puzzle5.model\", \"_self\");"
+					"value": "window.open(\"http://\" + self.location.hostname + \":\" + self.location.port + \"/atompm?fname=/Formalisms/Bird/hoc/puzzle5.model\", \"_self\");"
 				},
 				"$type": "/Formalisms/__Utilities__/Buttons/Buttons/Button"
 			},
@@ -2632,7 +2635,7 @@
 				},
 				"code": {
 					"type": "code",
-					"value": "window.open(\"http://localhost:8124/atompm?fname=/Formalisms/Bird/hoc/puzzle6.model\", \"_self\");"
+					"value": "window.open(\"http://\" + self.location.hostname + \":\" + self.location.port + \"/atompm?fname=/Formalisms/Bird/hoc/puzzle6.model\", \"_self\");"
 				},
 				"$type": "/Formalisms/__Utilities__/Buttons/Buttons/Button"
 			},
@@ -2647,7 +2650,7 @@
 				},
 				"code": {
 					"type": "code",
-					"value": "window.open(\"http://localhost:8124/atompm?fname=/Formalisms/Bird/hoc/puzzle7.model\", \"_self\");"
+					"value": "window.open(\"http://\" + self.location.hostname + \":\" + self.location.port + \"/atompm?fname=/Formalisms/Bird/hoc/puzzle7.model\", \"_self\");"
 				},
 				"$type": "/Formalisms/__Utilities__/Buttons/Buttons/Button"
 			},
@@ -2662,7 +2665,7 @@
 				},
 				"code": {
 					"type": "code",
-					"value": "window.open(\"http://localhost:8124/atompm?fname=/Formalisms/Bird/hoc/puzzle8.model\", \"_self\");"
+					"value": "window.open(\"http://\" + self.location.hostname + \":\" + self.location.port + \"/atompm?fname=/Formalisms/Bird/hoc/puzzle8.model\", \"_self\");"
 				},
 				"$type": "/Formalisms/__Utilities__/Buttons/Buttons/Button"
 			},
@@ -2677,7 +2680,7 @@
 				},
 				"code": {
 					"type": "code",
-					"value": "window.open(\"http://localhost:8124/atompm?fname=/Formalisms/Bird/hoc/puzzle9.model\", \"_self\");"
+					"value": "window.open(\"http://\" + self.location.hostname + \":\" + self.location.port + \"/atompm?fname=/Formalisms/Bird/hoc/puzzle9.model\", \"_self\");"
 				},
 				"$type": "/Formalisms/__Utilities__/Buttons/Buttons/Button"
 			},
@@ -2692,7 +2695,7 @@
 				},
 				"code": {
 					"type": "code",
-					"value": "window.open(\"http://localhost:8124/atompm?fname=/Formalisms/Bird/hoc/puzzle10.model\", \"_self\");"
+					"value": "window.open(\"http://\" + self.location.hostname + \":\" + self.location.port + \"/atompm?fname=/Formalisms/Bird/hoc/puzzle10.model\", \"_self\");"
 				},
 				"$type": "/Formalisms/__Utilities__/Buttons/Buttons/Button"
 			},
@@ -2707,7 +2710,7 @@
 				},
 				"code": {
 					"type": "code",
-					"value": "window.open(\"http://localhost:8124/atompm?fname=/Formalisms/Bird/hoc/puzzle11.model\", \"_self\");"
+					"value": "window.open(\"http://\" + self.location.hostname + \":\" + self.location.port + \"/atompm?fname=/Formalisms/Bird/hoc/puzzle11.model\", \"_self\");"
 				},
 				"$type": "/Formalisms/__Utilities__/Buttons/Buttons/Button"
 			},
@@ -2722,7 +2725,7 @@
 				},
 				"code": {
 					"type": "code",
-					"value": "if (__saveas.includes(\"11\"))\n{\nwindow.open(\"http://localhost:8124/atompm?fname=/Formalisms/Bird/hoc/puzzle10.model\", \"_self\");\n}\nelse if (__saveas.includes(\"10\"))\n{\nwindow.open(\"http://localhost:8124/atompm?fname=/Formalisms/Bird/hoc/puzzle9.model\", \"_self\");\n}\nelse if (__saveas.includes(\"9\"))\n{\nwindow.open(\"http://localhost:8124/atompm?fname=/Formalisms/Bird/hoc/puzzle8.model\", \"_self\");\n}\nelse if (__saveas.includes(\"8\"))\n{\nwindow.open(\"http://localhost:8124/atompm?fname=/Formalisms/Bird/hoc/puzzle7.model\", \"_self\");\n}\nelse if (__saveas.includes(\"7\"))\n{\nwindow.open(\"http://localhost:8124/atompm?fname=/Formalisms/Bird/hoc/puzzle6.model\", \"_self\");\n}\nelse if (__saveas.includes(\"6\"))\n{\nwindow.open(\"http://localhost:8124/atompm?fname=/Formalisms/Bird/hoc/puzzle5.model\", \"_self\");\n}\nelse if (__saveas.includes(\"5\"))\n{\nwindow.open(\"http://localhost:8124/atompm?fname=/Formalisms/Bird/hoc/puzzle4.model\", \"_self\");\n}\nelse if (__saveas.includes(\"4\"))\n{\nwindow.open(\"http://localhost:8124/atompm?fname=/Formalisms/Bird/hoc/puzzle3.model\", \"_self\");\n}\nelse if (__saveas.includes(\"3\"))\n{\nwindow.open(\"http://localhost:8124/atompm?fname=/Formalisms/Bird/hoc/puzzle2.model\", \"_self\");\n}\nelse if (__saveas.includes(\"2\"))\n{\nwindow.open(\"http://localhost:8124/atompm?fname=/Formalisms/Bird/hoc/puzzle1.model\", \"_self\");\n}\nelse if (__saveas.includes(\"1\"))\n{\nwindow.open(\"http://localhost:8124/atompm?fname=/Formalisms/Bird/hoc/puzzle11.model\", \"_self\");\n}"
+					"value": "if (__saveas == undefined)\n{\nwindow.open(\"http://\" + self.location.hostname + \":\" + self.location.port + \"/atompm?fname=/Formalisms/Bird/hoc/puzzle1.model\", \"_self\");\n}\nelse if (__saveas.includes(\"11\"))\n{\nwindow.open(\"http://\" + self.location.hostname + \":\" + self.location.port + \"/atompm?fname=/Formalisms/Bird/hoc/puzzle10.model\", \"_self\");\n}\nelse if (__saveas.includes(\"10\"))\n{\nwindow.open(\"http://\" + self.location.hostname + \":\" + self.location.port + \"/atompm?fname=/Formalisms/Bird/hoc/puzzle9.model\", \"_self\");\n}\nelse if (__saveas.includes(\"9\"))\n{\nwindow.open(\"http://\" + self.location.hostname + \":\" + self.location.port + \"/atompm?fname=/Formalisms/Bird/hoc/puzzle8.model\", \"_self\");\n}\nelse if (__saveas.includes(\"8\"))\n{\nwindow.open(\"http://\" + self.location.hostname + \":\" + self.location.port + \"/atompm?fname=/Formalisms/Bird/hoc/puzzle7.model\", \"_self\");\n}\nelse if (__saveas.includes(\"7\"))\n{\nwindow.open(\"http://\" + self.location.hostname + \":\" + self.location.port + \"/atompm?fname=/Formalisms/Bird/hoc/puzzle6.model\", \"_self\");\n}\nelse if (__saveas.includes(\"6\"))\n{\nwindow.open(\"http://\" + self.location.hostname + \":\" + self.location.port + \"/atompm?fname=/Formalisms/Bird/hoc/puzzle5.model\", \"_self\");\n}\nelse if (__saveas.includes(\"5\"))\n{\nwindow.open(\"http://\" + self.location.hostname + \":\" + self.location.port + \"/atompm?fname=/Formalisms/Bird/hoc/puzzle4.model\", \"_self\");\n}\nelse if (__saveas.includes(\"4\"))\n{\nwindow.open(\"http://\" + self.location.hostname + \":\" + self.location.port + \"/atompm?fname=/Formalisms/Bird/hoc/puzzle3.model\", \"_self\");\n}\nelse if (__saveas.includes(\"3\"))\n{\nwindow.open(\"http://\" + self.location.hostname + \":\" + self.location.port + \"/atompm?fname=/Formalisms/Bird/hoc/puzzle2.model\", \"_self\");\n}\nelse if (__saveas.includes(\"2\"))\n{\nwindow.open(\"http://\" + self.location.hostname + \":\" + self.location.port + \"/atompm?fname=/Formalisms/Bird/hoc/puzzle1.model\", \"_self\");\n}\nelse if (__saveas.includes(\"1\"))\n{\nwindow.open(\"http://\" + self.location.hostname + \":\" + self.location.port + \"/atompm?fname=/Formalisms/Bird/hoc/puzzle11.model\", \"_self\");\n}"
 				},
 				"$type": "/Formalisms/__Utilities__/Buttons/Buttons/Button"
 			},
@@ -2737,7 +2740,7 @@
 				},
 				"code": {
 					"type": "code",
-					"value": "if (__saveas.includes(\"11\"))\n{\nwindow.open(\"http://localhost:8124/atompm?fname=/Formalisms/Bird/hoc/puzzle1.model\", \"_self\");\n}\nelse if (__saveas.includes(\"10\"))\n{\nwindow.open(\"http://localhost:8124/atompm?fname=/Formalisms/Bird/hoc/puzzle11.model\", \"_self\");\n}\nelse if (__saveas.includes(\"9\"))\n{\nwindow.open(\"http://localhost:8124/atompm?fname=/Formalisms/Bird/hoc/puzzle10.model\", \"_self\");\n}\nelse if (__saveas.includes(\"8\"))\n{\nwindow.open(\"http://localhost:8124/atompm?fname=/Formalisms/Bird/hoc/puzzle9.model\", \"_self\");\n}\nelse if (__saveas.includes(\"7\"))\n{\nwindow.open(\"http://localhost:8124/atompm?fname=/Formalisms/Bird/hoc/puzzle8.model\", \"_self\");\n}\nelse if (__saveas.includes(\"6\"))\n{\nwindow.open(\"http://localhost:8124/atompm?fname=/Formalisms/Bird/hoc/puzzle7.model\", \"_self\");\n}\nelse if (__saveas.includes(\"5\"))\n{\nwindow.open(\"http://localhost:8124/atompm?fname=/Formalisms/Bird/hoc/puzzle6.model\", \"_self\");\n}\nelse if (__saveas.includes(\"4\"))\n{\nwindow.open(\"http://localhost:8124/atompm?fname=/Formalisms/Bird/hoc/puzzle5.model\", \"_self\");\n}\nelse if (__saveas.includes(\"3\"))\n{\nwindow.open(\"http://localhost:8124/atompm?fname=/Formalisms/Bird/hoc/puzzle4.model\", \"_self\");\n}\nelse if (__saveas.includes(\"2\"))\n{\nwindow.open(\"http://localhost:8124/atompm?fname=/Formalisms/Bird/hoc/puzzle3.model\", \"_self\");\n}\nelse if (__saveas.includes(\"1\"))\n{\nwindow.open(\"http://localhost:8124/atompm?fname=/Formalisms/Bird/hoc/puzzle2.model\", \"_self\");\n}"
+					"value": "if (__saveas == undefined)\n{\nwindow.open(\"http://\" + self.location.hostname + \":\" + self.location.port + \"/atompm?fname=/Formalisms/Bird/hoc/puzzle1.model\", \"_self\");\n}\nelse if (__saveas.includes(\"11\"))\n{\nwindow.open(\"http://\" + self.location.hostname + \":\" + self.location.port + \"/atompm?fname=/Formalisms/Bird/hoc/puzzle1.model\", \"_self\");\n}\nelse if (__saveas.includes(\"10\"))\n{\nwindow.open(\"http://\" + self.location.hostname + \":\" + self.location.port + \"/atompm?fname=/Formalisms/Bird/hoc/puzzle11.model\", \"_self\");\n}\nelse if (__saveas.includes(\"9\"))\n{\nwindow.open(\"http://\" + self.location.hostname + \":\" + self.location.port + \"/atompm?fname=/Formalisms/Bird/hoc/puzzle10.model\", \"_self\");\n}\nelse if (__saveas.includes(\"8\"))\n{\nwindow.open(\"http://\" + self.location.hostname + \":\" + self.location.port + \"/atompm?fname=/Formalisms/Bird/hoc/puzzle9.model\", \"_self\");\n}\nelse if (__saveas.includes(\"7\"))\n{\nwindow.open(\"http://\" + self.location.hostname + \":\" + self.location.port + \"/atompm?fname=/Formalisms/Bird/hoc/puzzle8.model\", \"_self\");\n}\nelse if (__saveas.includes(\"6\"))\n{\nwindow.open(\"http://\" + self.location.hostname + \":\" + self.location.port + \"/atompm?fname=/Formalisms/Bird/hoc/puzzle7.model\", \"_self\");\n}\nelse if (__saveas.includes(\"5\"))\n{\nwindow.open(\"http://\" + self.location.hostname + \":\" + self.location.port + \"/atompm?fname=/Formalisms/Bird/hoc/puzzle6.model\", \"_self\");\n}\nelse if (__saveas.includes(\"4\"))\n{\nwindow.open(\"http://\" + self.location.hostname + \":\" + self.location.port + \"/atompm?fname=/Formalisms/Bird/hoc/puzzle5.model\", \"_self\");\n}\nelse if (__saveas.includes(\"3\"))\n{\nwindow.open(\"http://\" + self.location.hostname + \":\" + self.location.port + \"/atompm?fname=/Formalisms/Bird/hoc/puzzle4.model\", \"_self\");\n}\nelse if (__saveas.includes(\"2\"))\n{\nwindow.open(\"http://\" + self.location.hostname + \":\" + self.location.port + \"/atompm?fname=/Formalisms/Bird/hoc/puzzle3.model\", \"_self\");\n}\nelse if (__saveas.includes(\"1\"))\n{\nwindow.open(\"http://\" + self.location.hostname + \":\" + self.location.port + \"/atompm?fname=/Formalisms/Bird/hoc/puzzle2.model\", \"_self\");\n}"
 				},
 				"$type": "/Formalisms/__Utilities__/Buttons/Buttons/Button"
 			}
@@ -2746,7 +2749,10 @@
 		"metamodels": [
 			"/Formalisms/__Utilities__/Buttons/Buttons",
 			"/Formalisms/Bird/Bird",
-			"/Formalisms/BlockBasedMDE/BlockBasedMDE"
+			"/Formalisms/BlockBasedMDE/BlockBasedMDE",
+			"/Formalisms/__LanguageSyntax__/ConcreteSyntax/ConcreteSyntax",
+			"/Formalisms/__LanguageSyntax__/SimpleClassDiagram/SimpleClassDiagram",
+			"/Formalisms/SCCD/SCCD"
 		]
 	}
 }

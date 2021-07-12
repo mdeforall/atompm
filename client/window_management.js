@@ -745,7 +745,7 @@ WindowManagement = function(){
 	{
 		var socket = io.connect(
 						window.location.hostname,
-						{'port':8124,'reconnect':false,'force new connection':true});
+						{'port':self.location.port,'reconnect':false,'force new connection':true});
 		socket.on('message',
 		function(msg)	
 		{

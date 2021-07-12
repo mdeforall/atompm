@@ -51,7 +51,7 @@ function __initClient()
 		});
 	
 	var socket = io.connect(
-			window.location.hostname,{'port':8124,'reconnect':false});
+			window.location.hostname,{'port':self.location.port,'reconnect':false});
 
 	socket.on('message', 
 		function(msg)	
