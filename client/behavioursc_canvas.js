@@ -403,9 +403,6 @@ __canvasBehaviourStatechart = {
 					if(getUnderneathID() != UnderneathIcon)
 						setUnderneathID(UnderneathIcon);
 
-					if(__selection.items.length==1 || __selection.items[0].includes("RuleIcon") || __selection.items[0].includes("QueryIcon"))
-						__deleteLinksOnMove();
-
 					__Target = event.currentTarget.getAttribute('__csuri');
 					srcIcon = __selection.items[0];
 
@@ -434,6 +431,10 @@ __canvasBehaviourStatechart = {
 								}
 							});
 					}
+
+					if(__selection.items.length==1 || __selection.items[0].includes("RuleIcon") || __selection.items[0].includes("QueryIcon"))
+						__deleteLinksOnMove();
+
 					this.__T(this.__STATE_SOMETHING_SELECTED,event);
 					__makeConnectionsWhenDropped();
 				}
