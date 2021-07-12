@@ -1643,44 +1643,64 @@ function __editRuleIconAttributes(ruleIcon)
 function __createRuleLink(underneathID, latestIconID, target)
 {
 	var connection;
-	for(var edgeI in __icons[target]['edgesIn'])
+	if (target.toString().includes("RuleIcon") || target.toString().includes("QueryIcon"))
 	{
-		if (__icons[target]['edgesIn'][edgeI] != undefined && underneathID != undefined) 
+		var targetX = __icons[target].icon.node.getAttribute("__x");
+		if (target.includes("RuleIcon"))
 		{
-			if (__icons[target]['edgesIn'][edgeI].toString().includes("lhs"))
-			{
-				var edgeId = __icons[target]['edgesIn'][edgeI].toString().split("-")[0];
-				target = __icons[edgeId]['edgesIn'].toString().split("-")[0];
-				connection = "/Formalisms/BlockBasedMDE/BlockBasedMDE.defaultIcons/lhsLink.type";
-			}
-			else if (__icons[target]['edgesIn'][edgeI].toString().includes("rhs"))
-			{
-				var edgeId = __icons[target]['edgesIn'][edgeI].toString().split("-")[0];
-				target = __icons[edgeId]['edgesIn'].toString().split("-")[0];
+			var targetWidth = 620;
+			var dropPositionX = __getDropPosition(latestIconID);
+			if (dropPositionX > (targetX + targetWidth) / 2)
 				connection = "/Formalisms/BlockBasedMDE/BlockBasedMDE.defaultIcons/rhsLink.type";
-			}
 			else
-				return;
-			
-			if(__isContainmentLink( latestIconID[0], target ))
+				connection = "/Formalisms/BlockBasedMDE/BlockBasedMDE.defaultIcons/lhsLink.type";
+		}
+		else
+			connection = "/Formalisms/BlockBasedMDE/BlockBasedMDE.defaultIcons/lhsLink.type";
+	}
+	else
+	{
+		for(var edgeI in __icons[target]['edgesIn'])
+		{
+			if (__icons[target]['edgesIn'][edgeI] != undefined && underneathID != undefined) 
 			{
-				DataUtils.getInsertConnectionType(
-					underneathID,
-					latestIconID,
-					function(connectionType)
-					{
-						connectionType = connection;
-						HttpUtils.httpReq(
-								'POST',
-								HttpUtils.url(connectionType,__NO_USERNAME),
-								{'src':target,
-								'dest':latestIconID[0],
-								'pos':[__icons[latestIconID[0]].icon.getAttr('__x'), __icons[latestIconID[0]].icon.getAttr('__y')]
-								});
-					}
-				);
+				if (__icons[target]['edgesIn'][edgeI].toString().includes("lhs"))
+				{
+					var edgeId = __icons[target]['edgesIn'][edgeI].toString().split("-")[0];
+					target = __icons[edgeId]['edgesIn'].toString().split("-")[0];
+					connection = "/Formalisms/BlockBasedMDE/BlockBasedMDE.defaultIcons/lhsLink.type";
+				}
+				else if (__icons[target]['edgesIn'][edgeI].toString().includes("rhs"))
+				{
+					var edgeId = __icons[target]['edgesIn'][edgeI].toString().split("-")[0];
+					target = __icons[edgeId]['edgesIn'].toString().split("-")[0];
+					connection = "/Formalisms/BlockBasedMDE/BlockBasedMDE.defaultIcons/rhsLink.type";
+				}
+				else
+					return;
 			}
 		}
+	}
+			
+	if(__isContainmentLink( latestIconID[0], target )
+					&& !__icons[latestIconID[0]]['edgesIn'].toString().includes("lhs")
+					&& !__icons[latestIconID[0]]['edgesIn'].toString().includes("rhs"))
+	{
+		DataUtils.getInsertConnectionType(
+			underneathID,
+			latestIconID,
+			function(connectionType)
+			{
+				connectionType = connection;
+				HttpUtils.httpReq(
+						'POST',
+						HttpUtils.url(connectionType,__NO_USERNAME),
+						{'src':target,
+						'dest':latestIconID[0],
+						'pos':[__icons[latestIconID[0]].icon.getAttr('__x'), __icons[latestIconID[0]].icon.getAttr('__y')]
+						});
+			}
+		);
 	}
 }
 

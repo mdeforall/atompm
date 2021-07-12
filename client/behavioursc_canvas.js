@@ -409,8 +409,8 @@ __canvasBehaviourStatechart = {
 					if(__selection.items.length == 1 && (__isVisualLink(srcIcon, __Target) && !__isVisualLink(__Target, srcIcon)))
 					{
 						__removeOnLinks(srcIcon);
-						__createVisualLink( srcIcon, __Target);
-						__createRuleLink(getUnderneathID(), __selection.items, __Target);
+						__createVisualLink(srcIcon, __Target);
+						setTimeout(function(){__createRuleLink(getUnderneathID(), __selection.items, __Target);},25);
 					}
 					else
 					{
@@ -420,10 +420,10 @@ __canvasBehaviourStatechart = {
 							function(connectionType) 
 							{
 								if( connectionType )
-									GeometryUtils.transformSelection(
-										__SELECTION_DRAG,
-										{'dropTarget':event.target,
-										 'connectionType':connectionType});
+								{
+									GeometryUtils.transformSelection(__SELECTION_DRAG);
+									setTimeout(function(){__createRuleLink(getUnderneathID(), __selection.items, __Target);},25);
+								}
 								else
 								{
 									console.warn('no containment relationship was created');

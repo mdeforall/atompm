@@ -347,6 +347,7 @@ function __makeConnectionsWhenDropped()
 					{
 						if (latestIcon[0] != undefined)
 							__findSurroundingIconsAndConnect(latestIcon[0], toApply[id]['from'], false);
+						__createRuleLink(getUnderneathID(), [ toApply[id]['from'] ], latestIcon[0]);
 					}
 					break;
 				}
