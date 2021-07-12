@@ -1,0 +1,705 @@
+{
+	"types": {
+		"Rule": [
+			{
+				"name": "count",
+				"type": "int",
+				"default": "1"
+			},
+			{
+				"name": "name",
+				"type": "string",
+				"default": ""
+			},
+			{
+				"name": "position",
+				"type": "list<int>",
+				"default": [
+					0,
+					0
+				]
+			}
+		],
+		"AbstractRule`": [
+			{
+				"name": "name",
+				"type": "string",
+				"default": ""
+			},
+			{
+				"name": "position",
+				"type": "list<int>",
+				"default": [
+					0,
+					0
+				]
+			}
+		],
+		"Query": [
+			{
+				"name": "name",
+				"type": "string",
+				"default": ""
+			},
+			{
+				"name": "position",
+				"type": "list<int>",
+				"default": [
+					0,
+					0
+				]
+			}
+		],
+		"RuleExit": [
+			{
+				"name": "position",
+				"type": "list<int>",
+				"default": [
+					0,
+					0
+				]
+			}
+		],
+		"AbstractEntry": [
+			{
+				"name": "position",
+				"type": "list<int>",
+				"default": [
+					0,
+					0
+				]
+			}
+		],
+		"RuleEntry": [
+			{
+				"name": "position",
+				"type": "list<int>",
+				"default": [
+					0,
+					0
+				]
+			}
+		],
+		"Start": [
+			{
+				"name": "position",
+				"type": "list<int>",
+				"default": [
+					0,
+					0
+				]
+			}
+		],
+		"fail": [],
+		"success": [],
+		"Entry": [],
+		"next": [],
+		"failToAbstractRule": [],
+		"exit": [],
+		"Positionable": [
+			{
+				"name": "position",
+				"type": "list<int>",
+				"default": [
+					0,
+					0
+				]
+			}
+		],
+		"SameConnector": [],
+		"$*": [],
+		"lhs": [],
+		"rhs": []
+	},
+	"constraints": [
+		{
+			"name": "noAbstractInstances",
+			"event": "pre-create",
+			"code": "false",
+			"targetType": "AbstractRule`"
+		},
+		{
+			"name": "noAbstractInstances",
+			"event": "pre-create",
+			"code": "false",
+			"targetType": "AbstractEntry"
+		},
+		{
+			"name": "noAbstractInstances",
+			"event": "pre-create",
+			"code": "false",
+			"targetType": "Positionable"
+		}
+	],
+	"actions": [
+		{
+			"name": "snapToTarget",
+			"event": "post-create",
+			"code": "/*newline*/      var targetNodes = getNeighbors('>'),/*newline*/          sourceNodes = getNeighbors('<');/*newline*/    /*newline*/        var targetNode = targetNodes[0],/*newline*/            sourceNode = sourceNodes[0];/*newline*/        /*newline*/        var sourcePosition = getAttr('position',sourceNode);/*newline*//*newline*/        setAttr('position',[sourcePosition[0]+298,sourcePosition[1]+260],targetNode);",
+			"targetType": "fail"
+		},
+		{
+			"name": "snapToTarget",
+			"event": "post-create",
+			"code": "/*newline*/      var targetNodes = getNeighbors('>'),/*newline*/          sourceNodes = getNeighbors('<');/*newline*/    /*newline*/        var targetNode = targetNodes[0],/*newline*/            sourceNode = sourceNodes[0];/*newline*/        /*newline*/        var sourcePosition = getAttr('position',sourceNode);/*newline*//*newline*/        setAttr('position',[sourcePosition[0]+38.5,sourcePosition[1]+260],targetNode);",
+			"targetType": "success"
+		},
+		{
+			"name": "snapToTarget",
+			"event": "post-create",
+			"code": "/*newline*/      var targetNodes = getNeighbors('>'),/*newline*/          sourceNodes = getNeighbors('<');/*newline*/    /*newline*/        var targetNode = targetNodes[0],/*newline*/            sourceNode = sourceNodes[0];/*newline*/        /*newline*/        var sourcePosition = getAttr('position',sourceNode);/*newline*//*newline*/        setAttr('position',[sourcePosition[0]-25,sourcePosition[1]+30],targetNode);",
+			"targetType": "Entry"
+		},
+		{
+			"name": "snapToTarget",
+			"event": "post-create",
+			"code": "/*newline*/      var targetNodes = getNeighbors('>'),/*newline*/          sourceNodes = getNeighbors('<');/*newline*/    /*newline*/        var targetNode = targetNodes[0],/*newline*/            sourceNode = sourceNodes[0];/*newline*/        /*newline*/        var sourcePosition = getAttr('position',sourceNode);/*newline*//*newline*/        setAttr('position',[sourcePosition[0],sourcePosition[1]+252.5],targetNode);",
+			"targetType": "next"
+		},
+		{
+			"name": "snapToTarget",
+			"event": "post-create",
+			"code": "/*newline*/      var targetNodes = getNeighbors('>'),/*newline*/          sourceNodes = getNeighbors('<');/*newline*/    /*newline*/        var targetNode = targetNodes[0],/*newline*/            sourceNode = sourceNodes[0];/*newline*/        /*newline*/        var sourcePosition = getAttr('position',sourceNode);/*newline*//*newline*/        setAttr('position',[sourcePosition[0]+272,sourcePosition[1]+254],targetNode);",
+			"targetType": "failToAbstractRule"
+		},
+		{
+			"name": "snapToTarget",
+			"event": "post-create",
+			"code": "/*newline*/      var targetNodes = getNeighbors('>'),/*newline*/          sourceNodes = getNeighbors('<');/*newline*/    /*newline*/        var targetNode = targetNodes[0],/*newline*/            sourceNode = sourceNodes[0];/*newline*/        /*newline*/        var sourcePosition = getAttr('position',sourceNode);/*newline*//*newline*/        setAttr('position',[sourcePosition[0]+26,sourcePosition[1]+260],targetNode);",
+			"targetType": "exit"
+		}
+	],
+	"cardinalities": {
+		"Rule": [
+			{
+				"dir": "out",
+				"type": "next",
+				"min": 0,
+				"max": 1
+			},
+			{
+				"dir": "out",
+				"type": "exit",
+				"min": 0,
+				"max": 1
+			},
+			{
+				"dir": "in",
+				"type": "next",
+				"min": 0,
+				"max": 1
+			},
+			{
+				"dir": "in",
+				"type": "Entry",
+				"min": 0,
+				"max": 1
+			},
+			{
+				"dir": "in",
+				"type": "failToAbstractRule",
+				"min": 0,
+				"max": 1
+			},
+			{
+				"dir": "out",
+				"type": "rhs",
+				"min": "0",
+				"max": "Infinity"
+			},
+			{
+				"dir": "out",
+				"type": "lhs",
+				"min": "0",
+				"max": "Infinity"
+			}
+		],
+		"AbstractRule`": [
+			{
+				"dir": "in",
+				"type": "next",
+				"min": 0,
+				"max": 1
+			},
+			{
+				"dir": "in",
+				"type": "Entry",
+				"min": 0,
+				"max": 1
+			},
+			{
+				"dir": "in",
+				"type": "failToAbstractRule",
+				"min": 0,
+				"max": 1
+			},
+			{
+				"dir": "out",
+				"type": "lhs",
+				"min": "0",
+				"max": "Infinity"
+			}
+		],
+		"Query": [
+			{
+				"dir": "out",
+				"type": "success",
+				"min": 0,
+				"max": 1
+			},
+			{
+				"dir": "out",
+				"type": "fail",
+				"min": 0,
+				"max": 1
+			},
+			{
+				"dir": "out",
+				"type": "failToAbstractRule",
+				"min": 0,
+				"max": 1
+			},
+			{
+				"dir": "in",
+				"type": "next",
+				"min": 0,
+				"max": 1
+			},
+			{
+				"dir": "in",
+				"type": "Entry",
+				"min": 0,
+				"max": 1
+			},
+			{
+				"dir": "in",
+				"type": "failToAbstractRule",
+				"min": 0,
+				"max": 1
+			},
+			{
+				"dir": "out",
+				"type": "lhs",
+				"min": "0",
+				"max": "Infinity"
+			}
+		],
+		"RuleExit": [
+			{
+				"dir": "in",
+				"type": "exit",
+				"min": 0,
+				"max": 1
+			},
+			{
+				"dir": "in",
+				"type": "fail",
+				"min": 0,
+				"max": 1
+			},
+			{
+				"dir": "in",
+				"type": "success",
+				"min": 0,
+				"max": 1
+			},
+			{
+				"dir": "out",
+				"type": "SameConnector",
+				"min": 0,
+				"max": 1
+			}
+		],
+		"AbstractEntry": [
+			{
+				"dir": "out",
+				"type": "Entry",
+				"min": 0,
+				"max": 1
+			},
+			{
+				"dir": "in",
+				"type": "SameConnector",
+				"min": "0",
+				"max": "Infinity"
+			}
+		],
+		"RuleEntry": [
+			{
+				"dir": "out",
+				"type": "Entry",
+				"min": 0,
+				"max": 1
+			},
+			{
+				"dir": "in",
+				"type": "SameConnector",
+				"min": "0",
+				"max": "Infinity"
+			}
+		],
+		"Start": [
+			{
+				"dir": "out",
+				"type": "Entry",
+				"min": 0,
+				"max": 1
+			},
+			{
+				"dir": "in",
+				"type": "SameConnector",
+				"min": "0",
+				"max": "Infinity"
+			}
+		],
+		"fail": [
+			{
+				"dir": "in",
+				"type": "Query",
+				"min": "0",
+				"max": "1"
+			},
+			{
+				"dir": "out",
+				"type": "RuleExit",
+				"min": "0",
+				"max": "1"
+			}
+		],
+		"success": [
+			{
+				"dir": "in",
+				"type": "Query",
+				"min": "0",
+				"max": "1"
+			},
+			{
+				"dir": "out",
+				"type": "RuleExit",
+				"min": "0",
+				"max": "1"
+			}
+		],
+		"Entry": [
+			{
+				"dir": "in",
+				"type": "AbstractEntry",
+				"min": "0",
+				"max": "1"
+			},
+			{
+				"dir": "out",
+				"type": "AbstractRule`",
+				"min": "0",
+				"max": "1"
+			},
+			{
+				"dir": "out",
+				"type": "Rule",
+				"min": "0",
+				"max": "1"
+			},
+			{
+				"dir": "out",
+				"type": "Query",
+				"min": "0",
+				"max": "1"
+			},
+			{
+				"dir": "in",
+				"type": "RuleEntry",
+				"min": "0",
+				"max": "1"
+			},
+			{
+				"dir": "in",
+				"type": "Start",
+				"min": "0",
+				"max": "1"
+			}
+		],
+		"next": [
+			{
+				"dir": "in",
+				"type": "Rule",
+				"min": "0",
+				"max": "1"
+			},
+			{
+				"dir": "out",
+				"type": "AbstractRule`",
+				"min": "0",
+				"max": "1"
+			},
+			{
+				"dir": "out",
+				"type": "Rule",
+				"min": "0",
+				"max": "1"
+			},
+			{
+				"dir": "out",
+				"type": "Query",
+				"min": "0",
+				"max": "1"
+			}
+		],
+		"failToAbstractRule": [
+			{
+				"dir": "in",
+				"type": "Query",
+				"min": "0",
+				"max": "1"
+			},
+			{
+				"dir": "out",
+				"type": "AbstractRule`",
+				"min": "0",
+				"max": "1"
+			},
+			{
+				"dir": "out",
+				"type": "Rule",
+				"min": "0",
+				"max": "1"
+			},
+			{
+				"dir": "out",
+				"type": "Query",
+				"min": "0",
+				"max": "1"
+			}
+		],
+		"exit": [
+			{
+				"dir": "in",
+				"type": "Rule",
+				"min": "0",
+				"max": "1"
+			},
+			{
+				"dir": "out",
+				"type": "RuleExit",
+				"min": "0",
+				"max": "1"
+			}
+		],
+		"Positionable": [],
+		"SameConnector": [
+			{
+				"dir": "in",
+				"type": "RuleExit",
+				"min": "0",
+				"max": "1"
+			},
+			{
+				"dir": "out",
+				"type": "AbstractEntry",
+				"min": "0",
+				"max": "1"
+			},
+			{
+				"dir": "out",
+				"type": "RuleEntry",
+				"min": "0",
+				"max": "1"
+			},
+			{
+				"dir": "out",
+				"type": "Start",
+				"min": "0",
+				"max": "1"
+			}
+		],
+		"$*": [
+			{
+				"dir": "in",
+				"type": "lhs",
+				"min": "0",
+				"max": "Infinity"
+			},
+			{
+				"dir": "in",
+				"type": "rhs",
+				"min": "0",
+				"max": "Infinity"
+			}
+		],
+		"lhs": [
+			{
+				"dir": "in",
+				"type": "AbstractRule`",
+				"min": "0",
+				"max": "1"
+			},
+			{
+				"dir": "out",
+				"type": "$*",
+				"min": "0",
+				"max": "1"
+			},
+			{
+				"dir": "in",
+				"type": "Rule",
+				"min": "0",
+				"max": "1"
+			},
+			{
+				"dir": "in",
+				"type": "Query",
+				"min": "0",
+				"max": "1"
+			}
+		],
+		"rhs": [
+			{
+				"dir": "in",
+				"type": "Rule",
+				"min": "0",
+				"max": "1"
+			},
+			{
+				"dir": "out",
+				"type": "$*",
+				"min": "0",
+				"max": "1"
+			}
+		]
+	},
+	"legalConnections": {
+		"Rule": {
+			"AbstractRule`": [
+				"next"
+			],
+			"Rule": [
+				"next"
+			],
+			"Query": [
+				"next"
+			],
+			"RuleExit": [
+				"exit"
+			],
+			"$*": [
+				"rhs",
+				"lhs"
+			]
+		},
+		"AbstractRule`": {
+			"$*": [
+				"lhs"
+			]
+		},
+		"Query": {
+			"RuleExit": [
+				"success",
+				"fail"
+			],
+			"AbstractRule`": [
+				"failToAbstractRule"
+			],
+			"Rule": [
+				"failToAbstractRule"
+			],
+			"Query": [
+				"failToAbstractRule"
+			],
+			"$*": [
+				"lhs"
+			]
+		},
+		"RuleExit": {
+			"AbstractEntry": [
+				"SameConnector"
+			],
+			"RuleEntry": [
+				"SameConnector"
+			],
+			"Start": [
+				"SameConnector"
+			]
+		},
+		"AbstractEntry": {
+			"AbstractRule`": [
+				"Entry"
+			],
+			"Rule": [
+				"Entry"
+			],
+			"Query": [
+				"Entry"
+			]
+		},
+		"RuleEntry": {
+			"AbstractRule`": [
+				"Entry"
+			],
+			"Rule": [
+				"Entry"
+			],
+			"Query": [
+				"Entry"
+			]
+		},
+		"Start": {
+			"AbstractRule`": [
+				"Entry"
+			],
+			"Rule": [
+				"Entry"
+			],
+			"Query": [
+				"Entry"
+			]
+		}
+	},
+	"connectorTypes": {
+		"fail": "visual",
+		"success": "visual",
+		"Entry": "visual",
+		"next": "visual",
+		"failToAbstractRule": "visual",
+		"exit": "visual",
+		"SameConnector": "visual",
+		"lhs": "containment",
+		"rhs": "containment"
+	},
+	"types2parentTypes": {
+		"Rule": [
+			"Positionable",
+			"AbstractRule`"
+		],
+		"AbstractRule`": [
+			"Positionable"
+		],
+		"Query": [
+			"Positionable",
+			"AbstractRule`"
+		],
+		"RuleExit": [
+			"Positionable"
+		],
+		"AbstractEntry": [
+			"Positionable"
+		],
+		"RuleEntry": [
+			"Positionable",
+			"AbstractEntry"
+		],
+		"Start": [
+			"Positionable",
+			"AbstractEntry"
+		],
+		"fail": [],
+		"success": [],
+		"Entry": [],
+		"next": [],
+		"failToAbstractRule": [],
+		"exit": [],
+		"Positionable": [],
+		"SameConnector": [],
+		"$*": [],
+		"lhs": [],
+		"rhs": []
+	}
+}

@@ -18,10 +18,9 @@
 	"autoloaded-toolbars": {
 		"type": "list<string>",
 		"value": [
-			"/Toolbars/CompileMenu/CompileMenu.buttons.model",
-			"/Toolbars/TransformationController/TransformationController.buttons.model",
-			"/Toolbars/TransformationEditor/TransformationEditor.buttons.model",
-			"/Formalisms/Workflows/Workflow.buttons.model"
+			"/Formalisms/Bird/toolbars/A_Mde.buttons.model",
+			"/Formalisms/Bird/toolbars/MazeSelector.buttons.model",
+            "/Formalisms/Bird/toolbars/Run.buttons.model"
 		]
 	},
 	"autoloaded-model": {
