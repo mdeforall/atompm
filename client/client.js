@@ -1643,6 +1643,8 @@ function __editRuleIconAttributes(ruleIcon)
 function __createRuleLink(underneathID, latestIconID, target)
 {
 	var connection;
+	if(underneathID == undefined)
+		return;
 	if (target.toString().includes("RuleIcon") || target.toString().includes("QueryIcon"))
 	{
 		var targetX = __icons[target].icon.node.getAttribute("__x");
@@ -1662,7 +1664,7 @@ function __createRuleLink(underneathID, latestIconID, target)
 	{
 		for(var edgeI in __icons[target]['edgesIn'])
 		{
-			if (__icons[target]['edgesIn'][edgeI] != undefined && underneathID != undefined) 
+			if (__icons[target]['edgesIn'][edgeI] != undefined) 
 			{
 				if (__icons[target]['edgesIn'][edgeI].toString().includes("lhs"))
 				{
@@ -1679,6 +1681,8 @@ function __createRuleLink(underneathID, latestIconID, target)
 				else
 					return;
 			}
+			else
+				return;
 		}
 	}
 			
