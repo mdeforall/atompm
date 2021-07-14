@@ -1076,25 +1076,10 @@ function __createVisualLink(srcUri, tarUri,choice=undefined)
 			:{ 'uri1': srcUri, 'uri2': tarUri, ctype: __VISUAL_LINK,"choice":choice},
     	callback
     );
-
-	for (var edgeO in __icons[tarUri].edgesOut)
-	{
-		edge = __icons[tarUri].edgesOut[edgeO].toString().split("-")[2];
-		if (__icons[edge].edgesOut[0].toString().split("-")[2].includes("RuleIcon")
-						|| __icons[edge].edgesOut[0].toString().split("-")[2].includes("QueryIcon"))
-		{
-			ruleNext = true;
-			break;
-		}
-		else
-			ruleNext = false;
-	}
-
 	
 	if ((ruleChain == undefined || ruleChain != false) 
 					&& __icons[tarUri].edgesOut.length > 0 
-					&& (tarUri.includes("RuleIcon") || tarUri.includes("QueryIcon"))
-					&& ruleNext)
+					&& (tarUri.includes("RuleIcon") || tarUri.includes("QueryIcon")))
 	{
 		__moveRuleChain(tarUri, srcUri, __icons[srcUri].icon.getBBox(), ruleChain);
 	}
@@ -1809,7 +1794,7 @@ function __moveRuleChain(orig, origIn, origInBBox, ruleChain)
 	
 	//Rule we are moving another rule under
 	var origNewX = origInBBox['x'];
-	var origNewY = origInBBox['y'] + 252.5;
+	var origNewY = origInBBox['y'] + height;
 	var origBBox = {'x': origInBBox['x'] - xOffset, 'y': origInBBox['y'] + height, 'height': __icons[orig].icon.getBBox()['height']};
 
 	//Rule that we are moving
