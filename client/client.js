@@ -1628,7 +1628,7 @@ function __editRuleIconAttributes(ruleIcon)
 function __createRuleLink(underneathID, latestIconID, target)
 {
 	var connection;
-	if(underneathID == undefined)
+	if(underneathID == undefined || target == undefined || latestIconID == undefined)
 		return;
 	if (target.toString().includes("RuleIcon") || target.toString().includes("QueryIcon"))
 	{
