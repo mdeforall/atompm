@@ -181,7 +181,6 @@ __canvasBehaviourStatechart = {
 			
 			else if( this.__currentState == this.__STATE_CANVAS_SELECTING )
 			{
-				console.log(name);
 				if( name == __EVENT_MOUSE_MOVE && GUIUtils.convertToCanvasX(event) > mazePosition ){
 					__updateCanvasSelectionOverlay(GUIUtils.convertToCanvasX(event), GUIUtils.convertToCanvasY(event));
 				}
