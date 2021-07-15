@@ -181,13 +181,14 @@ __canvasBehaviourStatechart = {
 			
 			else if( this.__currentState == this.__STATE_CANVAS_SELECTING )
 			{
-				if( name == __EVENT_MOUSE_MOVE ){
+				console.log(name);
+				if( name == __EVENT_MOUSE_MOVE && GUIUtils.convertToCanvasX(event) > mazePosition ){
 					__updateCanvasSelectionOverlay(GUIUtils.convertToCanvasX(event), GUIUtils.convertToCanvasY(event));
 				}
-				
 				else if( name == __EVENT_LEFT_RELEASE_CANVAS ||
 							name == __EVENT_LEFT_RELEASE_ICON )
 				{
+					console.log("RUN");
 					if( ! __selectSelection() )
 						this.__T(this.__STATE_IDLE,event);
 					else
@@ -207,6 +208,12 @@ __canvasBehaviourStatechart = {
 
 			else if( this.__currentState == this.__STATE_SOMETHING_SELECTED )
 			{
+				if( GUIUtils.convertToCanvasX(event) <= mazePosition )
+				{
+					__select();
+					this.__T(this.__STATE_IDLE,event);	
+				}
+
 				if( name == __EVENT_KEYUP_DEL )
 				{
 					DataUtils.del();
@@ -333,7 +340,7 @@ __canvasBehaviourStatechart = {
 			
 			else if( this.__currentState == this.__STATE_DRAGGING_SELECTION )
 			{
-				if( name == __EVENT_MOUSE_MOVE ) {
+				if( name == __EVENT_MOUSE_MOVE && GUIUtils.convertToCanvasX(event) > mazePosition ) {
 					canvasX = GUIUtils.convertToCanvasX(event);
 					canvasY = GUIUtils.convertToCanvasY(event);
 					GeometryUtils.previewSelectionTranslation(canvasX, canvasY);
@@ -358,85 +365,100 @@ __canvasBehaviourStatechart = {
 				else if( name == __EVENT_LEFT_RELEASE_CANVAS	   ||
 							name == __EVENT_LEFT_RELEASE_SELECTION )
 				{
-					GeometryUtils.transformSelection(__SELECTION_DRAG);
-					this.__T(this.__STATE_SOMETHING_SELECTED,event);
-
-					if(__selection.items.length==1 || __selection.items[0].includes("RuleIcon") || __selection.items[0].includes("QueryIcon"))
-						__deleteLinksOnMove();
-					
-					if ((__selection.items[0].includes("BirdIcon") 
-									|| __selection.items[0].includes("PigIcon")) 
-									&& __selection.items.length == 1 
-									&& GeometryUtils.getOverlay() != undefined) 
+					if ( GUIUtils.convertToCanvasX(event) <= mazePosition )
 					{
-						for (item in __icons) 
-						{
-							if (__icons[item].icon.node.getAttribute('id').includes("EmptyIcon")) 
-							{
-								var itemX = Number(__icons[item].icon.node.getAttribute('__x'));
-								var itemY = Number(__icons[item].icon.node.getAttribute('__y'));
-
-								var dropPositionX = __getDropPosition(__selection.items[0])[0];
-								var dropPositionY = __getDropPosition(__selection.items[0])[1];
-
-								if(itemX <= dropPositionX 
-												&& dropPositionX <= itemX + 40 
-												&& itemY <= dropPositionY 
-												&& dropPositionY <= itemY + 40)
-								{
-									__removeOnLinks(__selection.items[0]);
-									__createVisualLink(__selection.items[0], item);
-								} else 
-								{
-									__removeOnLinks(__selection.items[0]);
-								}
-							}
-						}
-					}
-					if(!__selection.items[0].includes("RuleEntry"))
-						__makeConnectionsWhenDropped();
-				}
-				else if( name == __EVENT_LEFT_RELEASE_ICON )
-				{
-
-					UnderneathIcon = event.currentTarget;
-					if(getUnderneathID() != UnderneathIcon)
-						setUnderneathID(UnderneathIcon);
-
-					__Target = event.currentTarget.getAttribute('__csuri');
-					srcIcon = __selection.items[0];
-
-					if(__selection.items.length == 1 && (__isVisualLink(srcIcon, __Target) && !__isVisualLink(__Target, srcIcon)))
-					{
-						__removeOnLinks(srcIcon);
-						__createVisualLink(srcIcon, __Target);
-						setTimeout(function(){__createRuleLink(getUnderneathID(), __selection.items, __Target);},25);
+						GeometryUtils.hideTransformationPreviewOverlay();
+						this.__T(this.__STATE_SOMETHING_SELECTED,event);
 					}
 					else
 					{
-						DataUtils.getInsertConnectionType(
-							event.target,
-							undefined,
-							function(connectionType) 
+						GeometryUtils.transformSelection(__SELECTION_DRAG);
+						this.__T(this.__STATE_SOMETHING_SELECTED,event);
+
+						if(__selection.items.length==1 || __selection.items[0].includes("RuleIcon") || __selection.items[0].includes("QueryIcon"))
+							__deleteLinksOnMove();
+						
+						if ((__selection.items[0].includes("BirdIcon") 
+										|| __selection.items[0].includes("PigIcon")) 
+										&& __selection.items.length == 1 
+										&& GeometryUtils.getOverlay() != undefined) 
+						{
+							for (item in __icons) 
 							{
-								if( connectionType )
+								if (__icons[item].icon.node.getAttribute('id').includes("EmptyIcon")) 
 								{
-									GeometryUtils.transformSelection(__SELECTION_DRAG);
-									setTimeout(function(){__createRuleLink(getUnderneathID(), __selection.items, __Target);},25);
+									var itemX = Number(__icons[item].icon.node.getAttribute('__x'));
+									var itemY = Number(__icons[item].icon.node.getAttribute('__y'));
+
+									var dropPositionX = __getDropPosition(__selection.items[0])[0];
+									var dropPositionY = __getDropPosition(__selection.items[0])[1];
+
+									if(itemX <= dropPositionX 
+													&& dropPositionX <= itemX + 40 
+													&& itemY <= dropPositionY 
+													&& dropPositionY <= itemY + 40)
+									{
+										__removeOnLinks(__selection.items[0]);
+										__createVisualLink(__selection.items[0], item);
+									} else 
+									{
+										__removeOnLinks(__selection.items[0]);
+									}
 								}
-								else
-								{
-									console.warn('no containment relationship was created');
-									GeometryUtils.transformSelection(__SELECTION_DRAG);
-								}
-							});
+							}
+						}
+						if(!__selection.items[0].includes("RuleEntry"))
+							__makeConnectionsWhenDropped();
 					}
+				}
+				else if( name == __EVENT_LEFT_RELEASE_ICON )
+				{
+					if ( GUIUtils.convertToCanvasX(event) <= mazePosition )
+					{
+						GeometryUtils.hideTransformationPreviewOverlay();
+						this.__T(this.__STATE_SOMETHING_SELECTED,event);
+					}
+					else
+					{
+						UnderneathIcon = event.currentTarget;
+						if(getUnderneathID() != UnderneathIcon)
+							setUnderneathID(UnderneathIcon);
 
-					if(__selection.items.length==1 || __selection.items[0].includes("RuleIcon") || __selection.items[0].includes("QueryIcon"))
-						__deleteLinksOnMove();
+						__Target = event.currentTarget.getAttribute('__csuri');
+						srcIcon = __selection.items[0];
 
-					this.__T(this.__STATE_SOMETHING_SELECTED,event);
-					__makeConnectionsWhenDropped();
+						if(__selection.items.length == 1 && (__isVisualLink(srcIcon, __Target) && !__isVisualLink(__Target, srcIcon)))
+						{
+							__removeOnLinks(srcIcon);
+							__createVisualLink(srcIcon, __Target);
+							setTimeout(function(){__createRuleLink(getUnderneathID(), __selection.items, __Target);},25);
+						}
+						else
+						{
+							DataUtils.getInsertConnectionType(
+								event.target,
+								undefined,
+								function(connectionType) 
+								{
+									if( connectionType )
+									{
+										GeometryUtils.transformSelection(__SELECTION_DRAG);
+										setTimeout(function(){__createRuleLink(getUnderneathID(), __selection.items, __Target);},25);
+									}
+									else
+									{
+										console.warn('no containment relationship was created');
+										GeometryUtils.transformSelection(__SELECTION_DRAG);
+									}
+								});
+						}
+
+						if(__selection.items.length==1 || __selection.items[0].includes("RuleIcon") || __selection.items[0].includes("QueryIcon"))
+							__deleteLinksOnMove();
+
+						this.__T(this.__STATE_SOMETHING_SELECTED,event);
+						__makeConnectionsWhenDropped();
+					}
 				}
 				
 				else
@@ -602,7 +624,7 @@ __canvasBehaviourStatechart = {
 				else if( name == __EVENT_KEYUP_TAB )
 					ConnectionUtils.snapControlPoint();
 		
-				else if( name == __EVENT_CODED_SELECTION )
+				else if( name == __EVENT_CODED_SELECTION && GUIUtils.convertToCanvasX(event) > mazePosition )
 				{
 					ConnectionUtils.hideConnectionPathEditingOverlay();
 					__select(event);

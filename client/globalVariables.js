@@ -37,6 +37,7 @@ var Key_E_S_W_N;
 var IconsBeforeCopy = [];
 var NewIconCreated;
 var creationInitializedByUser = false;
+var mazePosition = 500;
 
 // Command Keys
 var KEY_TAB = 9,

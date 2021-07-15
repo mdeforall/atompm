@@ -385,12 +385,12 @@ function resetMaze() {
 	
 	//Selecting Icons and Edges to be deleted
 	for (var id in __icons) {
-		if (__icons[id].icon.getAttr('__x') <= 500 && id.includes("BirdIcon")) {
+		if (__icons[id].icon.getAttr('__x') <= mazePosition && id.includes("BirdIcon")) {
 			edgesToRemove.push(__icons[id].icon.getAttr('__csuri'));
 		}
-		else if ((__icons[id].icon.getAttr('__x') <= 500 && id.includes("PigIcon")) && !id.includes("166")) {
+		else if ((__icons[id].icon.getAttr('__x') <= mazePosition && id.includes("PigIcon")) && !id.includes("166")) {
 			edgesToRemove.push(__icons[id].icon.getAttr('__csuri'));
-		} else if (__icons[id].icon.getAttr('__x') <= 500 && id.includes("OnLink")) {
+		} else if (__icons[id].icon.getAttr('__x') <= mazePosition && id.includes("OnLink")) {
 			edgesToRemove.push(__icons[id].icon.getAttr('__csuri'));
 		}
 	}
@@ -403,9 +403,9 @@ function resetMaze() {
 
 	setTimeout(function () {
 		for (var id in __icons) {
-			if ((__icons[id].icon.getAttr('__x') <= 500 && id.includes("PigIcon"))) {
+			if ((__icons[id].icon.getAttr('__x') <= mazePosition && id.includes("PigIcon"))) {
 				pig = (__icons[id].icon.getAttr('__csuri'));
-			} else if ((__icons[id].icon.getAttr('__x') <= 500 && id.includes("BirdIcon"))) {
+			} else if ((__icons[id].icon.getAttr('__x') <= mazePosition && id.includes("BirdIcon"))) {
 				bird = (__icons[id].icon.getAttr('__csuri'));
 			}
 		}
