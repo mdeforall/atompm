@@ -432,6 +432,30 @@ function setFacing(uri, initFacing)
     }
 }
 
+function changeCount(uri, direction) {
+	console.log(uri);
+	if((uri.includes("RuleIcon")) && (uri != undefined)) {
+		HttpUtils.httpReq(
+            'GET', 
+            HttpUtils.url(uri), 
+            undefined, 
+            function(statusCode, resp){
+				ruleCount = Number(utils.jsonp( utils.jsonp(resp)['data'] )['count']['value']);
+				if (direction == "+") {
+					ruleCount = ruleCount + 1;
+				} else if ((direction == "-") && (ruleCount > 1)) {
+					ruleCount = ruleCount - 1;
+				} else {
+					ruleCount = ruleCount;
+				}
+                DataUtils.update(uri,{count: ruleCount});
+            }
+            );
+	} else {
+		WindowManagement.openDialog(_ERROR, 'Please select a rule');
+	}
+}
+
 function clearRules() 
 {
 	var edgesToRemove = [];
