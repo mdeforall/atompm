@@ -187,7 +187,6 @@ __canvasBehaviourStatechart = {
 				else if( name == __EVENT_LEFT_RELEASE_CANVAS ||
 							name == __EVENT_LEFT_RELEASE_ICON )
 				{
-					console.log("RUN");
 					if( ! __selectSelection() )
 						this.__T(this.__STATE_IDLE,event);
 					else

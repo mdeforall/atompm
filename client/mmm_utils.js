@@ -432,6 +432,18 @@ function setFacing(uri, initFacing)
     }
 }
 
+function clearRules() 
+{
+	var edgesToRemove = [];
+	for (var id in __icons) {
+		if (__icons[id].icon.getAttr('__x') > mazePosition && !id.includes("StartIcon")) {
+			edgesToRemove.push(__icons[id].icon.getAttr('__csuri'));
+		}
+	}
+
+	__grabEdgesAndDelete(edgesToRemove);
+}
+
 /* icon positions may be set to [x,a%,y,b%], meaning that the point at a% of the
   	icon's width and at b% of the icon's height should be located at x,y... for
 	instance, if a and b == 50, the icon is centered on x,y... given a coordinate 
