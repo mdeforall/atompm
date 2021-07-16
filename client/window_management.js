@@ -547,6 +547,7 @@ WindowManagement = function(){
 				 attrs2ii = {};
 			form.onsubmit = function()	{return false;};
 			form.append(table);
+			table.attr("class", "default_style");
 	
 			for( var attr in args['data'] )
 			{

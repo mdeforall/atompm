@@ -193,19 +193,25 @@ html {
     min-height: auto;
     max-height: 80%;
     width: 50%;
-    padding:0 20px 20px;
+    height: 34%;
     z-index: 30;
-    background-color: whitesmoke;
-    border:2px solid crimson;
-    border-radius: 5px;
+    background: center url(media/help_window.png) no-repeat;
     overflow-x:hidden;
     overflow-y:auto;
 }
 
 .dialog_title {
-    padding: 10px;
+    padding-top: 275px;
     font-style: italic;
     font-weight: bold;
+}
+
+
+.dialog_help_title {
+    padding-top: 15px;
+    padding-bottom: 10px;
+    font-weight: bold;
+    font-size:30px;
 }
 
 

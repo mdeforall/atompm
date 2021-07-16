@@ -379,6 +379,102 @@ GUIUtils = function(){
 		__edges = {};
 		__canvasBehaviourStatechart.init();
 	};
+
+
+	/**
+	 * Sets up the help window and displays it.
+	 */
+	this.getUserHelp = function() {
+
+		var dialog 	  = $('#div_dialog'),
+		the_id = __dialog_stack.length;
+		dialog.attr("class", 'dialog');
+		dialog = dialog.clone().attr("id", 'div_dialog_'+the_id);
+		dim_bg 	  = $('#div_dim_bg'),
+		div_helpTitle = $('<div>');
+		div_buttonTitle = $('<div>');
+		div_mouseKeyboard = $('<div>');
+
+		div_buttonTitle.attr("class", 'dialog_help_title');
+		div_buttonTitle.append(GUIUtils.getTextSpan("Buttons"));
+		div_mouseKeyboard.attr("class", 'dialog_help_title');
+		div_mouseKeyboard.append(GUIUtils.getTextSpan("Mouse/Keyboard"));
+
+		__dialog_stack.push(dialog);
+		dialog.appendTo(document.body);
+		div_helpTitle.attr("class", 'dialog_help_title');
+		div_helpTitle.append(GUIUtils.getTextSpan("Help"));
+
+		dialog.append(div_helpTitle);
+
+		dialog.append(div_mouseKeyboard);
+		dialog.append("<b>Left Click:</b> Select/Deselect Item");
+		dialog.append( $('<br>') );
+		dialog.append( $('<br>') );
+		dialog.append("<b>Left Click + Drag:</b> Move Selected Item");
+		dialog.append( $('<br>') );
+		dialog.append( $('<br>') );
+		dialog.append("<b>Right Click:</b> Create Item");
+		dialog.append( $('<br>') );
+		dialog.append( $('<br>') );
+		dialog.append("<b>Right Click + Drag:</b> Connect Two Items Together");
+		dialog.append( $('<br>') );
+		dialog.append( $('<br>') );
+		dialog.append("<b>Delete:</b> Remove Selected Item");
+		dialog.append( $('<br>') );
+		dialog.append( $('<br>') );
+		dialog.append("<b>Alt + Left Click:</b> Rotate Bird, Change Box Tile Type, Change Rule/Query Name/Loop Count");
+		dialog.append( $('<br>') );
+		dialog.append( $('<br>') );
+		dialog.append("<b>Alt + Left Click:</b> Rotate Bird, Change Box Tile Type, Change Rule/Query Name/Loop Count");
+		dialog.append( $('<br>') );
+		dialog.append( $('<br>') );
+		dialog.append( $('<br>') );
+
+		dialog.append(div_buttonTitle);
+		dialog.append("<b>Run:</b> Run the maze");
+		dialog.append( $('<br>') );
+		dialog.append( $('<br>') );
+		dialog.append("<b>Step:</b> Run one rule of the maze");
+		dialog.append( $('<br>') );
+		dialog.append( $('<br>') );
+		dialog.append("<b>Reset:</b> Move the bird and pig back to their original places");
+		dialog.append( $('<br>') );
+		dialog.append( $('<br>') );
+		dialog.append("<b>Clear:</b> Delete the rules");
+		dialog.append( $('<br>') );
+		dialog.append( $('<br>') );
+		dialog.append("<b>Undo:</b> Undo last action");
+		dialog.append( $('<br>') );
+		dialog.append( $('<br>') );
+		dialog.append("<b>Redo:</b> Redo last action");
+		dialog.append( $('<br>') );
+		dialog.append( $('<br>') );
+		dialog.append("<b>Plus:</b> (When Rule Selected) Add 1 to the rule's loop count");
+		dialog.append( $('<br>') );
+		dialog.append( $('<br>') );
+		dialog.append("<b>Minus:</b> (When Rule Selected) Subtract 1 from the rule's loop count");
+		dialog.append( $('<br>') );
+		dialog.append( $('<br>') );
+
+
+		dialog.append( $('<br>') );
+		dialog.append( $('<br>') );
+
+
+		var ok = $('<button class="okbutton">'); // HUSEYIN-ENTER
+		ok.click( function(ev) {
+			BehaviorManager.handleUserEvent(__EVENT_OKAYED_DIALOG);
+		});
+		ok.attr("id", "dialog_btn");
+		ok.html('ok');
+		dialog.append(ok);
+
+
+		BehaviorManager.setActiveBehaviourStatechart(__SC_DIALOG);
+        BehaviorManager.handleUserEvent(__EVENT_SHOW_DIALOG);
+	};
+
 	
 	/**
 	 * Sets up a model popup window and displays it.
