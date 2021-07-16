@@ -398,8 +398,8 @@ function resetMaze() {
 	__grabEdgesAndDelete(edgesToRemove);
 	
 	//Creating New Bird and Pig Icons
-	__newIcon(pigX, pigY, "/Formalisms/Bird/Bird.defaultIcons/PigIcon");
-	__newIcon(birdX, birdY, "/Formalisms/Bird/Bird.defaultIcons/BirdIcon");
+	setTimeout(function () {__newIcon(pigX, pigY, "/Formalisms/Bird/Bird.defaultIcons/PigIcon");}, 50);
+	setTimeout(function () {__newIcon(birdX, birdY, "/Formalisms/Bird/Bird.defaultIcons/BirdIcon");}, 50);
 
 	setTimeout(function () {
 		for (var id in __icons) {
